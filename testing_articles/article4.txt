@@ -1,0 +1,49 @@
+How to Conduct a Market Sizing Analysis
+Why and how to assess market potential
+
+ZEB HASTINGS
+OCT 20, 2020
+
+When considering an investment, it's essential to understand the size of the opportunity. To find this information, both VCs and founders will conduct an exercise called market sizing. This post will define what market sizing is, why investors and founders benefit from it, and some approaches.
+
+What is market sizing?
+Market sizing is relatively straightforward. The basic principle is that it calculates the potential market demand for a company's products.
+
+Why is market sizing important?
+For investors, market sizing determines whether or not an opportunity is worth pursuing. VCs are looking for "outsized returns" and therefore need to invest in a company that can grow revenues enough to have an exit eventually. In general, VCs would like to be investing in a market worth at least $1B.
+
+For founders, knowing a market opportunity and customers will dictate the go-to-market strategy and business planning. Having these elements in place will help them determine their revenue goals and fundraising objectives. As venture capital should be used as a runway to hit specific milestones, these figures will help founders and investors determine a company's potential for successful growth, valuation, and the capital needed to achieve each milestone.
+
+How to size a market
+When looking at the traditional way to size up a market, investors need to focus on three components:
+
+TAM (Total Addressable Market): This is the total market for a product and includes everyone who could buy your product, regardless of other market factors such as competition.
+
+SAM (Serviceable Addressable Market): This is a portion of TAM that a company can acquire. For example, if your product is only available in English, you probably wouldn't be able to go after the Latin American market.
+
+SOM (Share of Market): This is your existing customer base or a percentage of SAM that you can realistically expect to acquire.
+
+
+Photo Source
+
+For more detailed information on these, Hubspot has a good blog about them here.
+
+There are two approaches to size up a market properly:
+
+Top-Down: This approach is a broad and quick way to look at a market. In a top-down approach, you would start with the largest size possible and use analysis, information, and assumptions about our business and the demand to reduce it to a reasonable estimate.
+
+Bottom-Up: This approach is more detailed and time-consuming. In a bottom-up analysis, you use your company's data (product, price, customer, competition) and scale up from there.
+
+In general, bottom-up is a more accurate assessment of your market. A best practice is to perform both calculations to validate your thinking.
+
+For a detailed analysis of these two approaches, this link provides an informative example.
+
+Beyond traditional market sizing, new approaches have been proposed. The TAM Onion is one such approach, starting with your spearhead market and expanding outward.
+
+
+Photo Source
+
+To learn more about this method, check out Samir Ghosh’s blog on it here.
+
+Final thoughts
+Market sizing is crucial for all businesses and investors. Knowing your market lays down the foundation for the entire company and investment strategy. There are many assumptions to make when conducting this exercise, and there is a fair amount of creativity involved. Market sizing can be difficult for early-stage companies, and even more so for startups creating a brand new market (think Uber or Airbnb). Try different approaches, and make sure you understand both your business and your customers. As the company moves further along and gathers more data, the exercise becomes more comfortable and accurate.

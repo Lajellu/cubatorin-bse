@@ -1,0 +1,124 @@
+
+Sizing Up: Market Sizing for Your Business
+Do you know your market size? Knowing market size can help you figure out how big is your business relative to the market, and how much potential it has. Here’s how to figure out market size.
+Outlier AI
+Towards Data Science
+Outlier AI
+
+·
+Follow
+
+Published in
+Towards Data Science
+
+·
+8 min read
+·
+Aug 25, 2017
+509
+
+
+1
+
+
+
+How big is your market?
+One of the first things an investor considers before investing in your business is how big is your market. Your total addressable market (TAM) is how big your business could theoretically become if it were to own 100% of its market — if every possible customer was a customer of your company and you had no competition. This is an important consideration because the larger the market the larger the business can become!
+
+Obviously, few businesses will ever come close to 100% market share and the TAM is a yardstick used to compare different businesses instead of a measure of a specific business. If you are considering investing in a business with a TAM of $10M and another with a TAM of $100M, the latter company has more potential because its market is larger. If you assume a successful business might own 10% of their TAM (much more realistic than 100%) then it becomes easier to compare these businesses since $1M < $10M.
+
+But how do you figure out your TAM? What if you are a new business who does not yet understand fully who your customers will be? What if you are in a new market that is growing and changing every day?
+
+This week we’ll cover techniques and considerations for sizing your TAM. Specifically:
+
+Part 2 — Top Down Market Sizing
+Part 3 — Bottom Up Market Sizing
+Part 4 — Using Comparables
+Part 5 — Sizing a New Market
+As you’ll see, market sizing requires a significant amount of creativity on your part since you will need to make many assumptions to create an estimate. We will get started with Top Down market sizing next.
+
+Starting from the top
+
+Our first approach to estimating your total addressable market (TAM) is a Top-Down analysis. As the name implies, in a Top-Down analysis we will start with the largest possible size estimate and reduce it using information and assumptions about our business and market.
+
+As an example, let us assume we want to start a new business called Tomatology which delivers tomatoes on demand. How big is the market for Tomatology? We will start with how much consumers spend on food today.
+
+There are many publicly available sources of market data, especially here in the US where the new Data.Gov initiative makes a lot of raw data about the size of commerce available. You can find out everything from national trade data to how much parents spend on their children. The Bureau of Labor Statistics publishes an annual Consumer Expenditure Survey (CES) which tells us that the average household spends $751 on fruits and vegetables every year, for a total of $94.4B spend every year in the US.
+
+Not everyone who buys fruits and vegetables will want them on demand or be reachable with deliveries! In fact, it only makes sense to offer Tomatology in large cities. About 30% of the population (according to the CES) lives in large cities so we’ll assume only 30% of those sales can be served by Tomatology. That reduces our estimate to $28.3B.
+
+Also, not all of the fruits and vegetables that are purchased are tomatoes! According to the USDA, only 5% are tomatoes (which are legally classified as a vegetable in the US). That reduces our estimate to $1.4B.
+
+Of course, not everyone will order their tomatoes on demand! Supermarkets will always have some market share, so we will assume that 20% of households would order their tomatoes on demand if offered. That brings our estimate to $140M.
+
+Finally, our business model assumes consumers will buy more tomatoes when they are delivered straight to your door! Our expectation is to grow tomato consumption by 10%. This increases our estimate to $154M.
+
+A shorter version of our Top-Down analysis might look like the following:
+
+
+For a real top-down analysis you would continue this process with more rigorous assumptions, getting to the most refined market size you can. Obviously, if you miss any important assumptions you will over-estimate your TAM using this technique. That is why, next, we’ll discuss Bottom-Up estimation!
+
+(Note: Tomatology is a very bad idea. However, if you start that business based on this idea I expect you to give me credit.)
+
+Working your way up
+
+While Top-Down market sizing is usually easy to do, it can be misleading. Can you really reach that entire market? How much would it cost you even if you could? The good news is that Bottom-Up market sizing gives us a clear picture of those factors.
+
+To do a bottom-up analysis you start with the basic units of your business (your product, price, customers) and estimate how large you can scale those units.
+
+Back to our example company, Tomatology (tomatoes delivered on-demand!), a Bottom-Up market sizing needs to start with the price of tomatoes which are around $1 for a large tomato in my area. Our local customer survey tells us that consumers buy 3 tomatoes when they go to the market once a week. That means the average consumer would buy $150 of tomatoes per year.
+
+How many consumers can we reach? Based on the effectiveness of commercials, billboards and other channels our head of marketing thinks we can reach about 35,000 households in our hometown of Oakland, CA. That brings our estimate to $5.3M.
+
+Finally, we will assume that we can expand into the top 30 cities based on our operating plan and available capital. That gives us an audience of 1.1M households or a total of $156M.
+
+A shorter version of our Bottom-Up analysis might look like the following:
+
+
+This is, like our Top-Down model, simplistic and a real Bottom-Up model would include many more steps to get to a better estimate.
+
+Note that our Bottom-Up model ignored some important factors like how long it would take us to reach consumers, churn rates of customers and whether there is competition. Remember, we are trying to size our Total Addressable Market which is only our market potential. The market reality in your business plan will need to address these other concerns and determine what percentage of your TAM is really achievable.
+
+So now that we have Top-Down and Bottom-Up market sizing experience, which do we choose when sizing a market? Tune in tomorrow, the answer may surprise you!
+
+Over the past few days we’ve reviewed Top-Down and Bottom-Up approaches to sizing a market. They both have advantages and disadvantages based on the kinds of assumptions you make as part of the approach.
+
+So, which should I use: Top-Down or Bottom-Up?
+
+Both. On their own, neither Top-Down or Bottom-Up analysis give you a complete picture. Top-Down hides the difficulties in reaching various segments of customers while Bottom-up assumes there will always be more customers in the segments you know how to reach.
+
+You have a good estimate of your market size when both your Top-Down and Bottom-Up models agree with each other. It may require updating your assumptions to get to such agreement, but those updates should be positive improvements that make the final estimate more accurate. It’s the equivalent of comparing your homework with a friend’s to see if you got the same answers.
+
+Luckily our Top-Down and Bottom-Up models for Tomatology, our hypothetical leader in on-demand tomato delivery, roughly agree at a market size around $150M. If you aren’t so lucky, reexamine your assumptions and see where the gap might exist. If you cannot make the two estimates agree there might be something fundamentally broken about your market or your business.
+
+One more thing…
+
+We can get even more confident in our estimates using comparables. Comparables are companies that are similar to yours, either in business model, product types or market position. A good comparable is a company that is already at scale and serving the same customers that you will serve (both now and in the future).
+
+For Tomatology, our hypothetical leader in on-demand tomato delivery, comparables might include:
+
+Instacart
+Amazon Fresh
+Boxed
+Postmates
+By looking at the size of these comparable businesses you can determine if your estimate is realistic. If your market estimate is $1B but no existing comparable does more than $10M in revenue then you are probably overestimating the potential (or you have a clever way to grow the market!). If your estimate is $100M and some of your comparables do $200M in business then you might be a little too small. Use it as a third check of your estimate!
+
+Next, we’ll look at how to size new markets, who don’t have existing customers or any available comparables. It will require us to get even more creative!
+
+The future is hazy, please try again.
+
+While market sizing can seem straightforward after everything we’ve discussed, the more interesting markets to size are the ones that don’t yet exist. These are new markets, created by changing consumer needs, technological innovations or shifts in the availability of resources. New markets lack all of the inputs we used for our previous sizing exercises!
+
+Have no fear, you can still estimate the size of a new market although it will be less accurate. To do so you need to make more aggressive assumptions.
+
+Let us assume Tomatology (our hypothetical on-demand tomato delivery company) runs into hard times as consumers don’t buy tomatoes on demand as much as our estimates would have predicted. So, we come up with a new product called a Tomapple which is a hybrid of a tomato and an apple! But what is the market size for the Tomapple? No one buys them today so we can’t use the Top-Down or Bottom-Up approaches we used so far.
+
+Or can we?
+
+Even those the Tomapple doesn’t exist yet, consumers buy other food every day. New products are either going to be replacements for existing products or create new demand for something that consumers don’t spend on today. It’s important to know which category your product falls into because sizing is different for each:
+
+Replacements: Sizing the market for a replacement works exactly the same as sizing for an existing product. You simply size the market for the product you will be replacing and make an assumption about how much of that market you can replace with your new product.
+
+New Demand: New demand sizing is harder and requires you to understand how much buying power your prospective customers have today and how much is available to spend on something new. This is why new products often target wealthier customer segments as luxury goods (iPhone, Tesla, etc.) because those customers have more buying power and hence the ability to buy something new.
+
+Sizing your market is an important step in understanding the potential of your business and the value you can create. It is also a useful exercise to help you understand the key obstacles you will need to overcome in growing your business. I

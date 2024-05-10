@@ -1,0 +1,34 @@
+<!--
+WORKS: Only on Firefox right now
+WORKS: This file is just a UI for the Advisor to upload testing_articles
+TODO: The article text will next be used as data to train the ChatGPT_FineTune.py
+
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Advisor File Upload</title>
+    <script src="../frontend-advisor.js"></script>
+
+</head>
+<body>
+    <h1>Welcome, Entrepreneurship Advisors</h1>
+    <p>Upload new article data to the OutCubator's OpenAI account.</p>
+
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
+        <label for="file">Choose a file to upload (.txt, .pdf):</label>
+        <input type="file" id="file" name="file" accept=".txt, .pdf">
+        <br><br>
+        <!-- py-click works, the warning is incorrect -->
+        <button type="button" id="uploadBtn">Upload File</button>
+    </form>
+
+    <p id="printSpace"></p>
+
+    <div id="fileContents"></div>
+</body>
+</html>
