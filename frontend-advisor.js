@@ -43,7 +43,7 @@ function handle_upload() {
                 const headers = {'Content-Type': 'application/json'};
 
                 // Using fetch API to send the file content to the backend
-                fetch('http://159.65.182.82:/api/upload_summarize_train', {
+                fetch('http://159.65.182.82:5000/api/upload_summarize_train', {
                     method: "POST",
                     headers: headers,
                     body: data
