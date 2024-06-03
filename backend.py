@@ -66,11 +66,11 @@ def research():
 # Receive and handle the request to upload a new article
 @app.route('/api/upload_summarize_train', methods=['POST'])
 def upload_summarize_train():
+    print("Received a request to /api/upload_summarize_train")
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    print("Received a request to /api/upload_summarize_train")
     # Extracting the text sent from the frontend
     data = request.json
     text_to_summarize = data['text']
