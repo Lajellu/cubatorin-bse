@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
          fetch('http://cubatorin.com:5000/get_message')
             .then(response => response.json())
             .then(data => {
+                console.log("Sending request to the summerizor");
                 // Add newlines to the OpenAI API response
                 let formattedMessage = data.message.replace(/\.(\s+)/g, '.$1<br>');
                 formattedMessage = formattedMessage.replace(/([a-z]\))(\s+)/g, '<br>$1$2');

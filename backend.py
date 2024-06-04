@@ -266,5 +266,5 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
 
 if __name__ == "__main__":
     print("Starting Flask server...")
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
