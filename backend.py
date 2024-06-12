@@ -101,13 +101,13 @@ def upload_summarize_train():
             time.sleep(6)
             status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
             print(f"Status: {status}")
-             # Retrieve checkpoints
-            checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
 
     if(status == "succeeded" ):
         print("--------- SUCCESS ---------")
         print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
         print("------------------")
+        # Retrieve checkpoints
+        checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
         # Analyze how well the model did
         # Print out the training loss, training token accuracy valid loss valid token accuracy
         retrieve_finetuning_metrics(client, fine_tuned_model.id)
