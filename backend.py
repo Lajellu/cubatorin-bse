@@ -3,7 +3,9 @@
 # "prompt" should contain the article text, and "completion" should contain the summary generated
 # Uploads the data to OpenAI API
 # Uses the data to train a model
-# TODO: Test the trained model with a query about market sizing
+# TODO: Fix the printing of the model analysis
+# TODO: The dropdown menu connects to the number of articles uploaded from each category in the bar graphs
+# at the bottom of the advisor's page. Add all articles into the same model though.
 
 from flask import Flask, request, jsonify
 import os
@@ -295,6 +297,8 @@ def retrieve_checkpoint_status(client, fine_tuned_model_id):
 
 def retrieve_finetuning_metrics(client, fine_tuned_model_id):
     try:
+        print("----Analyze the model: Print out the training loss, training token accuracy valid loss valid token accuracy-----")
+")
         # Retrieve the fine-tuning job details
         job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
 
