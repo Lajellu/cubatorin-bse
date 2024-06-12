@@ -298,7 +298,7 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
 
         # Extract the relevant metrics from the job details
-        metrics = job_details.get("result", {}).get("metrics", {})
+        print(json.dumps(job_details, indent=2))
 
         # Print out the fine-tuning job details
         print("Fine-tuning job details:")
