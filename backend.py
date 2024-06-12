@@ -128,7 +128,7 @@ def upload_summarize_train():
     if fine_tuned_model is None:
         print("Failed to train model.")
     else:
-        print("ine_tuned_model existed")
+        print("Fine_tuned_model existed")
         # TODO: Make this based on the dropdown menu choice on Advisor Upload page
 
         msg_for_user_ret = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
