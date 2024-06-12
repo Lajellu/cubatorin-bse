@@ -139,6 +139,7 @@ def upload_summarize_train():
 # Send the Cubatorin answer back to the frontend
 @app.route('/get_message')
 def get_message():
+    print("---------- Testing the model just trained. ----------")
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
@@ -225,7 +226,7 @@ def upload_dataset(client, local_file_path):
             file=open(local_file_path, 'rb'),  # Open the file in binary read mode
             purpose="fine-tune",
         )
-        print(f"File uploaded successfully with file ID:")
+        print(f"---------File uploaded successfully with file ID:-------")
         print(response.id)
         return response.id
     except Exception as e:
@@ -297,8 +298,11 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         # Retrieve the fine-tuning job details
         job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
 
-        # Extract the relevant metrics from the job details
-        print(json.dumps(job_details, indent=2))
+        # Convert the job details to a dictionary
+        job_details_dict = job_details.to_dict()
+
+        # Extract metrics from the job details
+        metrics = job_details_dict.get("result", {}).get("metrics", {})
 
         # Print out the fine-tuning job details
         print("Fine-tuning job details:")
