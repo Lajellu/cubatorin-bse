@@ -283,7 +283,7 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
 
 def retrieve_checkpoint_status(client, fine_tuned_model_id):
     try:
-        fine_tune_details = openai.FineTune.retrieve(id=fine_tuned_model_id)
+        fine_tune_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
         print("Retrieved checkpoints:")
         print(fine_tune_details)
         return fine_tune_details
