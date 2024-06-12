@@ -298,7 +298,6 @@ def retrieve_checkpoint_status(client, fine_tuned_model_id):
 def retrieve_finetuning_metrics(client, fine_tuned_model_id):
     try:
         print("----Analyze the model: Print out the training loss, training token accuracy valid loss valid token accuracy-----")
-")
         # Retrieve the fine-tuning job details
         job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
 
