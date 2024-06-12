@@ -103,13 +103,16 @@ def upload_summarize_train():
             print(f"Status: {status}")
              # Retrieve checkpoints
             checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
+
+    if(status == "succeeded" ):
+        print("--------- SUCCESS ---------")
+        print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+        print("------------------")
+        # Analyze how well the model did
+        # Print out the training loss, training token accuracy valid loss valid token accuracy
+        retrieve_finetuning_metrics(client, fine_tuned_model.id)
     else:
-        if(status == "succeeded" ):
-            print("--------- SUCCESS ---------")
-            print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
-            print("------------------")
-        else:
-            print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+        print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
 
     print("Checking other finetune jobs in the subscription.")
     all_trained_models = client.fine_tuning.jobs.list()
@@ -280,13 +283,34 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
 
 def retrieve_checkpoint_status(client, fine_tuned_model_id):
     try:
-        checkpoints = client.fine_tuning.jobs.retrieve_checkpoints(fine_tuned_model_id)
+        fine_tune_details = openai.FineTune.retrieve(id=fine_tuned_model_id)
         print("Retrieved checkpoints:")
-        for checkpoint in checkpoints.data:
-            print(f"Checkpoint ID: {checkpoint['id']}, Status: {checkpoint['status']}")
-        return checkpoints
+        print(fine_tune_details)
+        return fine_tune_details
     except Exception as e:
         print(f"Failed to retrieve checkpoints: {e}")
+        return None
+
+
+def retrieve_finetuning_metrics(client, fine_tuned_model_id):
+    try:
+        # Retrieve the fine-tuning job details
+        job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
+
+        # Extract the relevant metrics from the job details
+        metrics = job_details.get("result", {}).get("metrics", {})
+
+        # Print out the fine-tuning job details
+        print("Fine-tuning job details:")
+        print(json.dumps(job_details, indent=2))
+
+        # Print out the metrics specifically
+        print("Metrics:")
+        print(json.dumps(metrics, indent=2))
+
+        return job_details
+    except Exception as e:
+        print(f"Failed to retrieve fine-tuning job details: {e}")
         return None
 
 
