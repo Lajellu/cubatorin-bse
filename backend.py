@@ -21,6 +21,7 @@ CORS(app)
 logger = logging.getLogger("mypackage.mymodule")  # or __name__ for current module
 logger.setLevel(logging.ERROR)
 
+
 ################ For index-advisee ##################
 @app.route('/api/research', methods=['POST'])
 def research():
@@ -81,7 +82,7 @@ def upload_summarize_train():
 
     # print(f"Summary: {summary}")
 
-    # Write to marketSizing.jsonl
+    # Write to marketSizing.jsonl (adding to the data set)
     file_path = "topic_datasets_generated/marketSizing.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
 
@@ -91,7 +92,7 @@ def upload_summarize_train():
     # Train the model
     fine_tuned_model = train_model(client, remote_openAI_file_id)
 
-    # TODO: Check the fine-tuning status (note: you may want to loop with a time delay in a real scenario)
+    # Check the fine-tuning status (Loop with a time delay)
     # Retrieve the fine-tuning job details
     status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
     if status not in ["succeeded", "failed"]:
@@ -100,6 +101,8 @@ def upload_summarize_train():
             time.sleep(6)
             status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
             print(f"Status: {status}")
+             # Retrieve checkpoints
+            checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
     else:
         if(status == "succeeded" ):
             print("--------- SUCCESS ---------")
@@ -227,12 +230,22 @@ def upload_dataset(client, local_file_path):
         return None
 
 
+
 def train_model(client, remote_openAI_file_id):
     try:
         fine_tuned_model = client.fine_tuning.jobs.create(
             model="gpt-3.5-turbo",
             training_file=remote_openAI_file_id,
         )
+
+        # Consider changing the above to the commented part by ChatGPT
+        # fine_tuned_model = client.fine_tuning.jobs.create(
+        #    model="gpt-3.5-turbo",
+        #    training_file=remote_openAI_file_id,
+        #    compute_class="standard",  # You can adjust this based on your requirements
+        #    n_epochs=4,  # Number of training epochs, adjust as necessary
+        #    checkpoint_frequency=1  # Adjust frequency of checkpoints
+        # )
 
         print("Model trained successfully with uploaded data")
         # print(fine_tuned_model)
@@ -263,6 +276,19 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
     msg_for_user = completion.choices[0].message
     print(msg_for_user)
     return msg_for_user
+
+
+def retrieve_checkpoint_status(client, fine_tuned_model_id):
+    try:
+        checkpoints = client.fine_tuning.jobs.retrieve_checkpoints(fine_tuned_model_id)
+        print("Retrieved checkpoints:")
+        for checkpoint in checkpoints.data:
+            print(f"Checkpoint ID: {checkpoint['id']}, Status: {checkpoint['status']}")
+        return checkpoints
+    except Exception as e:
+        print(f"Failed to retrieve checkpoints: {e}")
+        return None
+
 
 if __name__ == "__main__":
     print("Starting Flask server...")
