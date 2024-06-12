@@ -128,7 +128,7 @@ def upload_summarize_train():
     if fine_tuned_model is None:
         print("Failed to train model.")
     else:
-        print("fine_tuned_model existed")
+        print("ine_tuned_model existed")
         # TODO: Make this based on the dropdown menu choice on Advisor Upload page
 
         msg_for_user_ret = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
@@ -151,7 +151,7 @@ def get_message():
     all_trained_models = client.fine_tuning.jobs.list()
     #print(all_trained_models)
     print(all_trained_models.data)
-    print(f"Found at least {len(all_trained_models.data)} finetune jobs.")
+    print(f"--------Found at least {len(all_trained_models.data)} finetune jobs.----------")
 
     fine_tuned_model = all_trained_models.data[0].fine_tuned_model
 
@@ -284,7 +284,7 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
 def retrieve_checkpoint_status(client, fine_tuned_model_id):
     try:
         fine_tune_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
-        print("Retrieved checkpoints:")
+        print("------Retrieved checkpoints:--------")
         print(fine_tune_details)
         return fine_tune_details
     except Exception as e:
