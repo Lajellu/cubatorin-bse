@@ -84,12 +84,14 @@ def upload_summarize_train():
 
     # print(f"Summary: {summary}")
 
+    ######### TODO: Read the from the OpenAI database https://platform.openai.com/storage/files/marketSizing.jsonl instead of the local topic_datasets_generated/marketSizing.jsonl
     # Write to marketSizing.jsonl (adding to the data set)
     file_path = "topic_datasets_generated/marketSizing.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
 
     # Upload the data to be added as Training Data
     remote_openAI_file_id = upload_dataset(client, file_path)
+    #########
 
     # Train the model
     fine_tuned_model = train_model(client, remote_openAI_file_id)
@@ -115,6 +117,8 @@ def upload_summarize_train():
         retrieve_finetuning_metrics(client, fine_tuned_model.id)
     else:
         print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+        print("-------------------------")
+
 
     print("Checking other finetune jobs in the subscription.")
     all_trained_models = client.fine_tuning.jobs.list()
@@ -123,15 +127,14 @@ def upload_summarize_train():
     # Retrieve the finetuned model
     fine_tuned_model = all_trained_models.data[0].fine_tuned_model
     print("Fine tune model: ")
-    print( fine_tuned_model)
-    # TODO: Make industry and topic based on the drop-down menu
-    industry = "parking"
-    topic = "market sizing"
+    print(fine_tuned_model)
+    print("-------------------------")
+
+
     if fine_tuned_model is None:
         print("Failed to train model.")
     else:
         print("Fine_tuned_model existed")
-        # TODO: Make this based on the dropdown menu choice on Advisor Upload page
 
         msg_for_user_ret = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
         return jsonify(message=msg_for_user_ret.content)
@@ -139,8 +142,8 @@ def upload_summarize_train():
     return "Fine tune model didn't exist"
 
 # Send the Cubatorin answer back to the frontend
-@app.route('/get_message')
-def get_message():
+@app.route('/test_me')
+def test_me():
     print("---------- Testing the model just trained. ----------")
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
@@ -163,8 +166,11 @@ def get_message():
 
     if fine_tuned_model is None:
         print("Model not found")
+        print("-------------------------")
+
     else:
-        print("fine_tuned_model existed")
+        print("Fine_tuned_model existed")
+        print("-------------------------")
 
         # use_trained_model_get_steps returns the message
         chatCompletionMessage = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
@@ -229,11 +235,13 @@ def upload_dataset(client, local_file_path):
             file=open(local_file_path, 'rb'),  # Open the file in binary read mode
             purpose="fine-tune",
         )
-        print(f"--------- File uploaded with file ID: SUCCESS-------")
+        print(f"--------- File uploaded with file ID: SUCCESS -------")
         print(response.id)
         return response.id
     except Exception as e:
         print(f"Failed to upload file: {e}")
+        print("-------------------------")
+
         return None
 
 
@@ -261,13 +269,16 @@ def train_model(client, remote_openAI_file_id):
     except openai.APIConnectionError as e:
         print("The server could not be reached")
         print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+        print("-------------------------")
     except openai.RateLimitError as e:
         print("A 429 status code was received; we should back off a bit.")
+        print("-------------------------")
     except openai.APIStatusError as e:
         print("Another non-200-range status code was received")
         print(e.status_code)
         print(e.response)
         print(e.response.text)  # Printing the detailed error message
+        print("-------------------------")
         return None
 
 def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
@@ -294,6 +305,7 @@ def retrieve_checkpoint_status(client, fine_tuned_model_id):
         return fine_tune_details
     except Exception as e:
         print(f"Failed to retrieve checkpoints: {e}")
+        print("-------------------------")
         return None
 
 
@@ -308,21 +320,27 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         if events:
             # Find the latest event with metrics
             for event in reversed(events):
-                if event['type'] == 'metrics':
-                    data = event['data']
+                if event.type == 'metrics':
+                    data = event.data
                     print(f"Training Loss: {data.get('train_loss')}")
                     print(f"Training Token Accuracy: {data.get('train_mean_token_accuracy')}")
                     print(f"Validation Loss: {data.get('valid_loss')}")
                     print(f"Validation Token Accuracy: {data.get('valid_mean_token_accuracy')}")
                     print(f"Full Validation Loss: {data.get('full_valid_loss')}")
                     print(f"Full Validation Token Accuracy: {data.get('full_valid_mean_token_accuracy')}")
+                    print("-------------------------")
+
                     break
         else:
             print("No events found with metrics.")
+            print("-------------------------")
+
 
         return events
     except Exception as e:
         print(f"Failed to retrieve fine-tuning job details: {e}")
+        print("-------------------------")
+
         return None
 
 
