@@ -3,7 +3,7 @@
 # "prompt" should contain the article text, and "completion" should contain the summary generated
 # Uploads the data to OpenAI API
 # Uses the data to train a model
-# TODO: Fix the printing of the model analysis
+# Performs model analysis (checks accurary, etc)
 # TODO: The dropdown menu connects to the number of articles uploaded from each category in the bar graphs
 # at the bottom of the advisor's page. Add all articles into the same model though.
 
@@ -34,7 +34,7 @@ def research():
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    # TODO: Make industry and topic based on the drop-down menu
+    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
     industry = "parking"
     topic = "market sizing"
 
@@ -162,7 +162,9 @@ def test_me():
     # print(all_trained_models)
     # print(all_trained_models.data)
     print(f"-------- Found at least {len(all_trained_models.data)} finetune jobs: SUCCESS ----------")
-
+    print("----------TEST---------------")
+    print(all_trained_models.data)
+    print("-------------------------")
     fine_tuned_model = all_trained_models.data[0].fine_tuned_model
 
     print(fine_tuned_model)
