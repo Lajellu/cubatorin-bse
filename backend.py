@@ -298,22 +298,9 @@ def retrieve_checkpoint_status(client, fine_tuned_model_id):
 def retrieve_finetuning_metrics(client, fine_tuned_model_id):
     try:
         print("----Analyze the model: Print out the training loss, training token accuracy valid loss valid token accuracy-----")
-        # Retrieve the fine-tuning job details
         job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
-
-        # Convert the job details to a dictionary
-        job_details_dict = job_details.to_dict()
-
-        # Extract metrics from the job details
-        metrics = job_details_dict.get("result", {}).get("metrics", {})
-
-        # Print out the fine-tuning job details
-        print("Fine-tuning job details:")
-        print(json.dumps(job_details, indent=2))
-
-        # Print out the metrics specifically
-        print("Metrics:")
-        print(json.dumps(metrics, indent=2))
+        print(job_details)
+        # Get the details of the model training loss, training token accuracy valid loss valid token accuracy
 
         return job_details
     except Exception as e:
