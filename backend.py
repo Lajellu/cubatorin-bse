@@ -87,9 +87,9 @@ def upload_summarize_train():
 
     ######### TODO June 13: Read the from the OpenAI database https://platform.openai.com/storage/files/marketSizing.jsonl instead of the local topic_datasets_generated/marketSizing.jsonl
     # Download file from OpenAI database
-    openai_file_url = "https://platform.openai.com/storage/files/marketSizing.jsonl"
-    local_file_path = "topic_datasets_generated/marketSizing.jsonl"
-    download_file_from_openai(openai_file_url, local_file_path)
+    # openai_file_url = "https://platform.openai.com/storage/files/marketSizing.jsonl"
+    # local_file_path = "topic_datasets_generated/marketSizing.jsonl"
+    # download_file_from_openai(openai_file_url, local_file_path)
 
     # Write to marketSizing.jsonl (adding to the data set)
     file_path = "topic_datasets_generated/marketSizing.jsonl"
