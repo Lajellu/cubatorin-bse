@@ -85,7 +85,12 @@ def upload_summarize_train():
 
     # print(f"Summary: {summary}")
 
-    ######### TODO: Read the from the OpenAI database https://platform.openai.com/storage/files/marketSizing.jsonl instead of the local topic_datasets_generated/marketSizing.jsonl
+    ######### TODO June 13: Read the from the OpenAI database https://platform.openai.com/storage/files/marketSizing.jsonl instead of the local topic_datasets_generated/marketSizing.jsonl
+    # Download file from OpenAI database
+    # openai_file_url = "https://platform.openai.com/storage/files/marketSizing.jsonl"
+    # local_file_path = "topic_datasets_generated/marketSizing.jsonl"
+    # download_file_from_openai(openai_file_url, local_file_path)
+
     # Write to marketSizing.jsonl (adding to the data set)
     file_path = "topic_datasets_generated/marketSizing.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
@@ -139,7 +144,7 @@ def upload_summarize_train():
         # TODO: Make these based on the user's profile
         industry = "parking"
         topic = "market sizing"
-        msg_for_user_ret = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
+        msg_for_user_ret = query_trained_model(client, industry, topic, fine_tuned_model)
         return jsonify(message=msg_for_user_ret.content)
 
     return "Fine tune model didn't exist"
@@ -175,8 +180,8 @@ def test_me():
         print("Fine_tuned_model existed")
         print("-------------------------")
 
-        # use_trained_model_get_steps returns the message
-        chatCompletionMessage = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
+        # query_trained_model returns the message
+        chatCompletionMessage = query_trained_model(client, industry, topic, fine_tuned_model)
         chatCompletionMsgContent = chatCompletionMessage.content
         return jsonify(message=chatCompletionMsgContent)
 
@@ -206,6 +211,19 @@ def openai_summarize_text(client, text_to_summarize):
     print(summaryByChatBot)
 
     return summaryByChatBot
+
+
+def download_file_from_openai(url, local_path):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Check if the request was successful
+
+        with open(local_path, 'wb') as f:
+            f.write(response.content)
+
+        print(f"File downloaded successfully from {url}")
+    except Exception as e:
+        print(f"Failed to download file: {e}")
 
 
 def write_to_jsonl(filename, article_text, summary):
@@ -284,7 +302,7 @@ def train_model(client, remote_openAI_file_id):
         print("-------------------------")
         return None
 
-def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
+def query_trained_model(client, industry, topic, fine_tuned_model):
     query = "I have just decided to build a new" + industry + "app, what steps do I take when performing" + topic + "?"
     completion = client.chat.completions.create(
       model = fine_tuned_model,
@@ -293,9 +311,12 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
         {"role": "user", "content": query}
        ]
     )
+    print("-------------------------")
+    print("Test the query")
 
     msg_for_user = completion.choices[0].message
-    print(msg_for_user)
+    print("Content: " + msg_for_user.content)
+    print("Role: " + msg_for_user.role)
     return msg_for_user
 
 
