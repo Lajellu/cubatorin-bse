@@ -85,12 +85,6 @@ def upload_summarize_train():
 
     # print(f"Summary: {summary}")
 
-    ######### TODO June 13: Read the from the OpenAI database https://platform.openai.com/storage/files/marketSizing.jsonl instead of the local topic_datasets_generated/marketSizing.jsonl
-    # Download file from OpenAI database
-    # openai_file_url = "https://platform.openai.com/storage/files/marketSizing.jsonl"
-    # local_file_path = "topic_datasets_generated/marketSizing.jsonl"
-    # download_file_from_openai(openai_file_url, local_file_path)
-
     # Write to marketSizing.jsonl (adding to the data set)
     file_path = "topic_datasets_generated/marketSizing.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
@@ -212,19 +206,6 @@ def openai_summarize_text(client, text_to_summarize):
     print(summaryByChatBot)
 
     return summaryByChatBot
-
-
-def download_file_from_openai(url, local_path):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Check if the request was successful
-
-        with open(local_path, 'wb') as f:
-            f.write(response.content)
-
-        print(f"File downloaded successfully from {url}")
-    except Exception as e:
-        print(f"Failed to download file: {e}")
 
 
 def write_to_jsonl(filename, article_text, summary):
