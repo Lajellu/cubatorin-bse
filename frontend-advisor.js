@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
      document.querySelector("#testMe").addEventListener("click", () => {
          console.log("Test Me button clicked");
 
-         fetch('http://cubatorin.com:5000/get_message')
+         fetch('http://cubatorin.com:5000/test_me')
             .then(response => {
                 console.log("Received response from server");  // Add this line
                 return response.json();
