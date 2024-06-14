@@ -105,7 +105,7 @@ def upload_summarize_train():
             print(f"Status: {status}")
 
     if(status == "succeeded" ):
-        print("--------- SUCCESS ---------")
+        print("--------- Finetune Job SUCCESS ---------")
         print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
         print("------------------")
         # Retrieve checkpoints
@@ -152,9 +152,10 @@ def get_message():
 
     print("Checking other finetune jobs in the subscription.")
     all_trained_models = client.fine_tuning.jobs.list()
-    #print(all_trained_models)
-    print(all_trained_models.data)
-    print(f"--------Found at least {len(all_trained_models.data)} finetune jobs.----------")
+    # Uncomment this for information about all of the existing trained models, Training Parameters, and File Details
+    # print(all_trained_models)
+    # print(all_trained_models.data)
+    print(f"-------- Found at least {len(all_trained_models.data)} finetune jobs: SUCCESS ----------")
 
     fine_tuned_model = all_trained_models.data[0].fine_tuned_model
 
@@ -228,7 +229,7 @@ def upload_dataset(client, local_file_path):
             file=open(local_file_path, 'rb'),  # Open the file in binary read mode
             purpose="fine-tune",
         )
-        print(f"---------File uploaded successfully with file ID:-------")
+        print(f"--------- File uploaded with file ID: SUCCESS-------")
         print(response.id)
         return response.id
     except Exception as e:
@@ -287,8 +288,9 @@ def use_trained_model_get_steps(client, industry, topic, fine_tuned_model):
 def retrieve_checkpoint_status(client, fine_tuned_model_id):
     try:
         fine_tune_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
-        print("------Retrieved checkpoints:--------")
-        print(fine_tune_details)
+        print("------ Retrieved checkpoint: SUCCESS --------")
+        # Uncomment this for information about the model, Training Parameters, and File Details
+        # print(fine_tune_details)
         return fine_tune_details
     except Exception as e:
         print(f"Failed to retrieve checkpoints: {e}")
@@ -297,25 +299,28 @@ def retrieve_checkpoint_status(client, fine_tuned_model_id):
 
 def retrieve_finetuning_metrics(client, fine_tuned_model_id):
     try:
-        print("----Analyze the model: Print out the training loss, training token accuracy valid loss valid token accuracy-----")
-        # Retrieve the fine-tuning job details
-        job_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
+        print("-------------------------")
+        print("---- Analyze the model: Print out the training loss, training token accuracy, validation loss, and validation token accuracy -----")
 
-        # Convert the job details to a dictionary
-        job_details_dict = job_details.to_dict()
+        # Retrieve events for the fine-tuning job
+        events = client.fine_tuning.jobs.list_events(fine_tuned_model_id).data
 
-        # Extract metrics from the job details
-        metrics = job_details_dict.get("result", {}).get("metrics", {})
+        if events:
+            # Find the latest event with metrics
+            for event in reversed(events):
+                if event['type'] == 'metrics':
+                    data = event['data']
+                    print(f"Training Loss: {data.get('train_loss')}")
+                    print(f"Training Token Accuracy: {data.get('train_mean_token_accuracy')}")
+                    print(f"Validation Loss: {data.get('valid_loss')}")
+                    print(f"Validation Token Accuracy: {data.get('valid_mean_token_accuracy')}")
+                    print(f"Full Validation Loss: {data.get('full_valid_loss')}")
+                    print(f"Full Validation Token Accuracy: {data.get('full_valid_mean_token_accuracy')}")
+                    break
+        else:
+            print("No events found with metrics.")
 
-        # Print out the fine-tuning job details
-        print("Fine-tuning job details:")
-        print(json.dumps(job_details, indent=2))
-
-        # Print out the metrics specifically
-        print("Metrics:")
-        print(json.dumps(metrics, indent=2))
-
-        return job_details
+        return events
     except Exception as e:
         print(f"Failed to retrieve fine-tuning job details: {e}")
         return None
