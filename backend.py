@@ -16,6 +16,7 @@ from flask_cors import CORS
 import logging
 from pathlib import Path
 import time
+import requests
 
 # Set up Flask
 app = Flask(__name__)
@@ -135,7 +136,9 @@ def upload_summarize_train():
         print("Failed to train model.")
     else:
         print("Fine_tuned_model existed")
-
+        # TODO: Make these based on the user's profile
+        industry = "parking"
+        topic = "market sizing"
         msg_for_user_ret = use_trained_model_get_steps(client, industry, topic, fine_tuned_model)
         return jsonify(message=msg_for_user_ret.content)
 
