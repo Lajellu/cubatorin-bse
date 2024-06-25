@@ -179,7 +179,6 @@ function fillBarGraphs(){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Dom content was loaded");
     fillBarGraphs();
 
     document.getElementById('URLuploadBtn').addEventListener('click', function() {
