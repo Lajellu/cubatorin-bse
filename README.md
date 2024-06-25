@@ -1,4 +1,5 @@
 **Cubatorin User Journey**
+
 Mentor meets with the Mentee to gather preliminary information about the Startup Idea
 
 Mentor uploads relevant startup articles to the Outcubator
