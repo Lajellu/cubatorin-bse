@@ -96,7 +96,7 @@ function truncateString(str, num) {
 }
 
 function fetchAndDisplayURLContent(url) {
-    const proxyUrl = 'http://localhost:5000/fetch-url?url=' + encodeURIComponent(url);
+    const proxyUrl = 'http://cubatorin.com:5000/fetch-url?url=' + encodeURIComponent(url);
 
     fetch(proxyUrl)
         .then(response => {
