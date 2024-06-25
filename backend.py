@@ -184,6 +184,21 @@ def test_me():
 
     return "Model not found"
 
+
+@app.route('/fetch-url')
+def fetch_url():
+    url = request.args.get('url')
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
     response = client.chat.completions.create(
@@ -350,6 +365,7 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         print("-------------------------")
 
         return None
+
 
 
 if __name__ == "__main__":

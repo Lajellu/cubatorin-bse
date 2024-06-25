@@ -94,3 +94,99 @@ function truncateString(str, num) {
     return str;
   }
 }
+
+function fetchAndDisplayURLContent(url) {
+    const proxyUrl = 'http://localhost:5000/fetch-url?url=' + encodeURIComponent(url);
+
+    fetch(proxyUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            const textContent = doc.body.innerText;
+            document.getElementById('fileContents').innerText = textContent;
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            document.getElementById('fileContents').innerText = 'Failed to fetch content from the URL.';
+        });
+}
+
+
+// Function for filling in the bar graph for the number of articles uploaded for each topic
+function fillBarGraphs(){
+    // JS for filling in the bar graph for the number of articles uploaded for each topic
+    let numMarketSizing = 30;
+    let numProductMarketFit = 0;
+    let numValuation = 0;
+    let numCapitalization = 0;
+    let numCompetitiveAnalysis = 0;
+    let numContentMarketing = 0;
+    let numNetworking = 0;
+    let numCustomerJourney = 0;
+    let numPrivacyandDataCompliance = 0;
+    let numCustomerLifetimeValue = 0;
+    let numSaaSMetrics = 0;
+
+    document.getElementById("barMarketSizing").innerHTML = numMarketSizing + "%";
+    document.getElementById("progressMarketSizing").style.width = numMarketSizing + "%";
+    document.getElementById("progressMarketSizing").ariaValueNow = numMarketSizing.toString();
+
+    document.getElementById("barProductMarketFit").innerHTML = numProductMarketFit + "%";
+    document.getElementById("progressProductMarketFit").style.width = numProductMarketFit + "%";
+    document.getElementById("progressProductMarketFit").ariaValueNow = numProductMarketFit.toString();
+
+    document.getElementById("barValuation").innerHTML = numValuation + "%";
+    document.getElementById("progressValuation").style.width = numValuation + "%";
+    document.getElementById("progressValuation").ariaValueNow = numValuation.toString();
+
+    document.getElementById("barCapitalization").innerHTML = numCapitalization + "%";
+    document.getElementById("progressCapitalization").style.width = numCapitalization + "%";
+    document.getElementById("progressCapitalization").ariaValueNow = numCapitalization.toString();
+
+    document.getElementById("barCompetitiveAnalysis").innerHTML = numCompetitiveAnalysis + "%";
+    document.getElementById("progressCompetitiveAnalysis").style.width = numCompetitiveAnalysis + "%";
+    document.getElementById("progressCompetitiveAnalysis").ariaValueNow = numCompetitiveAnalysis.toString();
+
+    document.getElementById("barContentMarketing").innerHTML = numContentMarketing + "%";
+    document.getElementById("progressContentMarketing").style.width = numContentMarketing + "%";
+    document.getElementById("progressContentMarketing").ariaValueNow = numContentMarketing.toString();
+
+    document.getElementById("barNetworking").innerHTML = numNetworking + "%";
+    document.getElementById("progressNetworking").style.width = numNetworking + "%";
+    document.getElementById("progressNetworking").ariaValueNow = numNetworking.toString();
+
+    document.getElementById("barCustomerJourney").innerHTML = numCustomerJourney + "%";
+    document.getElementById("progressCustomerJourney").style.width = numCustomerJourney + "%";
+    document.getElementById("progressCustomerJourney").ariaValueNow = numCustomerJourney.toString();
+
+    document.getElementById("barPrivacyandDataCompliance").innerHTML = numPrivacyandDataCompliance + "%";
+    document.getElementById("progressPrivacyandDataCompliance").style.width = numPrivacyandDataCompliance + "%";
+    document.getElementById("progressPrivacyandDataCompliance").ariaValueNow = numPrivacyandDataCompliance.toString();
+
+    document.getElementById("barCustomerLifetimeValue").innerHTML = numCustomerLifetimeValue + "%";
+    document.getElementById("progressCustomerLifetimeValue").style.width = numCustomerLifetimeValue + "%";
+    document.getElementById("progressCustomerLifetimeValue").ariaValueNow = numCustomerLifetimeValue.toString();
+
+    document.getElementById("barSaaSMetrics").innerHTML = numSaaSMetrics + "%";
+    document.getElementById("progressSaaSMetrics").style.width = numSaaSMetrics + "%";
+    document.getElementById("progressSaaSMetrics").ariaValueNow = numSaaSMetrics.toString();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    fillBarGraphs();
+
+    document.getElementById('URLuploadBtn').addEventListener('click', function() {
+        const url = document.getElementById('url_article').value;
+        fetchAndDisplayURLContent(url);
+    });
+});
+
+
+
