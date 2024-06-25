@@ -134,7 +134,6 @@ function fillBarGraphs(){
     let numSaaSMetrics = 0;
 
     document.getElementById("barMarketSizing").innerHTML = numMarketSizing + "%";
-    console.log(document.getElementById("barMarketSizing").innerHTML);
     document.getElementById("progressMarketSizing").style.width = numMarketSizing + "%";
     document.getElementById("progressMarketSizing").ariaValueNow = numMarketSizing.toString();
 
@@ -180,6 +179,7 @@ function fillBarGraphs(){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("Dom content was loaded");
     fillBarGraphs();
 
     document.getElementById('URLuploadBtn').addEventListener('click', function() {
