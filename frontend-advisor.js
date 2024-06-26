@@ -98,7 +98,7 @@ function truncateString(str, num) {
 function fetchAndDisplayURLContent(url) {
     const proxyUrl = 'http://cubatorin.com:5000/fetch_url_data?url=' + encodeURIComponent(url);
 
-    fetch(proxyUrl)
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
