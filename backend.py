@@ -185,8 +185,9 @@ def test_me():
     return "Model not found"
 
 
-@app.route('/fetch-url', methods=['POST'])
+@app.route('/fetch_url_data', methods=['POST'])
 def fetch_url():
+    print("Request to fetch_url received")
     url = request.args.get('url')
     try:
         response = requests.get(url)

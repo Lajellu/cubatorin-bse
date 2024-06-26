@@ -96,7 +96,8 @@ function truncateString(str, num) {
 }
 
 function fetchAndDisplayURLContent(url) {
-    const proxyUrl = 'http://cubatorin.com:5000/fetch-url?url=' + encodeURIComponent(url);
+    console.log("In the function fetchAndDisplayURLContent");
+    const proxyUrl = 'http://cubatorin.com:5000/fetch_url_data?url=' + encodeURIComponent(url);
 
     fetch(proxyUrl)
         .then(response => {
@@ -182,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fillBarGraphs();
 
     document.getElementById('URLuploadBtn').addEventListener('click', function() {
+        console.log("The URL upload button was clicked");
         const url = document.getElementById('url_article').value;
         fetchAndDisplayURLContent(url);
     });
