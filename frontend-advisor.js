@@ -96,15 +96,16 @@ function truncateString(str, num) {
 }
 
 function fetchAndDisplayURLContent(url) {
-    console.log("In the function fetchAndDisplayURLContent");
     const proxyUrl = 'http://cubatorin.com:5000/fetch_url_data?url=' + encodeURIComponent(url);
 
     fetch(proxyUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
+            } else {
+                console.log("The response was OK");
+                return response.text();
             }
-            return response.text();
         })
         .then(data => {
             const parser = new DOMParser();
@@ -183,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fillBarGraphs();
 
     document.getElementById('URLuploadBtn').addEventListener('click', function() {
-        console.log("The URL upload button was clicked");
         const url = document.getElementById('url_article').value;
         fetchAndDisplayURLContent(url);
     });
