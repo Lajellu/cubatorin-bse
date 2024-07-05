@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Advisee Login</h3>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row">Username {{form.username}}</div>
+    <div class="row">Password {{form.password}}</div>
+    
+    {% if form_errors %}
+        <div class="row" style="color:red;">{{ form_errors }}</div>
+    {% endif %}
+
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+
+    <div class="row"><input type="submit" value="Login" class="btn btn-primary mt-3"></div>    
+</form>
+
+<div class="row">
+    <div class="col text-center mt-3">
+        <p>
+            Don't have an account? <a href="{% url 'advisee:register' %}">Register as an advisee</a>
+        </p>        
+    </div>
+</div>
+{% endblock %}

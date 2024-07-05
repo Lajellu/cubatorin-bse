@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Advisee Registration</h3>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="row">First name {{form.first_name}}</div>
+    <div class="row">Last name {{form.last_name}}</div>
+    <div class="row">Username {{form.username}}</div>
+    <div class="row">Email {{form.email}}</div>
+    <div class="row">Password {{form.password1}}</div>
+    <div class="row">Password Again {{form.password2}}</div>
+    
+    {% if form.errors %}
+    <div class="row" style="color:red;">{{form.errors}}</div>
+    {% endif %}
+
+    <div class="row"><input type="submit" value="Register" class="btn btn-primary mt-3"></div>
+</form>
+
+<div class="row">
+    <div class="col text-center mt-3">
+        <p>
+            Already have an account? <a href="{% url 'advisee:login' %}">Login as an advisee</a>
+        </p>        
+    </div>
+</div>
+
+{% endblock %}
