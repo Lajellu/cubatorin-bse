@@ -26,10 +26,6 @@ logger.setLevel(logging.ERROR)
 
     
 ################ For index-advisor ##################
-@app.route('/')
-def index():
-    return "Flask server is running!"
-
 # Receive and handle the request to upload a new article
 @app.route('/api/upload_summarize_train', methods=['POST'])
 def upload_summarize_train():

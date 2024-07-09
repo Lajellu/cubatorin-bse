@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
          fetch('http://cubatorin.com:5000/test_me')
             .then(response => {
-                console.log("Received response from server");  // Add this line
+                console.log("Received response from server");
                 return response.json();
             })
             .then(data => {
@@ -52,7 +52,7 @@ function handle_upload() {
                 const headers = {'Content-Type': 'application/json'};
 
                 // Using fetch API to send the file content to the backend
-                fetch('http://cubatorin.com:5000/api/upload_summarize_train', {
+                fetch('/api/upload_summarize_train', {
                     method: "POST",
                     headers: headers,
                     body: data
