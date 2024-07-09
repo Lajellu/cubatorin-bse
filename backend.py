@@ -150,10 +150,23 @@ def fetch_url():
     url = request.args.get('url')
     try:
         response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-    except requests.RequestException as e:
+        print("\nResponse Text: " + response.text)
+
+        # If request has succeeded:
+        if response.status_code == 200:
+            page_content = response.text
+            # You can now process page_content as needed
+            # For demonstration, let's just return a portion of it
+            return jsonify({'content': page_content[:1000]})  # Limit to 1000 chars for demo purposes
+        else:
+            return jsonify({'error': 'Failed to fetch data from the URL'}), 400
+    except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+    """ Removed by ChatGPT but unsure why. Could potentially be added back in
+    response.raise_for_status()
+        return response.text
+    """
 
 
 def openai_summarize_text(client, text_to_summarize):
