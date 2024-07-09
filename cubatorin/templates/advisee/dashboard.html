@@ -8,3 +8,8 @@
     {% endfor %}
 
 {% endblock %}
+
+{% block body_end %}
+    <!-- Frontend script -->
+    <script src="{% static 'js/frontend-advisee.js' %}"></script>
+{%endblock%}
