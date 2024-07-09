@@ -26,6 +26,10 @@ logger.setLevel(logging.ERROR)
 
     
 ################ For index-advisor ##################
+@app.route('/')
+def index():
+    return "Flask server is running!"
+
 # Receive and handle the request to upload a new article
 @app.route('/api/upload_summarize_train', methods=['POST'])
 def upload_summarize_train():
@@ -155,9 +159,6 @@ def fetch_url():
     except requests.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
@@ -370,4 +371,3 @@ def research():
 if __name__ == "__main__":
     print("Starting Flask server...")
     app.run(host='0.0.0.0', port=5000, debug=True)
-
