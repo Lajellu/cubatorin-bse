@@ -20,7 +20,7 @@ import requests
 
 # Set up Flask
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type"]}})
 logger = logging.getLogger("mypackage.mymodule")  # or __name__ for current module
 logger.setLevel(logging.ERROR)
 
