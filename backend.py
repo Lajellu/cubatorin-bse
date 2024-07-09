@@ -26,10 +26,26 @@ logger.setLevel(logging.ERROR)
 
     
 ################ For index-advisor ##################
+@app.route('/api/fetch_url_data', methods=['GET'])
+def fetch_url_data():
+    url = request.args.get('url')
+    if not url:
+        return jsonify({'error': 'No URL provided'}), 400
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text, 200  # Return the raw HTML content
+        else:
+            return jsonify({'error': 'Failed to fetch data from the URL'}), response.status_code
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 # Receive and handle the request to upload a new article
-@app.route('/api/upload_summarize_train', methods=['POST'])
-def upload_summarize_train():
-    print("Received a request to /api/upload_summarize_train")
+@app.route('/api/file_upload_train', methods=['POST'])
+def file_upload_train():
+    print("Received a request to /api/file_upload_train")
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
@@ -162,11 +178,6 @@ def fetch_url():
             return jsonify({'error': 'Failed to fetch data from the URL'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-    """ Removed by ChatGPT but unsure why. Could potentially be added back in
-    response.raise_for_status()
-        return response.text
-    """
 
 
 def openai_summarize_text(client, text_to_summarize):
