@@ -24,47 +24,6 @@ CORS(app)
 logger = logging.getLogger("mypackage.mymodule")  # or __name__ for current module
 logger.setLevel(logging.ERROR)
 
-
-################ For index-advisee ##################
-@app.route('/api/research', methods=['POST'])
-def research():
-    print("Received a request to /api/research")
-
-    # Ensure your OPENAI_API_KEY environment variable is set
-    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=OPENAI_API_KEY)
-
-    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
-    industry = "parking"
-    topic = "market sizing"
-
-    # Use a pre-trained OpenAI API call to do research across the web for this information
-    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
-    response = client.chat.completions.create(
-      model="gpt-3.5-turbo",
-      messages=[
-        {
-          "role": "system",
-          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
-
-        },
-        {
-          "role": "user",
-          "content": query
-        }
-      ],
-      temperature=0.7,
-      max_tokens=250,
-      top_p=1
-    )
-
-    researchbyChatBot = response.choices[0].message.content
-    print("Research is ready: ")
-    print(researchbyChatBot)
-
-    return jsonify(message=researchbyChatBot)
-
-
     
 ################ For index-advisor ##################
 # Receive and handle the request to upload a new article
@@ -367,7 +326,46 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
 
         return None
 
+################ For index-advisee ##################
+@app.route('/api/research', methods=['POST'])
+def research():
+    print("Received a request to /api/research")
 
+    # Ensure your OPENAI_API_KEY environment variable is set
+    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
+    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
+    industry = "parking"
+    topic = "market sizing"
+
+    # Use a pre-trained OpenAI API call to do research across the web for this information
+    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
+    response = client.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=[
+        {
+          "role": "system",
+          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
+
+        },
+        {
+          "role": "user",
+          "content": query
+        }
+      ],
+      temperature=0.7,
+      max_tokens=250,
+      top_p=1
+    )
+
+    researchbyChatBot = response.choices[0].message.content
+    print("Research is ready: ")
+    print(researchbyChatBot)
+
+    return jsonify(message=researchbyChatBot)
+
+################ Above is For index-advisee ##################
 
 if __name__ == "__main__":
     print("Starting Flask server...")
