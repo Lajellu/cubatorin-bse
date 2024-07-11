@@ -20,57 +20,32 @@ import requests
 
 # Set up Flask
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type"]}})
 logger = logging.getLogger("mypackage.mymodule")  # or __name__ for current module
 logger.setLevel(logging.ERROR)
 
-
-################ For index-advisee ##################
-@app.route('/api/research', methods=['POST'])
-def research():
-    print("Received a request to /api/research")
-
-    # Ensure your OPENAI_API_KEY environment variable is set
-    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=OPENAI_API_KEY)
-
-    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
-    industry = "parking"
-    topic = "market sizing"
-
-    # Use a pre-trained OpenAI API call to do research across the web for this information
-    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
-    response = client.chat.completions.create(
-      model="gpt-3.5-turbo",
-      messages=[
-        {
-          "role": "system",
-          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
-
-        },
-        {
-          "role": "user",
-          "content": query
-        }
-      ],
-      temperature=0.7,
-      max_tokens=250,
-      top_p=1
-    )
-
-    researchbyChatBot = response.choices[0].message.content
-    print("Research is ready: ")
-    print(researchbyChatBot)
-
-    return jsonify(message=researchbyChatBot)
-
-
     
 ################ For index-advisor ##################
+@app.route('/api/fetch_url_data', methods=['GET'])
+def fetch_url_data():
+    url = request.args.get('url')
+    if not url:
+        return jsonify({'error': 'No URL provided'}), 400
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text, 200  # Return the raw HTML content
+        else:
+            return jsonify({'error': 'Failed to fetch data from the URL'}), response.status_code
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 # Receive and handle the request to upload a new article
-@app.route('/api/upload_summarize_train', methods=['POST'])
-def upload_summarize_train():
-    print("Received a request to /api/upload_summarize_train")
+@app.route('/api/file_upload_train', methods=['POST'])
+def file_upload_train():
+    print("Received a request to /api/file_upload_train")
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
@@ -191,14 +166,19 @@ def fetch_url():
     url = request.args.get('url')
     try:
         response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-    except requests.RequestException as e:
+        print("\nResponse Text: " + response.text)
+
+        # If request has succeeded:
+        if response.status_code == 200:
+            page_content = response.text
+            # You can now process page_content as needed
+            # For demonstration, let's just return a portion of it
+            return jsonify({'content': page_content[:1000]})  # Limit to 1000 chars for demo purposes
+        else:
+            return jsonify({'error': 'Failed to fetch data from the URL'}), 400
+    except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
@@ -367,9 +347,47 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
 
         return None
 
+################ For index-advisee ##################
+@app.route('/api/research', methods=['POST'])
+def research():
+    print("Received a request to /api/research")
 
+    # Ensure your OPENAI_API_KEY environment variable is set
+    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
+    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
+    industry = "parking"
+    topic = "market sizing"
+
+    # Use a pre-trained OpenAI API call to do research across the web for this information
+    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
+    response = client.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=[
+        {
+          "role": "system",
+          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
+
+        },
+        {
+          "role": "user",
+          "content": query
+        }
+      ],
+      temperature=0.7,
+      max_tokens=250,
+      top_p=1
+    )
+
+    researchbyChatBot = response.choices[0].message.content
+    print("Research is ready: ")
+    print(researchbyChatBot)
+
+    return jsonify(message=researchbyChatBot)
+
+################ Above is For index-advisee ##################
 
 if __name__ == "__main__":
     print("Starting Flask server...")
     app.run(host='0.0.0.0', port=5000, debug=True)
-
