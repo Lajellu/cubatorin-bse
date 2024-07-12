@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['137.184.166.117']
+ALLOWED_HOSTS = ['137.184.166.117', 'cubatorin.com']
 
 
 # Application definition
