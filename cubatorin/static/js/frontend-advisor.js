@@ -1,4 +1,4 @@
-apiUrl = "http://cubatorin.com/api/"
+apiUrl = "/api/"
 
 document.addEventListener("DOMContentLoaded", () => {
     // Always listening for clicks on the Upload button
