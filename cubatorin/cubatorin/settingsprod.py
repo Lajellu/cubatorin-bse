@@ -31,6 +31,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['137.184.166.117', 'cubatorin.com']
 
+# CSRF security mechanism needs to know that cubatorin is a trusted domain
+CSRF_TRUSTED_ORIGINS = [
+    'https://cubatorin.com',
+]
 
 # Application definition
 
