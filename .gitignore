@@ -1,5 +1,3 @@
-/topic_datasets_generated/
-
 .env
 
 db.sqlite3
