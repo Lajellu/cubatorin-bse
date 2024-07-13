@@ -55,7 +55,7 @@ function handle_upload() {
 
 
                 // Using fetch API to send the file content to the backend
-                fetch($apiUrl + '/api/file_upload_train', {
+                fetch(apiUrl + '/api/file_upload_train', {
                     method: "POST",
                     headers: headers,
                     body: data
