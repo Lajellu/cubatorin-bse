@@ -1,3 +1,5 @@
+apiUrl = "http://cubatorin.com:5001"
+
 document.addEventListener("DOMContentLoaded", () => {
     // Always listening for clicks on the Upload button
     document.querySelector("#uploadBtn").addEventListener("click", () => {
@@ -53,7 +55,7 @@ function handle_upload() {
 
 
                 // Using fetch API to send the file content to the backend
-                fetch('http://cubatorin.com:5000/api/file_upload_train', {
+                fetch($apiUrl + '/api/file_upload_train', {
                     method: "POST",
                     headers: headers,
                     body: data
@@ -98,7 +100,7 @@ function truncateString(str, num) {
 
 
 function fetchAndDisplayURLContent(url) {
-    const proxyUrl = 'http://cubatorin.com:5000/api/fetch_url_data?url=' + encodeURIComponent(url);
+    const proxyUrl = apiUrl + '/api/fetch_url_data?url=' + encodeURIComponent(url);
 
     fetch(proxyUrl)
         .then(response => {
