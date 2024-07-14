@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- Bootstrap CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- TinyMCE -->
+   <script src="https://cdn.tiny.cloud/1/8x1hweynrzp6x8azzn91rhukl6pwwq6vyqwhmahqrpp6bgpb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="text/javascript">
+      tinymce.init({
+          selector: '.textEditor',
+          theme: 'silver',
+          plugins: [
+            'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+            'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+            'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+          ],
+          toolbar: 'undo redo | a11ycheck casechange blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify |' +
+          'bullist numlist checklist outdent indent | removeformat | code table help'
+        })
+    </script>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="adivseeView/startbootstrap-simple-sidebar-gh-pages/css/styles.css" rel="stylesheet" />
+    <!-- Wavy Background CSS. Use class="wave" on a HTML element to use it -->
+    <link rel="stylesheet" href="./gradient-background-with-waves/dist/style.css">
+
+     <!-- Wavy Background CSS. Use class="wave" on a HTML element to use it -->
+    <link rel="stylesheet" href="./output-animation-card-animation/dist/style.css">
+    <!-- CSS for the button to request research -->
+    <link rel="stylesheet" href="./button-CSS/dist/style.css">
+    <!-- Custom styles for Cubatorin-->
+    <style>
+        article {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 5%;
+        }
+        #cubatorin-research-btn {
+            border-radius: 8px;
+            background-color: silver;
+        }
+        #main-name {
+            color: black;
+            text-decoration: none;
+            font-family: "Marker Felt", fantasy;
+        }
+    </style>
+</head>
+
+<body>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                <div class="sidebar-heading border-bottom bg-light">
+                        <!-- Sidebar - Brand -->
+                        <div class="sidebar-brand d-flex align-items-center justify-content-center" href="index-advisor.html">
+                            <div class="sidebar-brand-icon rotate-n-15">
+                                <img src="./cubatorin-logo.png" alt="cubatorin logo: cube with a plant" width="60" height="60">
+                            </div>
+                            <div id="main-name">CUBATORIN</div>
+                        </div>
+
+                </div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Message Advisor</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Saved Drafts</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Contacts</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+                </div>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                    <div class="container-fluid">
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <h1>Advisee Ideation</h1>
+                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#!">Edit Profile</a>
+                                        <a class="dropdown-item" href="#!">Notifications</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#!">Settings</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+                    <!-- Add the wave animation to the main container of the page-->
+                    <div class="wave"></div>
+                    <br/>
+                    <div>
+                    <p>
+                        The Advisee Ideation Document is a living and growing document, written by you, and with research help by the Cubatorin.
+                        Start going through the questions, and at each step ask the Cubatorin Chat to help you with the reserach.
+                    </p>
+                    <p>
+                        Your advisor can also use this space to keep track of your progress, and to also flag the AI if it gives wrong answers.
+
+                        <form method="post" >
+                             <h2>Market Sizing</h2>
+                                <p id="apiMessageSpace">Loading...</p>
+                                <button type="button" id="cubatorin-research-btn">Cubatorin, please research!</button>
+                                <br/>
+                                <br/>
+                                 <article>
+                                    <section class="textEditor" id="audience" style="width: 70%">1. Main target audience: Starting brainstorming the types of users your application might attract.z2222222 </section>
+                                     <aside>
+                                        <!-- Research Output Space -->
+                                        <div class="container">
+                                            <div class="card">
+
+                                                <svg class="card__svg" viewBox="0 0 800 500">
+
+                                                <path d="M 0 100 Q 50 200 100 250 Q 250 400 350 300 C 400 250 550 150 650 300 Q 750 450 800 400 L 800 500 L 0 500" stroke="transparent" fill="#333"/>
+                                                <path class="card__line" d="M 0 100 Q 50 200 100 250 Q 250 400 350 300 C 400 250 550 150 650 300 Q 750 450 800 400" stroke="pink" stroke-width="3" fill="transparent"/>
+                                                </svg>
+
+                                                <div class="card__content">
+                                                <h1 class="card__title">Research Results</h1>
+                                                <p id="research-results-space"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                     </aside>
+                                </article>
+
+                            <br/>
+                            <br/>
+
+
+                            <h2>Capitalization</h2>
+                            <p>Write the problems/opportunities that you see in the locally or in the world. Think about what problems/opportunities that matter to you. </p>
+                            <article>
+                                <section class="textEditor" id="capitalization" style="width: 80%">1. Problem X in the world</section>
+                            </article>
+
+                            <h2>Product Market Fit</h2>
+                            <article>
+                                <section class="textEditor" id="fit" style="width: 80%">1. Competitor X name </section>
+                            </article>
+
+                            <h2>Valuation</h2>
+                            <article>
+                                <section class="textEditor" id="valuation" style="width: 80%">1. How might we solve X in the world </section>
+                            </article>
+
+                            <h2>Competitive Analysis</h2>
+                            <section class="textEditor" id="competitive" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Content Marketing</h2>
+                            <section class="textEditor" id="content_marketing"  style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Networking</h2>
+                            <section class="textEditor" id="networking" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Customer Journey</h2>
+                            <section class="textEditor" id="journey" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Privacy and Data Compliance</h2>
+                            <section class="textEditor" id="privacy" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Customer Lifetime Value</h2>
+                            <section class="textEditor" id="lifetime" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>SaaS Metrics</h2>
+                            <section class="textEditor" id="metrics" style="width: 80%">Click here to edit the second section of content!</section>
+
+                            <h2>Implement technology</h2>
+                            <section class="textEditor" id="implement" style="width: 80%">Click here to edit the second section of content!</section>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+</body>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<!-- Cubatorin JS that controls this page -->
+<script src="./frontend-advisee.js"></script>
+<script src="js/scripts.js"></script>
+
+</html>

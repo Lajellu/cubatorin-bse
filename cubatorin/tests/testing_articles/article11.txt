@@ -1,0 +1,107 @@
+HOW TO ESTIMATE MARKET SIZE FOR A STARTUP
+8 JULY 2019•8 COMMENTS• FINANCIAL PROJECTIONS
+BY GIULIA GIRARDI
+Rachleff’s Law of Startup Success (of Andy Rachleff, formerly of Benchmark Capital)
+
+The #1 company-killer is lack of market. When a great team meets a lousy market, market wins. When a lousy team meets a great market, market wins. When a great team meets a great market, something special happens.
+
+The market is certainly one of the top three factors in a startup’s success or failure, together with team and product, with different investors and thought leaders siding with each of them. Probably the most vocal of them all, Marc Andreessen, is a strong market advocate, stating emphatically that even a mediocre team with a great market can make it.
+
+Estimating market size is then much more than an exercise to complete a presentation. It is the activity of understanding how the current and future state of the world supports your offering, as well as your competitive positioning and product/market fit.
+
+What’s a market and what do people mean with its size?
+To estimate the market size, the first step is actually to understand and crystallise what a market is.
+
+From Geoffrey Moore’s “Crossing the Chasm” a market is:
+
+A set of actual potential customers…
+
+for a given set of products or services
+who have a common set of needs or wants, and
+who reference each other when making a buying decision.
+Basically it is an aggregate of buying decision-makers that have a common need/want and are willing to spend money to fulfill it. In addition, according to Linowes, they have the potential to reference each other when making the decision.
+
+“A market is a set of connected customers, thus far away geographies generally count as separate markets”
+
+According to the last clause, completely disconnected markets, like restaurants in Mumbai and New York, do not really count as same markets because the average buyers cannot reference each other. They count then as two different markets.
+
+Now that the definition of market is clearer, what about the definition of market size?
+
+Generally market size is split in two – the size in terms of number of customers, and the one in terms of monetary value. For the sake of clarity, we’ll be referring to the former as market size and to the latter as market value.
+
+The first step to estimating the market size is understanding the market
+The market is then the aggregate of buying decision makers. They have a common need/want and that is what classifies them. When estimating the market size for your company, the need/want in question is the one fulfilled by your product/service. Hence the most overused sentence in startup and company development lingo, understand your customer.
+
+If you have been building a product and talking to potential or actual customers, you probably have a good enough idea of who they are and what need does your product fulfil. (In case you don’t).
+
+Enrich the analysis by thinking broader
+As any founder can confirm, it is really hard to take a step back from the narrow focus of the company and the product. That is why I’m a strong believer in little exercises to broaden our thinking.
+
+Now that the product need and target customers are clear, let’s go through 3 steps that allow us to step out and get a more eagle-eye view.
+
+Broadening step 1: Substitute products
+Answer these questions:
+
+What are the products that substitute mine almost exactly at the moment?
+Who are the direct competitors?
+Are they fulfilling exactly the same need?
+Put yourself in the shoes of your customers and try to answer these questions from their perspective.
+
+Broadening step 2: Replacement products
+Now let’s take this a step further:
+
+What are the alternatives that the customer uses to fulfil the same need?
+What are their disadvantages?
+How much do they cost?
+How many people are buying them?
+Broadening warning
+There are few products and companies that are actually creating a market. They are the exception. The market is usually finding or putting together solutions already. Before Slack, people were using a mix of Facebook Groups, chats, hangouts, emails etc. Communication as a problem has always been there. The right solution is the one that took over the market.
+
+The second step in estimating market size: Research
+You should have by now a pretty good idea of what the market is. Now it’s time to estimate the number of customers the market has.
+
+This step is usually very market specific. But there are some guidelines.
+
+Start broad: when estimating the potential clients for a food restaurant in a city, look up its population on Wikipedia. Narrow it down to the percentage of the city that is within car reach (if there is available parking). Narrow it down to the percentage of the population that is going to be attracted by your specific product, e.g. no kids in a cocktail bar, etc.
+Be realistic: generally if your analysis ends up identifying almost everybody as a potential customer, you probably have to go back to step 1. Not all businesses are going to use Salesforce (because of pricing, positioning, etc.)
+This exercise is mostly for you: investors and stakeholders are also interested in your market size. However this number does not affect them as much as it affects you. They are diversified, they invested in a number of companies, and they don’t have to face customers and employees when things go sour. Having credible, reliable and realistic market numbers is a competitive advantage that impacts mostly you.
+Consider the future: Markets are always moving- the smartphone app market did not exist 10 years ago. Now companies that only develop apps can break 1Bln valuation (Supercell) and enter the unicorn club.
+“Past and future of a market are as important as its present state“
+
+Given these premises and guidelines for the approach, you should proceed to identify:
+
+1 | The Potential Market, the upper limit of the market size. The maximum demand level for a product in a certain area and period of time. It implies that:
+
+Every subject, who is able to use the product, uses it
+Every user adopt the product at every usage occasion
+Every time that is adopted, the product is used in the optimal dose
+2| The Total Market Size (or primary demand), that is the total volume of a product or service that would be bought by a defined consumer.
+
+Tip: Remember to consider not only the number of clients in the market, but also their frequency of usage of the product during the specific time frame (e.g., one year).
+
+
+
+3| The Secondary Demand, that is the market share held by your company.
+
+
+
+Third step: Research + Competitive Analysis = Price
+Now that you have the number of potential customers in your market and you have investigated substitute and replacement products, you should have a well formed and strong idea about:
+
+The market size
+The value per customer
+Now it’s just about multiplying:
+
+Market size (number of potential customers) * value per customer (Price) = Market Volume
+
+Tip: The reliability of these numbers only goes as far as the reliability of their assumptions. The final market volume can be a very well rounded estimate. It is very useful to check it against some numbers. Generally, there is research available on the aggregate expenses of a certain sector (e.g. CRM software, SaaS software, Food and Dining etc). If your product does not create additional demand (again those are the exceptions) the market volume should reflect and not be 10X what customers are spending already in a category of product.
+
+Step 4: Consider Timing
+Startups and companies take years to form. Technology is increasing the speed at which markets change. On top of that, all information is worth much more in context. For these reasons, you should consider the history and the future of the market. Understanding market size in context improves the reliability and confidence of your estimate as it gives you more insights into how to better tackle its future developments.
+
+Conclusion:
+If the #1 company-killer is lack of market, then understanding your customer segment, their behaviour, their aggregate number and purchasing power, gives you an unbeatable edge in increasing your chances of success, funding, and growth.
+
+The next step to estimate your business potential, is to make financial projections. Check out our partnership with ProjectionHub for a way to make that easier!
+
+What is your take on market size estimation? Are there other tricks, techniques, or tools to do this in a better way? What are the heuristics that you have experienced that can be helpful for other readers? Share them in the comments.

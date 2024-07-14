@@ -1,0 +1,94 @@
+How To Effectively Determine Your Market Size
+Alejandro Cremades
+Former Contributor
+Author of The Art of Startup Fundraising & Serial Entrepreneur
+
+Sep 23, 2018,07:59am EDT
+This article is more than 5 years old.
+Pixabay
+Pixabay PIXABAY
+One of the most crucial tasks an entrepreneur has is to calculate the size of their market, and the potential value that market has for their startup business. Without this data you can’t create a viable business plan, or be taken seriously when approaching potential investors.
+
+As described in my book, The Art of Startup Fundraising, the market needs to be in the billions. Otherwise, even if you have the perfect team and product the returns will be limited for potential investors making your investment opportunity less attractive.
+
+Market Size for Startups
+
+Determining the market size is critical. It tells you and your partners, team and investors how much potential business is really out there. It helps calculate how much value there really is for your individual venture. This is critical to know, even if you never plan to raise a dime in outside capital.
+
+Market size becomes far more important if you ever need to raise funding for your business. It is one of the most basic digits every potential angel and VC investor is going to expect. Even your friends and family should be asking about it during seed and pre-seed financing rounds. Coming up empty handed is going to destroy your credibility instantly.
+
+Unfortunately, this is one factor which entrepreneurs frequently blow when formulating initial plans, stepping out into a new business and when pitching investors. So, how do you do it right?
+
+How to Determine Market Size
+
+To calculate your market size, you’ll either be looking for data on the number of potential customer, or number of transactions each year.
+
+
+CEO: C-suite news, analysis, and advice for top decision makers right to your inbox.
+
+Email address
+Sign Up
+By signing up, you accept and agree to our Terms of Service (including the class action waiver and arbitration provisions), and you acknowledge our Privacy Statement. Forbes is protected by reCAPTCHA, and the Google Privacy Policy and Terms of Service apply.
+For example; if you are selling toothbrushes, virtually everyone can be counted in your big whole market figure. If people are listening to their dentists, and they are purchasing new toothbrushes 2-4 times per year, that number is even larger. If you are selling houses, then there may only be an average of 5.34M transactions in a good year, in the entire United States.
+
+The Art of Startup Fundraising book
+The Art of Startup Fundraising book THE ART OF STARTUP FUNDRAISING BOOK
+
+Keep in mind:
+
+Show projections going out 3 years (it’s hard to accurately analyze after that)
+Account for organic growth or decline in the years ahead
+Your roll out to geographic areas over time
+There are a variety of ways to acquire this data. Census and labor bureau hold a lot of information, and most industries have formal associations which compile and track this type of data. You can also commission your own research or purchase studies.
+
+Once you have the data you want to make sure that you are presenting it in a powerful way in your pitch deck since it is one of the most important slides. A good pitch deck template is the one created by Silicon Valley legend, Peter Thiel (see it here) that I recently covered. Thiel was the first angel investor in Facebook with a $500K check that turned into more than $1 billion in cash. Thiel actually includes not one, but two slides around the market and its size. Moreover, I also provided a commentary on a pitch deck from an Uber competitor that has raised over $400M (see it here).
+
+Below is another example of how to show in your pitch deck your market growing over time.
+
+The Art of Startup Fundraising book
+The Art of Startup Fundraising book THE ART OF STARTUP FUNDRAISING BOOK
+
+How to Determine Market Value
+
+Market size, or the number of potential customers or unit sales is one thing. How much that is worth, is a completely different, and perhaps more important figure.
+
+You need to know how much revenue that market has to offer. For example; UpNest is one of the fastest growing real estate tech startups, which helps home buyers and sellers save on Realtor commissions. If the average home price is $394,300, and there are 5M sales per year, and the average Realtor commission is 5% of the sales price, and 90% of users use a Realtor, UpNest is in an $88.7B per year industry. Or has a market size of $88.7B.
+
+Determining Total Addressable Market (TAM)
+
+Realistically, no startup should or can expect to gain 100% market share. Trying to capture an entire market, without first targeting several niches, price points, customer sizes or geo areas for roll out, is going to be financial suicide for the vast majority of entrepreneurs.
+
+The Art of Startup Fundraising book
+The Art of Startup Fundraising book THE ART OF STARTUP FUNDRAISING BOOK
+
+For example; even giant online real estate firm Zillow, which dominates the marketplace, has far more modest estimates for its own new venture in buying and flipping houses directly with consumers. The company’s CEO recently said that if it could acquire 275,000 units a $3,500 profit each, it would be doing very well. That’s about $1B a year from just one extra revenue stream, at just over 18% of the available market share.
+
+Of course, most new startups can’t expect to even command that much market share. Even if you could, most seasoned investors won’t believe it until you prove it. Tx Zhuo of Karlin Ventures says “If it’s 1 to 5 percent of the pie, you have a realistic plan.”
+
+If you have no idea what’s a reasonable amount of market share in your industry, Projection Hub says one hack is to anonymously call around to all of your local competitors and find out how much volume they are doing. Then estimate you’ll be doing a fraction of that as you gain traction.
+
+The Art of Startup Fundraising book
+The Art of Startup Fundraising book THE ART OF STARTUP FUNDRAISING BOOK
+Also factor in the static versus evolving marketplace. Do population growth rates mean there will be more prospective customers in your market in 5 years, or less? Don’t forget to factor in your own impact on the market.
+
+For example; if you were Amazon a decade ago, you should have factored in the fact that you are about to destroy the marketplace for regular bookstores. Their price cutting also slashed the value of the market in a huge way.
+
+Early stage startup investor at Matrix Partners, Jared Sleeper notes there are actually :three distinct ways to calculate TAM.”
+
+They are:
+
+Top-down, using industry research and reports.
+Bottom-up, using data from early selling efforts.
+Value theory, using conjecture about buyer willingness to pay.
+It’s best to know them all before you go into an investor meeting, or finish polishing your pitch deck.
+
+Summary
+
+Knowing your market size is a basic foundational part of launching any startup venture. Every entrepreneur needs to know how to calculate it, and how it relates to potential revenue in their addressable market.
+
+Be realistic. Investors like big numbers, but don’t have patience for flakes over-inflating numbers. You should be able to show the potential to achieve VC sized growth and returns over time. Just make sure you can back up your claims with the data and research, you derived your numbers from, and how you arrived at your assumptions.
+
+Follow me on LinkedIn. Check out my website.
+Alejandro Cremades
+Alejandro Cremades
+I am a serial entrepreneur and the author of the The Art of Startup

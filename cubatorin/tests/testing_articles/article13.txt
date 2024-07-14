@@ -1,0 +1,128 @@
+Market sizing
+2/10/20150 Comments
+
+Picture
+One of the most important determinants of a new venture’s success is calculating the total potential market size and value. Knowing this figure helps determine how much money your business can make and also competitive market share. Whether you’re creating a business around a new product or coming out with a different version of something that already exists, it’s important to determine the overall size of your market. This information will be highly valuable as you reach out to potential investors and banks for funding. Additionally, you should always be aware of how many customers you could potentially serve.
+
+What does market size mean? Basically, it’s the number of customers potentially interested in your product or service, and the total possible amount of money that could be spent on that product or service. It sounds easy enough, but how do you measure something intangible?
+
+This guide breaks down the five steps to estimating the market size providing specifics on where to find the information.
+
+The following are key steps in calculating the market size measured in number of customers, market volume, and market value:
+
+Define the total geographical population
+Define the market segment and estimate the percentage of target customers in that area
+Estimate average number of items purchased at a time
+Estimate average purchase frequency
+Calculate selling price
+The following formula is used to estimate the total size of your product or service’s market. Keep in mind that this is not necessarily how much your company can capture, but the total amount possible in the market. The market size is calculated by determining a value for all of the variables and then multiplying them together.
+
+Formula for Calculating Total Market Size (in dollars):
+
+MS = N * TC * Q * F * P
+
+MS = Market Size
+
+N = Total Geographical Population
+
+TC = Percentage of Target Customers in Geographical Area
+
+Q = Quantity purchased at a time
+
+F = Purchase Frequency in a year
+
+P = Price of Product
+
+The following sections break down how to determine each of the necessary variables. Keep in mind that all of the values will be estimates, and this is OK! Market sizing isn’t precise, and we will discuss tips on how to make it more reliable through sensitivity analysis at the end.
+
+Geographic Population (N)
+The total geographical population is the number of people living in the area your businesses will target. This can be national, regional, statewide, citywide, or a specific neighborhood. This geographical location should reflect the service or product you are selling. If you’re opening a coffee shop, use the population of your neighborhood. If you’re launching a mobile grocery list app, use national population data.
+
+Many governments and municipalities publish this data and you can access it online. The US Census bureau has detailed breakdowns country wide, by state and by zip code. For city level data, go to your local municipality website and check if they publish population information. Examples can be found at (https://data.cityofchicago.org/ ,  https://data.ny.gov/ , https://data.sfgov.org/ ). If not online, you can contact them directly and they will provide you with the information.
+
+Find the population size for your target market and insert it as N in the equation
+
+Percent of Target Customers (TC)
+Now that we identified the total geographical population, we have to estimate how many people within that area will potentially use your product/service. Determine who your target customer is and create a profile of your typical/expected target customer. It is critical to recognize that the target customer equals the person or company for whom your technology solves a specific problem. Defining the target customer is an essential task for all start-ups.
+
+The target customer is generally described using demographic variables: gender, age, education and income. The customer is also described using psychographic variables: lifestyle, interests and belief system variables. The more specific your target market, the harder it will be to find specific data to match all the criteria.
+
+You can find single variable demographics such as age, marital status, household income, gender, race/ethnicity, and education by using US Census data:
+
+Go to quickfacts.census.gov to access national and statewide data in the US
+Select the target state from the dropdown menu. If nationwide, select USA.
+Select Browse data sets for [state] at the top
+Select Demographic Profile
+From this list, find the numbers that fit your target demographic. This list contains a breakdown of age groups as well as other demographic information
+Take the percentage figure for your target demographic and this will be the value for TC (% of Target Customers in Geographical Area)
+
+
+
+Quantity Purchased at a Time (Q)
+Consumers will purchase different quantities of a product/service depending on how they interact with it in their daily lives. Products can be purchased one at a time or in multiples. Depending on the nature of your product, how many units do you expect customers to purchase at a single time? Light bulbs are typically purchased in multiples, say 2 or 4 at a time, while a personal computer may be purchased 1 at a time.
+
+If you know how many units are purchased at a time for your product/service by a single customer, use this number as the value for Q (Quantity purchased at a time). If you do not know this for your product/service you can estimate by searching industry reports in your category, observing consumers, or conducting a survey asking “When purchasing this product/service, how many will you purchase at a time?”
+
+Purchase Frequency (F)
+Purchase Frequency is a determination of how often your target customers would purchase your product/service. This figure will have a significant impact on the estimated market potential. For instance, is your product purchased frequently, occasionally or infrequently? Obviously, the more frequently the product is purchased, the larger the market potential. Some products like cars may be purchased once every 5 years, while a cup of coffee may be purchased 5 days a week.
+
+If you know how often your product is purchased in a year by a single customer, use this number as the value for F (Purchase Frequency in a year). If you do not know this for your product/service you can estimate by searching industry reports in your category, observing consumers, or conducting a survey asking, “How often would you expect to purchase this product/service?”
+
+Purchase Price (P)
+Purchased price can be estimated for existing products by identifying similar products in the market place, and comparing the value your product will provide. The price used for this estimate is the average price your target customers are willing to pay for this product.
+
+If you know how much you will charge for your product, use this number as the value for P (Purchase Price). If you do not know this for your product/service you can estimate by searching industry reports in your category, observing consumers, or conducting a survey asking, “How often would you expect to purchase this product/service?”
+
+Final Market Size
+Now that we have solved for all the variables, the market size is simply calculated by inserting each of them into the formula. The resulting number for this formula will tell you the total dollar sales possible for your entire market.
+
+MS = N * TC * Q * F * P
+
+As you can see, a little bit of research can make a big impact on sizing your market. Being able to successfully size your market will help you understand how much money you have to make and how many customers you can reach. Want more? You can purchase the full 19-page guide with detailed instructions and worksheets on our websitePractical Startup: Market Sizing Guide
+
+
+0 Comments
+Evaluating Product Ideas
+2/10/20150 Comments
+
+Picture
+At Practical Startup, we have a process of developing and evaluating new business ideas. This is the second in a series of two posts on this process. If you missed it, read the first post here.
+
+MARKET DEMAND
+
+Demand is important. Really, really important. Without a large group of people who want your product, you’re doomed. You can do everything else perfectly and still fail. So it’s crucial to ensure there is a legitimate market for your product before investing time in building your business. The best ways to estimate demand is to actually try selling a minimally viable product, but this can be time consuming. For our purposes we are going to look at a few online tools to quickly analyze demand before investing significant resources and time in other methods.
+
+Google Keyword Tool (www.google.com/adwords)
+
+The Google Keyword Tool shows you how many people are searching for a particular term each month. The search volume for a term can be a proxy for consumer demand and interest.
+
+To Use: Sign-up for a free Google Adwords account and select Keyword Planner from the Tools menu at the top. Enter your product or category in the search window, and any demographic targeting information. The resulting chart will show you how many people searched for that term every month, and can be used as an indicator for consumer demand.
+Picture
+Google Trends (www.google.com/trends)
+
+Google Trends identifies the number of searches for a term over time and can be used as a proxy for forecasting increasing or decreasing consumer demand. An increasing number of searches can be interpreted as an in-demand product, while a flattening or declining trend can be interpreted as a product loosing consumer interest.
+
+To Use: Go to www.google.com/trends and search for your product or category. The resulting graph shows the percentage of searches compared to the peak date. The highest number has a score of 100, and every other date is rated 0-99 in relation to this point.
+Picture
+Topsy (www.topsy.com)
+
+Topsy is a twitter analytics tool that searches all mentions of keywords to determine how many people are actively talking about a product or topic. Twitter is an effective source for looking at market potential and product interest. Use Topsy to search for the volume of tweets per day mentioning your product / service category
+
+To Use: Enter your search term on the Topsy website and hit enter. Then, click on the graph labeled “Tweets Over Past 30 Days”. From this graph, you can determine how many people are tweeting about your product / service and see what they are saying.
+Picture
+MARKET SUPPLY
+
+It’s important to understand your competitors in the marketplace before deciding to establish a business. Unless your idea is truly novel, there are likely to be existing businesses that are tackling the same problem. While you don’t have to be first to market your business should address an unmet need either by targeting a different customer, a different location, or a different method. The following tools will help you understand the nature of competition in your area, how many companies exist, and where they are located.
+
+SBA’s SizeUp Tool (www.sba.gov/tools/sizeup)
+
+The Small Business Administration’s SizeUp tool lets you crunch millions of data points to get customizable reports and statistics about your potential competition. Enter your industry, city, state and other details. The tool then runs various reports and provides maps and data related to your competition, suppliers and customers. This tool is applicable to both consumer and B2B industries.
+
+To Use: At the tool, enter in the industry category and city you plan to target, then select competition. The resulting window will show you a list of businesses in the geographical area you selected. Try using various data filters to better understand your competition and customers.
+Picture
+Google Competition Search (www.google.com)
+
+The majority of people use search engines like Google to find businesses and services, so it’s a great place to start when looking for competitors. Google is able to identify physical locations of retail businesses or online websites for service and web based businesses.
+
+To Use: Search your product / service category in Google and note the search results that come up on the first 3 pages. When customers are searching for you, the other companies listed are likely your competition. Identify any clear market leaders and the services they provide.
+Picture
