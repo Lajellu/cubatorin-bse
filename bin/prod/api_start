@@ -6,4 +6,4 @@ DJANGODIR="${PROJECT_PATH}/cubatorin"
 cd $DJANGODIR
 source "${PROJECT_PATH}/env/bin/activate"
 
-python "${DJANGODIR}/api/api.py
+python "${DJANGODIR}/api/api.py"
