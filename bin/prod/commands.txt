@@ -1,0 +1,21 @@
+# activate venv virtual env
+source /webapps/cubatorin/env/bin/activate
+
+# nginx 
+service nginx [start | stop | restart]
+
+# flask api
+supervisorctl [start | stop | restart] cubatorin_api
+
+# gunicorn (django)
+supervisorctl [start | stop | restart] cubatorin_gunicorn
+
+# supervisor 
+#    reread supervisor config from /etc/supervisor/conf.d
+supervisorctl reread
+
+#    start/stop processes based on new config
+supervisorctl update
+
+#    check on processes and print their status
+supervisorctl status
