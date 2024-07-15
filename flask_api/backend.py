@@ -7,16 +7,20 @@
 # TODO: The dropdown menu connects to the number of articles uploaded from each category in the bar graphs
 # at the bottom of the advisor's page. Add all articles into the same model though.
 
-from flask import Flask, request, jsonify
 import os
 import openai
 import json
-from openai import OpenAI
-from flask_cors import CORS
 import logging
-from pathlib import Path
 import time
 import requests
+
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+from openai import OpenAI
+from flask_cors import CORS
+from pathlib import Path
+
+load_dotenv()
 
 # Set up Flask
 app = Flask(__name__)
