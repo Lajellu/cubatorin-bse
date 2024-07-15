@@ -31,7 +31,7 @@ def file_upload_train(request):
     # print(f"Summary: {summary}")
 
     # Write to marketSizing.jsonl (adding to the data set)
-    file_path = "articles_and_summaries.jsonl"
+    file_path = "articles_and_summaries/db.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
 
     # Upload the data to be added as Training Data
