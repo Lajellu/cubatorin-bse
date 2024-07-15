@@ -51,11 +51,11 @@ function handle_upload() {
                 const fileContents = event.target.result;
                 document.getElementById("fileContents").innerText = truncateString(fileContents, 400);
                 const data = JSON.stringify({'text': fileContents});
-                const headers = {'Content-Type': 'application/json'};
+                const headers = {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken'),};
 
 
                 // Using fetch API to send the file content to the backend
-                fetch(apiUrl + 'file_upload_train', {
+                fetch(apiUrl + 'file_upload_train/', {
                     method: "POST",
                     headers: headers,
                     body: data
@@ -193,5 +193,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
-
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

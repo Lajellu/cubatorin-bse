@@ -1,6 +1,9 @@
 # activate venv virtual env
 source /webapps/cubatorin/env/bin/activate
 
+# deactivate venv virtual env (only works if it's already active)
+deactivate 
+
 # nginx 
 service nginx [start | stop | restart]
 
