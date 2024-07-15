@@ -1,0 +1,13 @@
+## IGNORE THIS FOR NOW. 
+
+# install all these packages using Homebrew
+brew install python@3.12                # installs Python3 and Pip3. 
+brew install nginx                      # installs nginx and creates a service. control with "brew services start nginx"
+brew install certbot                    # do we need this on dev? prob not.
+brew install supervisor                 # control with "brew services start supervisor"
+
+
+
+python3-certbot-nginx 
+
+python3.12-venv

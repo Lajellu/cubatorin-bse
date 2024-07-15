@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <a href="{% url 'advisee:logout' %}">logout</a>
+
+    {% for message in messages %}
+    <p>{{message}}</p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block body_end %}
+    <!-- Frontend script -->
+    <script src="{% static 'js/frontend-advisee.js' %}"></script>
+{%endblock%}

@@ -1,0 +1,2 @@
+# install all these packages using apt
+sudo apt install python3-pip python3-dev libpq-dev nginx certbot python3-certbot-nginx supervisor python3.12-venv
