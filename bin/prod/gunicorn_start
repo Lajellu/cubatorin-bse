@@ -1,0 +1,44 @@
+#!/bin/bash
+
+NAME="cubatorin"
+USER=cubatorinuser
+GROUP=webapps
+
+PROJECT_PATH="/webapps/cubatorin"
+DJANGODIR="${PROJECT_PATH}/cubatorin"
+SOCKFILE="${PROJECT_PATH}/run/gunicorn.sock"
+
+NUM_WORKERS=3
+DJANGO_SETTINGS_MODULE=cubatorin.settingsprod
+DJANGO_WSGI_MODULE=cubatorin.wsgi
+TIMEOUT=120
+
+cd $DJANGODIR
+source "${PROJECT_PATH}/env/bin/activate"
+
+
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHON_PATH=$DJANGODIR:$PYTHONPATH
+
+
+RUNDIR=$(dirname $SOCKFILE)
+echo $RUNDIR
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+
+RUNCMD="/webapps/cubatorin/env/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --time $TIMEOUT \
+  --user=$USER \
+  --group=$GROUP \
+  --bind=unix:$SOCKFILE \
+  --log-level=debug \
+  --log-file=-"
+
+echo "----------------------------------------"
+echo "Running Gunicorn with this command:"
+echo $RUNCMD
+echo "----------------------------------------"
+
+exec $RUNCMD
