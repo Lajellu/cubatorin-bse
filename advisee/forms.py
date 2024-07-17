@@ -20,6 +20,6 @@ class AdviseeLoginForm(AuthenticationForm):
         if not user.is_active:
             raise ValidationError("This account is inactive.")
             
-        # ensure user is an §ee
+        # ensure user is an advisee
         if not Advisee.objects.filter(user_id=user.id).exists():
             raise ValidationError("Sorry, you are not an advisee.")
