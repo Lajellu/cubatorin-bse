@@ -22,6 +22,9 @@
     <!-- Admin-page Bootstrap CSS -->
     <link href="{% static 'vendor/bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
 
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/8x1hweynrzp6x8azzn91rhukl6pwwq6vyqwhmahqrpp6bgpb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
     {% block head_end %}{% endblock %}
 </head>
 
@@ -221,6 +224,14 @@
     <script src="{% static 'vendor/bootstrap/js/sb-admin-2.min.js' %}"></script>
     <!-- Chart JS -->
     <script src="{% static 'vendor/chart/js/Chart.min.js' %}"></script>
+    <!-- TinyMCE -->
+    <script>
+        tinymce.init({
+            selector: 'textarea.rich-editor',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 
     {% block body_end %}{% endblock %}
 </body>

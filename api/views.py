@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pathlib import Path
 
+from advisor.models import Advisor, Topic, Article
+
 load_dotenv()
 
 @api_view(['POST'])
@@ -24,6 +26,17 @@ def file_upload_train(request):
     data = request.data
     text_to_summarize = data['text']
     # print(f"Text to summarize: {text_to_summarize}")
+
+    # Create article in DB
+    advisor = Advisor.objects.get(user_id=request.user.id)
+    topic = Topic.objects.get(id=data['topic_id'])
+    article = Article(
+        name="Article Name",
+        advisor=advisor,
+        topic=topic,
+        body=text_to_summarize
+    )
+    article.save()
 
     # Call OpenAI's API to summarize the text
     summary = openai_summarize_text(client, text_to_summarize)
@@ -78,15 +91,61 @@ def file_upload_train(request):
 
     if fine_tuned_model is None:
         print("Failed to train model.")
+
+        # update article status in DB
+        article.status = "FAILED"
+        article.save()
     else:
         print("Fine_tuned_model existed")
         # TODO: Make these based on the user's profile
         industry = "parking"
         topic = "market sizing"
         msg_for_user_ret = query_trained_model(client, industry, topic, fine_tuned_model)
+
+        # update article status in DB
+        article.status = "SUCCEEDED"
+        article.save()
+
         return Response({"message":msg_for_user_ret.content})
 
     return Response({"message":"Fine tune model didn't exist"}) 
+
+@api_view(['POST'])
+def research():
+    print("Received a request to /api/research")
+
+    # Ensure your OPENAI_API_KEY environment variable is set
+    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
+    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
+    data = request.data
+    industry = data['industry']
+
+    # Use a pre-trained OpenAI API call to do research across the web for this information
+    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
+    response = client.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=[
+        {
+          "role": "system",
+          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
+        },
+        {
+          "role": "user",
+          "content": query
+        }
+      ],
+      temperature=0.7,
+      max_tokens=250,
+      top_p=1
+    )
+
+    researchbyChatBot = response.choices[0].message.content
+    print("Research is ready: ")
+    print(researchbyChatBot)
+
+    return Response({"message":"researchbyChatBot"})
 
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number

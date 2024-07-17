@@ -11,7 +11,7 @@ def advisee_login_required(view_func):
             return HttpResponseForbidden("Access Forbidden: You are not logged in")
 
         if not Advisee.objects.filter(user_id=request.user.id).exists():
-            return HttpResponseForbidden("Access Forbidden: You are not an Advisor")
+            return HttpResponseForbidden("Access Forbidden: You are not an Advisee")
         
         return view_func(request, *args, **kwargs)
     

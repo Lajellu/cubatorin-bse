@@ -32,6 +32,8 @@ function handle_upload() {
     const summaryPrintSpace = document.getElementById("summaryPrintSpace");
     const fileInput = document.getElementById('file');
     const files = fileInput.files;
+    const topicsDropdown = document.getElementById('topics_dd');
+    const topicId = topicsDropdown.options[topicsDropdown.selectedIndex].value;
 
     // Read each first file uploaded in order
     if (files.length > 0) {
@@ -50,7 +52,10 @@ function handle_upload() {
                 // This function is called when the FileReader has read the file
                 const fileContents = event.target.result;
                 document.getElementById("fileContents").innerText = truncateString(fileContents, 400);
-                const data = JSON.stringify({'text': fileContents});
+                const data = JSON.stringify({
+                    'text': fileContents, 
+                    'topic_id': topicId
+                });
                 const headers = {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken'),};
 
 
@@ -185,7 +190,7 @@ function fillBarGraphs(){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    fillBarGraphs();
+    // fillBarGraphs();
 
     document.getElementById('URLuploadBtn').addEventListener('click', function() {
         const url = document.getElementById('url_article').value;

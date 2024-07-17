@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as loginUser, logout as logoutUser
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from pprint import pprint
 
 
@@ -15,19 +15,30 @@ from advisee.models import Advisee
 
 @advisor_login_required
 def dashboard(request):
-    advisor_id = Advisor.objects.get(user_id=request.user.id)
-    num_advisees = Advisee.objects.filter(advisor_id=advisor_id).count()
-    num_articles = Article.objects.filter(advisor_id=advisor_id).count()
-
-    num_articles_per_topic = Topic.objects.annotate(num_articles=Count('article')).values('id','name','num_articles')
+    advisor = Advisor.objects.get(user_id=request.user.id)
+    num_advisees = Advisee.objects.filter(advisor=advisor).count()
+    num_articles = Article.objects.filter(status='SUCCEEDED').count()
+    num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='SUCCEEDED').count()
+    topics = Topic.objects.all()
+    num_articles_per_topic = Topic.objects.annotate(
+        num_articles=Count('article', filter=Q(article__status='SUCCEEDED'))
+        ).values('id','name','num_articles')
+    pprint(list(num_articles_per_topic))
+    
     perc_articles_per_topic = []
     for row in num_articles_per_topic:
-        perc_articles_per_topic.append({'topic_name':row['name'], 'perc_complete':int(row['num_articles']/30*100)})
+        perc_articles_per_topic.append({
+            'topic_name':row['name'], 
+            'topic_name_no_space': row['name'].replace(" ", ""),
+            'perc_complete':int(row['num_articles']/30*100)})
+    pprint(perc_articles_per_topic)
 
     return render(request, 'advisor/dashboard.html', {
         'user':request.user, 
         'num_advisees':num_advisees,
         'num_articles':num_articles,
+        'num_articles_by_advisor': num_articles_by_advisor, 
+        'topics':topics,
         'perc_articles_per_topic':perc_articles_per_topic,
         })
 

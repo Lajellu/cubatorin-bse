@@ -1,3 +1,5 @@
+apiUrl = "/api/"
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#cubatorin-research-btn").addEventListener("click", () => {
         let industry = "parking" // TODO: Get from form
@@ -11,7 +13,7 @@ function request_research(industry, topic) {
     const data = JSON.stringify({ text: "Please find the market demographic usually used in the " + industry + " industry" });
     const headers = {'Content-Type': 'application/json'};
 
-    fetch('http://159.65.182.82:5000/api/research', {
+    fetch(apiUrl + 'research', {
         method: "POST",
         headers: headers,
         body: data

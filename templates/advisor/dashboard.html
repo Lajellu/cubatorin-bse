@@ -9,11 +9,10 @@
     Advisor Dashboard 
 {% endblock %}
 
-
 {% block sidebar %}
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{% url 'advisor:dashboard' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -94,7 +93,7 @@
                             
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
+            <span class="mr-2 text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
             <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg'%}">
         </a>
         
@@ -163,6 +162,25 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Number of Articles by Advisor card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Number of Articles by You </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{num_articles_by_advisor}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Content Row -->
@@ -192,26 +210,11 @@
                     <form id="uploadForm" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="topic">What topic is the article for?</label>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="topic"
-                                name="topic" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                Topic
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Market Sizing</a>
-                                <a class="dropdown-item" href="#">Product Market Fit</a>
-                                <a class="dropdown-item" href="#">Valuation</a>
-                                <a class="dropdown-item" href="#">Capitalization</a>
-                                <a class="dropdown-item" href="#">Competitive Analysis</a>
-                                <a class="dropdown-item" href="#">Content Marketing</a>
-                                <a class="dropdown-item" href="#">Networking</a>
-                                <a class="dropdown-item" href="#">Customer Journey</a>
-                                <a class="dropdown-item" href="#">Privacy and Data Compliance</a>
-                                <a class="dropdown-item" href="#">Customer Lifetime Value</a>
-                                <a class="dropdown-item" href="#">SaaS Metrics</a>
-                            </div>
-                        </div>
+                        <select id="topics_dd" name="topics_dd">
+                            {% for topic in topics%}
+                            <option value="{{topic.id}}">{{topic.name}}</option>
+                            {% endfor %}
+                        </select>
                         <br>
                         <label for="file">Choose a file to upload (.txt, .pdf):</label>
                         <input type="file" class="form-control" id="file" name="file"
@@ -305,11 +308,13 @@
                 <div class="card-body">
                     <div class="card-body">
                         {% for topic_stats in perc_articles_per_topic%}
-                        <h4 class="small font-weight-bold">{{topic_stats.topic_name}}<span id="barMarketSizing"
-                                class="float-right">{{topic_stats.perc_complete}}%</span></h4>
+                        <h4 class="small font-weight-bold">{{topic_stats.topic_name}}
+                            <span id="bar{{topic_stats.topic_name_no_space}}" class="float-right">{{topic_stats.perc_complete}}%</span>
+                        </h4>
                         <div class="progress mb-4">
-                            <div id="progressMarketSizing" class="progress-bar bg-warning"
-                                role="progressbar" style="width: {{topic_stats.perc_complete}}%" aria-valuenow="0" aria-valuemin="0"
+                            <div id="progress{{topic_stats.topic_name_no_space}}" class="progress-bar bg-warning"
+                                role="progressbar" style="width: {{topic_stats.perc_complete}}%;" 
+                                aria-valuenow="{{topic_stats.perc_complete}}" aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
                         {% endfor %}
