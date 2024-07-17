@@ -120,7 +120,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Industry</h6>
             </div>
             <div class="card-body">
-                <textarea name="industry" class="form-control col-12">{{advisee.industry}}</textarea>
+                <textarea id="industry" name="industry" class="form-control col-12">{{advisee.industry}}</textarea>
             </div>
         </div>
         
@@ -134,11 +134,11 @@
         {% for topic_field_name, topic_name in advisee.get_topics_dict.items %}
         <div class="card shadow mb-4">
             <!-- Card Header - Accordion -->
-            <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+            <a href="#collapse-{{topic_field_name}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-{{topic_field_name}}">
                 <h6 class="m-0 font-weight-bold text-primary">{{ topic_name }}</h6>
             </a>
             <!-- Card Content - Collapse -->
-            <div class="collapse show" id="collapseCardExample">
+            <div class="collapse show" id="collapse-{{topic_field_name}}">
                 <div class="card-body">
                     <textarea id="market-sizing" name="{{topic_field_name}}" class="rich-editor">
                         {{ advisee|get_attr:topic_field_name }}
@@ -146,13 +146,17 @@
                     
                     <div class="container mt-4">
                         <div class="row justify-content-end">
-                            <a href="#" class="btn btn-primary btn-icon-split">
+                            <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="{{ topic_name }}">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-flag"></i>
                                 </span>
                                 <span class="text">Research Topic with AI</span>
                             </a>
                         </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <p id="{{ topic_name }}-research-results"></p>
                     </div>
                 </div>
             </div>
@@ -164,4 +168,27 @@
 {% block body_end %}
     <!-- Frontend script -->
     <script src="{% static 'js/frontend-advisee.js' %}"></script>
+
+    <!-- <script>
+        tinymce.init({
+            selector: 'textarea.rich-editor',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script> -->
+    <script>
+        $(document).ready(function() {
+            $('.rich-editor').summernote({
+                height: 300,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['style', 'bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    // ['font', ['strikethrough']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            })
+        });
+    </script>
 {%endblock%}

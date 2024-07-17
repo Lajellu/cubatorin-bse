@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters_2 %}
+
+{% block title %}
+{{ advisee.user.first_name }} {{ advisee.user.last_name }}
+{% endblock %}
+
+{% block heading %}
+{{ advisee.user.first_name }} {{ advisee.user.last_name }}
+{% endblock %}
+
+{% block sidebar %}
+{% include "partial.advisor.sidebar.html" %}
+{% endblock %}
+
+{% block user_messages %}
+{% include "partial.user_messages.html" %}
+{% endblock %}
+
+{% block user_menu %}
+{% include "partial.advisor.user_menu.html" %}
+{% endblock %}
+
+{% block content %}
+{% for topic_field_name, topic_name in advisee.get_topics_dict.items %}
+<div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapse-{{topic_field_name}}" class="d-block card-header py-3" data-toggle="collapse" role="button"
+        aria-expanded="true" aria-controls="collapse-{{topic_field_name}}">
+        <h6 class="m-0 font-weight-bold text-primary">{{ topic_name }}</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapse-{{topic_field_name}}">
+        <div class="card-body">
+            <textarea id="{{topic_field_name}}" name="{{topic_field_name}}" class="rich-editor">
+                    {{ advisee|get_attr:topic_field_name }}
+                </textarea>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block body_end %}
+<script>
+    $(document).ready(function () {
+        // summernote's functionality is broken, so we can't just do $('.rich-editor').summernote("disable")
+        // instead we iterate over each textarea and call summernote("disable") on them
+        tas = $('.rich-editor')
+        tas.each(function () {
+            id = $(this).attr('id')
+            $("#" + id).summernote("disable")
+        });
+    });
+</script>
+{% endblock %}

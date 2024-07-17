@@ -19,11 +19,12 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Admin-page Bootstrap CSS -->
+    <!-- SB Admin Bootstrap CSS -->
     <link href="{% static 'vendor/bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
-
-    <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/8x1hweynrzp6x8azzn91rhukl6pwwq6vyqwhmahqrpp6bgpb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <!-- Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    
 
     {% block head_end %}{% endblock %}
 </head>
@@ -93,14 +94,14 @@
 
             <!-- Nav Item - About Cubatorin -->
             <li class="nav-item">
-                <a class="nav-link" href="advisorView%20-%20based%20on%20Admin%20Bootstrap%20Theme/charts.html">
+                <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>About Cubatorin</span></a>
             </li>
 
             <!-- Nav Item - Contact Us -->
             <li class="nav-item">
-                <a class="nav-link" href="advisorView%20-%20based%20on%20Admin%20Bootstrap%20Theme/tables.html">
+                <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Contact Us</span></a>
             </li>
@@ -224,14 +225,8 @@
     <script src="{% static 'vendor/bootstrap/js/sb-admin-2.min.js' %}"></script>
     <!-- Chart JS -->
     <script src="{% static 'vendor/chart/js/Chart.min.js' %}"></script>
-    <!-- TinyMCE -->
-    <script>
-        tinymce.init({
-            selector: 'textarea.rich-editor',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
-    </script>
+    <!-- Summernote -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
     {% block body_end %}{% endblock %}
 </body>

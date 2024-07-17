@@ -14,12 +14,32 @@ from .decorators import advisor_login_required
 from advisee.models import Advisee
 
 @advisor_login_required
+def advisee(request, id):
+    advisor = Advisor.objects.select_related('user').get(user_id=request.user.id)
+    advisee = Advisee.objects.select_related('user').get(id=id)
+
+    return render(request, 'advisor/advisee.html', {
+        'advisee': advisee
+    })
+
+@advisor_login_required
+def advisees(request):
+    advisor = Advisor.objects.select_related('user').get(user_id=request.user.id)
+    advisees = advisor.advisee_set.all()
+
+    return render(request, 'advisor/advisees.html', {
+        'advisees': advisees
+    })
+
+
+@advisor_login_required
 def dashboard(request):
     advisor = Advisor.objects.get(user_id=request.user.id)
     num_advisees = Advisee.objects.filter(advisor=advisor).count()
     num_articles = Article.objects.filter(status='SUCCEEDED').count()
     num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='SUCCEEDED').count()
     topics = Topic.objects.all()
+    
     num_articles_per_topic = Topic.objects.annotate(
         num_articles=Count('article', filter=Q(article__status='SUCCEEDED'))
         ).values('id','name','num_articles')

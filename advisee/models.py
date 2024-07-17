@@ -32,7 +32,7 @@ class Advisee(models.Model):
             'content_marketing': 'Content Marketing',
             'networking': 'Networking',
             'customer_journey': 'Customer Journey',
-            'privacy_and_data_compliance': 'Privacy and Date Compliance',
+            'privacy_and_data_compliance': 'Privacy and Data Compliance',
             'customer_lifetime_value': 'Customer Lifetime Value',
             'saas_metrics': 'SaaS Metrics',
         }

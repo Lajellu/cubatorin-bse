@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 from dotenv import load_dotenv
 from openai import OpenAI
 from pathlib import Path
+from pprint import pprint
 
 from advisor.models import Advisor, Topic, Article
 
@@ -111,7 +112,7 @@ def file_upload_train(request):
     return Response({"message":"Fine tune model didn't exist"}) 
 
 @api_view(['POST'])
-def research():
+def research(request):
     print("Received a request to /api/research")
 
     # Ensure your OPENAI_API_KEY environment variable is set
@@ -121,9 +122,12 @@ def research():
     # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
     data = request.data
     industry = data['industry']
+    topic = data['topic']
 
     # Use a pre-trained OpenAI API call to do research across the web for this information
-    query = "Please do research for me given that my app is in the " + industry + "what is the usual geographical location, age, gender and income of user of this type of app?"
+    # query = "Please do research for me given that my app is in the " + industry + ". what is the usual geographical location, age, gender and income of user of this type of app?"
+    query = "I'm building an app in the " + industry + "industry. Do some " + topic + " research for me"
+
     response = client.chat.completions.create(
       model="gpt-3.5-turbo",
       messages=[
@@ -145,7 +149,7 @@ def research():
     print("Research is ready: ")
     print(researchbyChatBot)
 
-    return Response({"message":"researchbyChatBot"})
+    return Response({"message":researchbyChatBot})
 
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
