@@ -10,10 +10,60 @@ class AdvisorRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+    
+    def __init__(self, *args, **kwargs):
+        super(AdvisorRegistrationForm, self).__init__(*args, **kwargs)
+        
+        self.fields['first_name'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'First Name',
+            'autofocus': True,
+            'required': True
+        })
+
+        self.fields['last_name'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Last Name',
+            'required': True
+        })
+
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Username'
+        })
+
+        self.fields['email'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Email address',
+            'required': True
+        })
+
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Password'
+        })
+
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Repeat Password'
+        })
 
 class AdvisorLoginForm(AuthenticationForm):
     class Meta:
         model = User
+    
+    def __init__(self, *args, **kwargs):
+        super(AdvisorLoginForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Username'
+        })
+
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control form-control-user',
+            'placeholder': 'Password'
+        })
     
     def confirm_login_allowed(self, user):
         # ensure user is active

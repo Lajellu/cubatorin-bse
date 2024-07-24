@@ -86,6 +86,7 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
+        pprint(request.POST)
         form = AdvisorRegistrationForm(request.POST)
         if form.is_valid():
             try:
@@ -103,4 +104,5 @@ def register(request):
     else:
         form = AdvisorRegistrationForm()
     
+    print(form.errors)
     return render(request, 'advisor/register.html', {'form':form})

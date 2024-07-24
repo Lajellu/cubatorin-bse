@@ -9,29 +9,10 @@
             <form method="POST" action="" class="user">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input 
-                        type="text" 
-                        name="username" 
-                        autofocus="" 
-                        autocapitalize="none" 
-                        autocomplete="username" 
-                        maxlength="150" 
-                        required="" 
-                        id="id_username"
-                        class="form-control form-control-user"
-                        placeholder="Username"
-                    >
+                    {{ form.username }}
                 </div>
                 <div class="form-group">
-                    <input 
-                        type="password" 
-                        name="password" 
-                        autocomplete="current-password" 
-                        required="" 
-                        id="id_password"
-                        class="form-control form-control-user"
-                        placeholder="Password"
-                    >
+                    {{ form.password }}
                 </div>
 
                 <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">

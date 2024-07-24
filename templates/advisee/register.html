@@ -1,29 +1,53 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <h3>Advisee Registration</h3>
 
-<form method="POST" action="">
-    {% csrf_token %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-10 col-xl-8">
+            <form method="POST" action="" class="user">
+                {% csrf_token %}
 
-    <div class="row">First name {{form.first_name}}</div>
-    <div class="row">Last name {{form.last_name}}</div>
-    <div class="row">Username {{form.username}}</div>
-    <div class="row">Email {{form.email}}</div>
-    <div class="row">Password {{form.password1}}</div>
-    <div class="row">Password Again {{form.password2}}</div>
-    
-    {% if form.errors %}
-    <div class="row" style="color:red;">{{form.errors}}</div>
-    {% endif %}
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{form.first_name}}
+                    </div>
+                    <div class="col-sm-6">
+                        {{form.last_name}}
+                    </div>
+                </div>
 
-    <div class="row"><input type="submit" value="Register" class="btn btn-primary mt-3"></div>
-</form>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{form.username}}
+                    </div>
+                    <div class="col-sm-6">
+                        {{form.email}}
+                    </div>
+                </div>
 
-<div class="row">
-    <div class="col text-center mt-3">
-        <p>
-            Already have an account? <a href="{% url 'advisee:login' %}">Login as an advisee</a>
-        </p>        
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{form.password1}}
+                    </div>
+                    <div class="col-sm-6">
+                        {{form.password2}}
+                    </div>
+                </div>
+                
+                <input type="submit" value="Register" class="btn btn-primary btn-user btn-block">
+
+                {% if form.errors %}
+                <div class="alert alert-danger mt-4">{{ form.errors }}</div>
+                {% endif %}
+            </form>
+
+            <p class="text-center mt-4">
+                Already have an account? <br/>
+                <a href="{% url 'advisee:login' %}">Login as an advisee</a>
+            </p>
+        </div>
     </div>
 </div>
 

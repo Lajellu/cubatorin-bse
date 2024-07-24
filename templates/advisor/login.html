@@ -9,40 +9,21 @@
             <form method="POST" action="" class="user">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input 
-                        type="text" 
-                        name="username" 
-                        autofocus="" 
-                        autocapitalize="none" 
-                        autocomplete="username" 
-                        maxlength="150" 
-                        required="" 
-                        id="id_username"
-                        class="form-control form-control-user"
-                        placeholder="Username"
-                    >
+                    {{form.username}}
                 </div>
                 <div class="form-group">
-                    <input 
-                        type="password" 
-                        name="password" 
-                        autocomplete="current-password" 
-                        required="" 
-                        id="id_password"
-                        class="form-control form-control-user"
-                        placeholder="Password"
-                    >
+                    {{form.password}}
                 </div>
 
                 <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">
                 
-            {% if form_errors %}
+                {% if form_errors %}
                 <div class="alert alert-danger mt-4">{{ form_errors }}</div>
-            {% endif %}
+                {% endif %}
 
-            {% for message in messages %}
+                {% for message in messages %}
                 <p>{{message}}</p>
-            {% endfor %}
+                {% endfor %}
 
                 <p class="text-center mt-4">
                     Don't have an account? <br/>
