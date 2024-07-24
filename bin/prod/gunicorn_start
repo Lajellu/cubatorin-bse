@@ -34,9 +34,9 @@ RUNCMD="/webapps/cubatorin/env/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
   --user=$USER \
   --group=$GROUP \
   --bind=unix:$SOCKFILE \
+  --capture-output \
   --log-level=debug \
-  --log-file=$LOGFILE \
-  >> $LOGFILE 2>&1"
+  --log-file=$LOGFILE"
 
 echo "----------------------------------------"
 echo "Running Gunicorn with this command:"
