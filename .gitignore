@@ -3,3 +3,4 @@ __pycache__
 db.sqlite3
 bin/dev/*
 articles_and_summaries/db.jsonl
+.DS_Store
