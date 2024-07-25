@@ -85,20 +85,17 @@
     <!-- Content Row -->
 
     <div class="row">
-
-        <!-- File Upload area-->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - File Upload -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">File Upload</h6>
-                    <div class="dropdown no-arrow">
+                    <!-- <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -106,30 +103,41 @@
                     <p>Upload new article data to the OutCubator's OpenAI account, so it can be used for
                         training the model on these *specific* articles.</p>
 
-                    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                    <form id="fileUploadForm" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+
                         <label for="topic">What topic is the article for?</label>
                         <select id="topics_dd" name="topics_dd">
                             {% for topic in topics%}
                             <option value="{{topic.id}}">{{topic.name}}</option>
                             {% endfor %}
                         </select>
+
                         <br>
+
                         <label for="file">Choose a file to upload (.txt, .pdf):</label>
-                        <input type="file" class="form-control" id="file" name="file"
-                            accept=".txt, .pdf">
+                        <input type="file" class="form-control" id="file" name="file" accept=".txt, .pdf">
+
                         <br>
-                        <button type="button" class="btn btn-primary" id="uploadBtn">Upload
-                            File</button>
+
+                        <div id="fileUploadSuccessMsg" class="alert alert-success d-none" role="alert">
+                            Thank you for submitting an article. The AI is being trained on it. <br>
+                            You will receive an email at <strong>{{ user.email }}</strong> when training is complete. 
+                        </div>
+
+                        <br>
+                        
+                        <button type="button" class="btn btn-primary" id="uploadBtn">Train AI</button>
+
 
                         <!-- TODO: Add the ability to ask any question-->
-                        <hr>
+                        <!-- <hr>
                         <h3> Test the new Cubatorin! </h3>
                         <p>Click the button below to fill this space with the new model's response</p>
                         <button type="button" class="btn btn-primary" id="testMe" name="testMe">Test the
                             new me</button>
                         <br><br>
-                        <p id="apiMessageSpace"></p>
+                        <p id="apiMessageSpace"></p> -->
                     </form>
                 </div>
             </div>
@@ -160,37 +168,53 @@
     <!-- Content Row -->
 
     <div class="row">
-        <!-- Area Chart -->
-        <div class="card shadow mb-4">
-            <!-- Card Header - URL Upload -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">URL Upload</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="URLdropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - URL Upload -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">URL Upload</h6>
+                    <!-- <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="URLdropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                    </div> -->
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h3>URL Upload</h3>
+                    <form id="urlUploadForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <label for="topic">What topic is the article for?</label>
+                        <select id="topics_dd" name="topics_dd">
+                            {% for topic in topics%}
+                            <option value="{{topic.id}}">{{topic.name}}</option>
+                            {% endfor %}
+                        </select>
+
+                        <br>
+
+                        <label for="url_article">Upload via link to article</label>
+                        
+                        <br>
+
+                        <input style="width: 100%;" type="url" id="url_article" name="url_article">
+                        
+                        <br><br>
+                        
+                        <button type="button" class="btn btn-primary" id="URLuploadBtn">Train AI</button>
+                        <!-- <hr>
+                        <h3>Test the new Cubatorin!</h3>
+                        <p>Click the button below to fill this space with the new model's response</p>
+                        <button type="button" class="btn btn-primary" id="URLtestMe" name="testMe">Test the
+                            new me</button>
+                        <br><br>
+                        <p id="URLapiMessageSpace"></p> -->
+                    </form>
                 </div>
             </div>
-            <div class="card-body">
-                <h3>URL Upload</h3>
-                <form id="URLuploadForm" method="POST" enctype="multipart/form-data">
-                    <label for="url_article">Upload via link to article</label>
-                    <br>
-                    <input style="width: 100%;" type="url" id="url_article" name="url_article">
-                    <br><br>
-                    <button type="button" class="btn btn-primary" id="URLuploadBtn">Upload URL</button>
-                    <hr>
-                    <h3>Test the new Cubatorin!</h3>
-                    <p>Click the button below to fill this space with the new model's response</p>
-                    <button type="button" class="btn btn-primary" id="URLtestMe" name="testMe">Test the
-                        new me</button>
-                    <br><br>
-                    <p id="URLapiMessageSpace"></p>
-                </form>
-            </div>
         </div>
-
     </div>
 
     <!-- Content Row -->

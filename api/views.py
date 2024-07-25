@@ -4,6 +4,8 @@ import json
 import logging
 import time
 import requests
+import ssl
+import certifi
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -11,6 +13,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pathlib import Path
 from pprint import pprint
+from django.core.mail import EmailMessage, send_mail
+from django.conf import settings
 
 from advisor.models import Advisor, Topic, Article
 
@@ -38,6 +42,18 @@ def file_upload_train(request):
         body=text_to_summarize
     )
     article.save()
+
+    # 
+    # SEND EMAIL
+    # 
+    # 
+    # send_mail(
+    #     'AI trained successfully with your article', 
+    #     f"Here's the test results: <br><br> {msg_for_user_ret}.<br><br>Did this improve the AI? <a href=''>yes</a> <a href=''>no</a>", 
+    #     'settings.EMAIL_HOST_USER',
+    #     [request.user.email],
+    #     fail_silently=False
+    # )
 
     # Call OpenAI's API to summarize the text
     summary = openai_summarize_text(client, text_to_summarize)
@@ -106,6 +122,17 @@ def file_upload_train(request):
         # update article status in DB
         article.status = "SUCCEEDED"
         article.save()
+
+        # email user to notify of success
+        email = EmailMessage(
+            'AI trained successfully with your article', 
+            f"Here's the test results: <br><br> {msg_for_user_ret.content}.<br><br>Did this improve the AI? <a href=''>yes</a> <a href=''>no</a>", 
+            settings.EMAIL_HOST_USER, 
+            [request.user.email])
+        email.content_subtype = 'html'
+        email.send(fail_silently=False)
+
+        return Response({"message":"sent email"})
 
         return Response({"message":msg_for_user_ret.content})
 

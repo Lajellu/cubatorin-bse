@@ -2,7 +2,7 @@ from django.db import migrations, transaction
 from advisor.models import Advisor, Topic, Article
 
 def populate_data(apps, schema_editor):
-    print ("Migration deprecated. Will seed at the end of all migrations. ")
+    print ("Deprecated. Use: python manage.py seed_db")
     # ad = Advisor.objects.get(id=1)
     # t1 = Topic.objects.get(id=1) 
     # t2 = Topic.objects.get(id=2) 
