@@ -1,17 +1,58 @@
+from pprint import pprint
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as loginUser, logout as logoutUser
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import Count, Q
-from pprint import pprint
+from django.conf import settings
 
-
+from advisee.models import Advisee
 from .forms import AdvisorRegistrationForm
 from .forms import AdvisorLoginForm
 from .models import Advisor, Article, Topic
 from .decorators import advisor_login_required
-from advisee.models import Advisee
+
+
+def article_feedback(request, id, feedback):
+
+    try:
+        article = Article.objects.get(id=id)
+
+        if (article.status != "FINETUNE-SUCCEEDED"):
+            message_header = "Can't provide feedback for this article"
+            message_body = f"The article must be in 'FINETUNE-SUCCEEDED' state before you can provide feedback. Currently it's in the '{article.status}' state"
+            message_class = "alert-danger"
+        else:
+            if (feedback == "accept"):
+                article.status = "ACCEPTED"
+                article.save()
+
+                message_header = "Thank you for accepting this article"
+                message_body = "From now on, the AI will use this article to help Advisees."
+                message_class = "alert-success"
+            elif (feedback == "reject"):
+                article.status = "REJECTED"
+                article.save()
+
+                message_header = "Thank you for rejecting this article"
+                message_body = "The AI will not use this article to help Advisees."
+                message_class = "alert-success"
+            else:
+                message_header = "Incorrect Feedback"
+                message_body = f"The feedback can only be 'accept' or 'reject', not '{feedback}'"
+                message_class = "alert-danger"
+
+    except Article.DoesNotExist as e:
+        message_header = "Can't find article"
+        message_body = "The article ID provided in the link is incorrect"
+        message_class = "alert-danger"
+
+    return render(request, 'advisor/article-feedback.html', {
+        'message_header': message_header,
+        'message_body': message_body, 
+        'message_class': message_class
+    })
 
 @advisor_login_required
 def advisee(request, id):

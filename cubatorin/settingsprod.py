@@ -29,6 +29,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+PROTOCOL = 'https://'
+DOMAIN_NAME = 'cubatorin.com'
+
 ALLOWED_HOSTS = ['137.184.166.117', 'cubatorin.com']
 
 # CSRF security mechanism needs to know that cubatorin is a trusted domain
@@ -125,12 +128,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-#(Laily) STATIC_URL is relative path of static files INSIDE EACH APP eg. project/app2/static
+# STATIC_URL is relative path of static files INSIDE EACH APP eg. project/app2/static
 STATIC_URL = 'static/'
-#(Laily) STATICFILES_DIRS is  path of global static files eg. project/static
+# STATICFILES_DIRS are paths of global static files eg. project/static
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
 # Set STATIC_ROOT to the directory where collectstatic will gather files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -138,3 +142,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email server setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'l.ajellu@gmail.com'      # TODO replace with cubatorin@gmail.com or similar.
+EMAIL_HOST_PASSWORD = 'jdzraqzwxgknazei'

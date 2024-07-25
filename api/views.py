@@ -6,6 +6,7 @@ import time
 import requests
 import ssl
 import certifi
+import traceback
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -43,100 +44,149 @@ def file_upload_train(request):
     )
     article.save()
 
-    # 
-    # SEND EMAIL
-    # 
-    # 
-    # send_mail(
-    #     'AI trained successfully with your article', 
-    #     f"Here's the test results: <br><br> {msg_for_user_ret}.<br><br>Did this improve the AI? <a href=''>yes</a> <a href=''>no</a>", 
-    #     'settings.EMAIL_HOST_USER',
-    #     [request.user.email],
-    #     fail_silently=False
-    # )
+    # Summarize text with OpenAI
+    try:
+        article.status = "SUMMARIZE-PROCESSING"
+        article.save()
 
-    # Call OpenAI's API to summarize the text
-    summary = openai_summarize_text(client, text_to_summarize)
+        summary = openai_summarize_text(client, text_to_summarize)
 
-    # print(f"Summary: {summary}")
+        article.summary = summary
+        article.save()
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
 
-    # Write to marketSizing.jsonl (adding to the data set)
+        article.status = "SUMMARIZE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(str(e))
+
+    # TODO: generate db.jsonl from db.seed.jsonl + articles in DB
+    # Write to db.jsonl (adding to the data set)
     file_path = "articles_and_summaries/db.jsonl"
     write_to_jsonl(file_path, text_to_summarize, summary)
 
     # Upload the data to be added as Training Data
-    remote_openAI_file_id = upload_dataset(client, file_path)
-    #########
+    try:
+        article.status = "UPLOADDATA-PROCESSING"
+        article.save()
 
-    # Train the model
-    fine_tuned_model = train_model(client, remote_openAI_file_id)
+        remote_openAI_file_id = upload_dataset(client, file_path)
+    except Exception as e: 
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
 
-    # Check the fine-tuning status (Loop with a time delay)
-    # Retrieve the fine-tuning job details
-    status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
-    if status not in ["succeeded", "failed"]:
-        print(f"Job not in terminal status: {status}. Waiting.")
+        article.status = "UPLOADDATA-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(str(e))
+
+    # Fine-tune the model
+    try:
+        article.status = "FINETUNE-PROCESSING"
+        article.save()
+
+        # Create fine-tuning job on OpenAI
+        fine_tuned_model = finetune_model(client, remote_openAI_file_id)
+
+        # Check the fine-tuning job status (Loop with a time delay)
+        status = ""
         while status not in ["succeeded", "failed"]:
-            time.sleep(6)
             status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
+            time.sleep(10)
             print(f"Status: {status}")
 
-    if(status == "succeeded" ):
+        # If fine-tuning failed, raise an exception
+        if (status == "failed"):
+            print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+            print("-------------------------")
+
+            raise Exception(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+
+        # fine-tuning has successed
+        # Retrieve the fine-tuning job details
         print("--------- Finetune Job SUCCESS ---------")
         print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
         print("------------------")
+        
         # Retrieve checkpoints
-        checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
+        finetune_checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
+        
         # Analyze how well the model did
         # Print out the training loss, training token accuracy valid loss valid token accuracy
-        retrieve_finetuning_metrics(client, fine_tuned_model.id)
-    else:
-        print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+        finetune_metrics = retrieve_finetuning_metrics(client, fine_tuned_model.id)
+
+        print("Checking other finetune jobs in the subscription.")
+        all_trained_models = client.fine_tuning.jobs.list()
+        print(f"Found {len(all_trained_models.data)} finetune jobs.")
+        
+        article.status = "FINETUNE-SUCCEEDED"
+        article.finetune_checkpoints = finetune_checkpoints
+        article.finetune_metrics = finetune_metrics
+        article.save()
+
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "FINETUNE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(str(e))
+
+    # Test the model
+    try:
+        # Retrieve the finetuned model
+        fine_tuned_model = all_trained_models.data[0].fine_tuned_model
+        print("Fine tune model: ")
+        print(fine_tuned_model)
         print("-------------------------")
 
+        # If model retrieval failed, raise an exception
+        if fine_tuned_model is None:
+            print("Cannot retrieve fine-tuned model")
+            raise Exception("Fine-tuning succeeded, but cannot retrieve fine-tuned model")
+        
 
-    print("Checking other finetune jobs in the subscription.")
-    all_trained_models = client.fine_tuning.jobs.list()
-    print(f"Found {len(all_trained_models.data)} finetune jobs.")
-
-    # Retrieve the finetuned model
-    fine_tuned_model = all_trained_models.data[0].fine_tuned_model
-    print("Fine tune model: ")
-    print(fine_tuned_model)
-    print("-------------------------")
-
-
-    if fine_tuned_model is None:
-        print("Failed to train model.")
-
-        # update article status in DB
-        article.status = "FAILED"
-        article.save()
-    else:
-        print("Fine_tuned_model existed")
-        # TODO: Make these based on the user's profile
+        # Model retrieval succeeded
+        # Test the model by querying it
+        # TODO: how to set industry and topic dynamically so it makes sense? 
         industry = "parking"
-        topic = "market sizing"
-        msg_for_user_ret = query_trained_model(client, industry, topic, fine_tuned_model)
+        test_query = "I have just decided to build a new " + industry + " app. What steps do I take when performing " + topic.name + "?"
+        test_result = query_trained_model(client, fine_tuned_model, test_query).content
 
-        # update article status in DB
-        article.status = "SUCCEEDED"
+        article.test_query = test_query
+        article.test_result = test_result
         article.save()
 
-        # email user to notify of success
+        # Email user to notify of fine-tuning completion, sent test results and ask for feedback
+        accept_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/accept"
+        reject_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/reject"
         email = EmailMessage(
             'AI trained successfully with your article', 
-            f"Here's the test results: <br><br> {msg_for_user_ret.content}.<br><br>Did this improve the AI? <a href=''>yes</a> <a href=''>no</a>", 
+            f"Here's the test results: <br><br> \
+                {test_result}<br><br> \
+                Did this improve the AI? \
+                <a href='{accept_url}'>yes</a> \
+                <a href='{reject_url}'>no</a>", 
             settings.EMAIL_HOST_USER, 
             [request.user.email])
         email.content_subtype = 'html'
         email.send(fail_silently=False)
 
-        return Response({"message":"sent email"})
+        return Response({"message":test_result})
 
-        return Response({"message":msg_for_user_ret.content})
 
-    return Response({"message":"Fine tune model didn't exist"}) 
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "FINETUNE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(str(e))
+
 
 @api_view(['POST'])
 def research(request):
@@ -227,21 +277,23 @@ def write_to_jsonl(filename, article_text, summary):
 
 def upload_dataset(client, local_file_path):
     try:
-        # The 'file' parameter takes a path to the local file
+        # The 'file' parameter takes file pointer
         response = client.files.create(
             file=open(local_file_path, 'rb'),  # Open the file in binary read mode
             purpose="fine-tune",
         )
+
         print(f"--------- File uploaded with file ID: SUCCESS -------")
         print(response.id)
+
         return response.id
     except Exception as e:
         print(f"Failed to upload file: {e}")
         print("-------------------------")
 
-        return None
+        raise e
 
-def train_model(client, remote_openAI_file_id):
+def finetune_model(client, remote_openAI_file_id):
     try:
         fine_tuned_model = client.fine_tuning.jobs.create(
             model="gpt-3.5-turbo",
@@ -257,27 +309,33 @@ def train_model(client, remote_openAI_file_id):
         #    checkpoint_frequency=1  # Adjust frequency of checkpoints
         # )
 
-        print("Model trained successfully with uploaded data")
+        print("Fine-tuning job created successfully")
         # print(fine_tuned_model)
 
         return fine_tuned_model  # Retrieve the name of the fine-tuned model
+
     except openai.APIConnectionError as e:
         print("The server could not be reached")
         print(e.__cause__)  # an underlying Exception, likely raised within httpx.
         print("-------------------------")
+
+        raise e
     except openai.RateLimitError as e:
         print("A 429 status code was received; we should back off a bit.")
         print("-------------------------")
+
+        raise e
     except openai.APIStatusError as e:
         print("Another non-200-range status code was received")
         print(e.status_code)
         print(e.response)
         print(e.response.text)  # Printing the detailed error message
         print("-------------------------")
-        return None
 
-def query_trained_model(client, industry, topic, fine_tuned_model):
-    query = "I have just decided to build a new" + industry + "app, what steps do I take when performing" + topic + "?"
+        raise e
+
+def query_trained_model(client, fine_tuned_model, query):
+    
     completion = client.chat.completions.create(
       model = fine_tuned_model,
       messages = [
@@ -294,47 +352,43 @@ def query_trained_model(client, industry, topic, fine_tuned_model):
     return msg_for_user
 
 def retrieve_checkpoint_status(client, fine_tuned_model_id):
-    try:
-        fine_tune_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
-        print("------ Retrieved checkpoint: SUCCESS --------")
-        # Uncomment this for information about the model, Training Parameters, and File Details
-        # print(fine_tune_details)
-        return fine_tune_details
-    except Exception as e:
-        print(f"Failed to retrieve checkpoints: {e}")
-        print("-------------------------")
-        return None
+    fine_tune_details = client.fine_tuning.jobs.retrieve(fine_tuned_model_id)
+    
+    print("------ Retrieved checkpoint: SUCCESS --------")
+    # Uncomment this for information about the model, Training Parameters, and File Details
+    # print(fine_tune_details)
+
+    return fine_tune_details
 
 def retrieve_finetuning_metrics(client, fine_tuned_model_id):
-    try:
-        print("-------------------------")
-        print("---- Analyze the model: Print out the training loss, training token accuracy, validation loss, and validation token accuracy -----")
+    print("-------------------------")
+    print("---- Analyze the model: Print out the training loss, training token accuracy, validation loss, and validation token accuracy -----")
 
-        # Retrieve events for the fine-tuning job
-        events = client.fine_tuning.jobs.list_events(fine_tuned_model_id).data
+    # Retrieve events for the fine-tuning job
+    events = client.fine_tuning.jobs.list_events(fine_tuned_model_id).data
+    metrics = ""
 
-        if events:
-            # Find the latest event with metrics
-            for event in reversed(events):
-                if event.type == 'metrics':
-                    data = event.data
-                    print(f"Training Loss: {data.get('train_loss')}")
-                    print(f"Training Token Accuracy: {data.get('train_mean_token_accuracy')}")
-                    print(f"Validation Loss: {data.get('valid_loss')}")
-                    print(f"Validation Token Accuracy: {data.get('valid_mean_token_accuracy')}")
-                    print(f"Full Validation Loss: {data.get('full_valid_loss')}")
-                    print(f"Full Validation Token Accuracy: {data.get('full_valid_mean_token_accuracy')}")
-                    print("-------------------------")
+    if events:
+        # Find the latest event with metrics
+        for event in reversed(events):
+            if event.type == 'metrics':
+                data = event.data
 
-                    break
-        else:
-            print("No events found with metrics.")
-            print("-------------------------")
+                metrics += f"Training Loss: {data.get('train_loss')}\n"
+                metrics += f"Training Token Accuracy: {data.get('train_mean_token_accuracy')}\n"
+                metrics += f"Validation Loss: {data.get('valid_loss')}\n"
+                metrics += f"Validation Token Accuracy: {data.get('valid_mean_token_accuracy')}\n"
+                metrics += f"Full Validation Loss: {data.get('full_valid_loss')}\n"
+                metrics += f"Full Validation Token Accuracy: {data.get('full_valid_mean_token_accuracy')}\n"
+                metrics += "-------------------------"
 
+                print(metrics)
 
-        return events
-    except Exception as e:
-        print(f"Failed to retrieve fine-tuning job details: {e}")
-        print("-------------------------")
+                break
+    else:
+        metrics += "No events found with metrics."
+        metrics += "-------------------------"
 
-        return None
+        print(metrics)
+
+    return metrics

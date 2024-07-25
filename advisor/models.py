@@ -14,22 +14,34 @@ class Topic(Model):
 
     def __str__(self):
         return f"Topic({self.id}:{self.name})"
-        # return "Topic(" + self.id + ": " + self.name + ")"
 
 class Article(Model):
+    # SUMMARIZE-PROCESSING ---> UPLOADDATA-PROCESSING ----> FINETUNE-PROCESSING ----> FINETUNE-SUCCEEDED ----> ACCEPTED 
+    #                      └--> UPLOADDATA-FAILED     └---> SUMMARIZE-FAILED    └---> FINETUNE-FAILED    └---> REJECTED
     STATUS_CHOICES = [
-        ('PROCESSING', 'Processing'),
-        ('FAILED', 'Failed'),
-        ('SUCCEEDED', 'Succeeded'),
+        ('SUMMARIZE-PROCESSING', 'Summarize Processing'),
+        ('SUMMARIZE-FAILED', 'Summarize Failed'),
+        ('UPLOADDATA-PROCESSING', 'Upload Data Processing'),
+        ('UPLOADDATA-FAILED', 'Upload Data Failed'),
+        ('FINETUNE-PROCESSING', 'Finetune Processing'),
+        ('FINETUNE-FAILED', 'Finetune Failed'),
+        ('FINETUNE-SUCCEEDED', 'Finetune Succeeded'),
+        ('ACCEPTED', 'Accepted'),
+        ('REJECTED', 'Rejected'),
     ]
 
-    advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    uploaded_on = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PROCESSING')
-    failure_reason = models.CharField(max_length=255, blank=True, null=True)
-    body = models.TextField(blank=False, null=False, default='')
+    advisor =               models.ForeignKey(Advisor, on_delete=models.CASCADE)
+    topic =                 models.ForeignKey(Topic, on_delete=models.CASCADE)
+    name =                  models.CharField(max_length=200)
+    uploaded_on =           models.DateTimeField(default=timezone.now)
+    status =                models.CharField(max_length=100, choices=STATUS_CHOICES, default='SUMMARIZE-PROCESSING')
+    failure_reason =        models.TextField(blank=False, null=False, default='')
+    body =                  models.TextField(blank=False, null=False, default='')
+    summary =               models.TextField(blank=False, null=False, default='')
+    finetune_checkpoints =  models.TextField(blank=False, null=False, default='')
+    finetune_metrics =      models.TextField(blank=False, null=False, default='')
+    test_query =            models.CharField(max_length=1000, blank=False, null=False, default='')
+    test_result =           models.TextField(blank=False, null=False, default='')
 
     def __str__(self):
         return f"Article({self.id}:{self.name} -on- {self.topic.name})"
