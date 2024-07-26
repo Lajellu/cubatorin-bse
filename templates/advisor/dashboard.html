@@ -186,8 +186,8 @@
                     <form id="urlUploadForm" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <label for="topic">What topic is the article for?</label>
-                        <select id="topics_dd" name="topics_dd">
+                        <label for="topics_dd_url">What topic is the article for?</label>
+                        <select id="topics_dd_url" name="topics_dd_url">
                             {% for topic in topics%}
                             <option value="{{topic.id}}">{{topic.name}}</option>
                             {% endfor %}

@@ -18,190 +18,53 @@ from pprint import pprint
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.db.models import Q
+from django.http import JsonResponse
 
 from advisor.models import Advisor, Topic, Article
 
 load_dotenv()
 
 @api_view(['POST'])
+def url_fetch_train(request):
+    print("Received request to url_fetch_train")
+
+    user_id = request.user.id
+    data = request.data
+    url = data['url']
+    topic_id = data['topic_id']
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    response = requests.get(url, headers=headers)
+    print(response)
+
+    if response.status_code == 200:
+        text_to_summarize = response.text
+        print(text_to_summarize)
+    else:
+        print(f"Failed to retrieve data: {response.status_code}")
+
+    response = train_model(user_id, topic_id, text_to_summarize)
+
+    return response
+
+
+@api_view(['POST'])
 def file_upload_train(request):
     print("Received a request to /api/file_upload_train")
-    # Ensure your OPENAI_API_KEY environment variable is set
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=OPENAI_API_KEY)
 
     # Extracting the text sent from the frontend
     data = request.data
     text_to_summarize = data['text']
     # print(f"Text to summarize: {text_to_summarize}")
 
-    # Create article in DB
-    advisor = Advisor.objects.get(user_id=request.user.id)
-    topic = Topic.objects.get(id=data['topic_id'])
-    article = Article(
-        name="Article Name",
-        advisor=advisor,
-        topic=topic,
-        body=text_to_summarize
-    )
-    article.save()
+    user_id = request.user.id
+    topic_id = data['topic_id']
+    response = train_model(user_id, topic_id, text_to_summarize)
 
-    # Summarize text with OpenAI
-    try:
-        article.status = "SUMMARIZE-PROCESSING"
-        article.save()
-
-        summary = openai_summarize_text(client, text_to_summarize)
-
-        article.summary = summary
-        article.save()
-    except Exception as e:
-        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
-
-        article.status = "SUMMARIZE-FAILED"
-        article.failure_reason = error_str
-        article.save()
-
-        return Response(str(e))
-
-    # Generate db.jsonl by copying db.seed.jsonl and
-    # appending all ACCEPTED articles and the current article being processed
-    try:
-        all_accepted_articles_and_current_article = Article.objects.filter(Q(status='ACCEPTED') | Q(id=article.id))
-
-        db_dir = "articles_and_summaries/"
-        db_seed_jsonl_path = db_dir + 'db.seed.jsonl'
-        db_jsonl_path = db_dir + 'db.jsonl'
-
-        generate_articles_and_summaries_jsonl(db_jsonl_path, db_seed_jsonl_path, all_accepted_articles_and_current_article)
-    except Exception as e:
-        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
-
-        article.status = "SUMMARIZE-FAILED"
-        article.failure_reason = error_str
-        article.save()
-
-        return Response(str(e))
-
-    # Upload the data to be added as Training Data
-    try:
-        article.status = "UPLOADDATA-PROCESSING"
-        article.save()
-
-        remote_openAI_file_id = upload_dataset(client, db_jsonl_path)
-    except Exception as e: 
-        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
-
-        article.status = "UPLOADDATA-FAILED"
-        article.failure_reason = error_str
-        article.save()
-
-        return Response(str(e))
-
-    # Fine-tune the model
-    try:
-        article.status = "FINETUNE-PROCESSING"
-        article.save()
-
-        # Create fine-tuning job on OpenAI
-        fine_tuned_model = finetune_model(client, remote_openAI_file_id)
-
-        # Check the fine-tuning job status (Loop with a time delay)
-        status = ""
-        while status not in ["succeeded", "failed"]:
-            status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
-            time.sleep(10)
-            print(f"Status: {status}")
-
-        # If fine-tuning failed, raise an exception
-        if (status == "failed"):
-            print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
-            print("-------------------------")
-
-            raise Exception(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
-
-        # fine-tuning has successed
-        # Retrieve the fine-tuning job details
-        print("--------- Finetune Job SUCCESS ---------")
-        print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
-        print("------------------")
-        
-        # Retrieve checkpoints
-        finetune_checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
-        
-        # Analyze how well the model did
-        # Print out the training loss, training token accuracy valid loss valid token accuracy
-        finetune_metrics = retrieve_finetuning_metrics(client, fine_tuned_model.id)
-
-        print("Checking other finetune jobs in the subscription.")
-        all_trained_models = client.fine_tuning.jobs.list()
-        print(f"Found {len(all_trained_models.data)} finetune jobs.")
-        
-        article.status = "FINETUNE-SUCCEEDED"
-        article.finetune_checkpoints = finetune_checkpoints
-        article.finetune_metrics = finetune_metrics
-        article.save()
-
-    except Exception as e:
-        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
-
-        article.status = "FINETUNE-FAILED"
-        article.failure_reason = error_str
-        article.save()
-
-        return Response(str(e))
-
-    # Test the model
-    try:
-        # Retrieve the finetuned model
-        fine_tuned_model = all_trained_models.data[0].fine_tuned_model
-        print("Fine tune model: ")
-        print(fine_tuned_model)
-        print("-------------------------")
-
-        # If model retrieval failed, raise an exception
-        if fine_tuned_model is None:
-            print("Cannot retrieve fine-tuned model")
-            raise Exception("Fine-tuning succeeded, but cannot retrieve fine-tuned model")
-        
-
-        # Model retrieval succeeded
-        # Test the model by querying it
-        # TODO: how to set industry and topic dynamically so it makes sense? 
-        industry = "parking"
-        test_query = "I have just decided to build a new " + industry + " app. What steps do I take when performing " + topic.name + "?"
-        test_result = query_trained_model(client, fine_tuned_model, test_query).content
-
-        article.test_query = test_query
-        article.test_result = test_result
-        article.save()
-
-        # Email user to notify of fine-tuning completion, send test results and ask for feedback
-        accept_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/accept"
-        reject_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/reject"
-        email = EmailMessage(
-            'AI trained successfully with your article', 
-            f"Here's the test results: <br><br> \
-                {test_result}<br><br> \
-                Did this improve the AI? \
-                <a href='{accept_url}'>yes</a> \
-                <a href='{reject_url}'>no</a>", 
-            settings.EMAIL_HOST_USER, 
-            [request.user.email])
-        email.content_subtype = 'html'
-        email.send(fail_silently=False)
-
-        return Response({"message":test_result})
-
-
-    except Exception as e:
-        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
-
-        article.status = "FINETUNE-FAILED"
-        article.failure_reason = error_str
-        article.save()
-
-        return Response(str(e))
+    return response
 
 
 @api_view(['POST'])
@@ -244,6 +107,181 @@ def research(request):
 
     return Response({"message":researchbyChatBot})
 
+
+def train_model(user_id, topic_id, text_to_summarize):
+    print("About to train the model")
+    # Ensure your OPENAI_API_KEY environment variable is set
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
+    # Create article in DB
+    advisor = Advisor.objects.get(user_id=user_id)
+    topic = Topic.objects.get(id=topic_id)
+    article = Article(
+        name="Article Name",
+        advisor=advisor,
+        topic=topic,
+        body=text_to_summarize
+    )
+    article.save()
+
+    # Summarize text with OpenAI
+    try:
+        article.status = "SUMMARIZE-PROCESSING"
+        article.save()
+
+        summary = openai_summarize_text(client, text_to_summarize)
+
+        article.summary = summary
+        article.save()
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "SUMMARIZE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(error_str)
+
+    # Generate db.jsonl by copying db.seed.jsonl and
+    # appending all ACCEPTED articles and the current article being processed
+    try:
+        all_accepted_articles_and_current_article = Article.objects.filter(Q(status='ACCEPTED') | Q(id=article.id))
+
+        db_dir = "articles_and_summaries/"
+        db_seed_jsonl_path = db_dir + 'db.seed.jsonl'
+        db_jsonl_path = db_dir + 'db.jsonl'
+
+        generate_articles_and_summaries_jsonl(db_jsonl_path, db_seed_jsonl_path, all_accepted_articles_and_current_article)
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "SUMMARIZE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(error_str)
+
+    # Upload the data to be added as Training Data
+    try:
+        article.status = "UPLOADDATA-PROCESSING"
+        article.save()
+
+        remote_openAI_file_id = upload_dataset(client, db_jsonl_path)
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "UPLOADDATA-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(error_str)
+
+    # Fine-tune the model
+    try:
+        article.status = "FINETUNE-PROCESSING"
+        article.save()
+
+        # Create fine-tuning job on OpenAI
+        fine_tuned_model = finetune_model(client, remote_openAI_file_id)
+
+        # Check the fine-tuning job status (Loop with a time delay)
+        status = ""
+        while status not in ["succeeded", "failed"]:
+            status = client.fine_tuning.jobs.retrieve(fine_tuned_model.id).status
+            time.sleep(10)
+            print(f"Status: {status}")
+
+        # If fine-tuning failed, raise an exception
+        if (status == "failed"):
+            print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+            print("-------------------------")
+
+            raise Exception(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+
+        # fine-tuning has successed
+        # Retrieve the fine-tuning job details
+        print("--------- Finetune Job SUCCESS ---------")
+        print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
+        print("------------------")
+
+        # Retrieve checkpoints
+        finetune_checkpoints = retrieve_checkpoint_status(client, fine_tuned_model.id)
+
+        # Analyze how well the model did
+        # Print out the training loss, training token accuracy valid loss valid token accuracy
+        finetune_metrics = retrieve_finetuning_metrics(client, fine_tuned_model.id)
+
+        print("Checking other finetune jobs in the subscription.")
+        all_trained_models = client.fine_tuning.jobs.list()
+        print(f"Found {len(all_trained_models.data)} finetune jobs.")
+
+        article.status = "FINETUNE-SUCCEEDED"
+        article.finetune_checkpoints = finetune_checkpoints
+        article.finetune_metrics = finetune_metrics
+        article.save()
+
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "FINETUNE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(error_str)
+
+    # Test the model
+    try:
+        # Retrieve the finetuned model
+        fine_tuned_model = all_trained_models.data[0].fine_tuned_model
+        print("Fine tune model: ")
+        print(fine_tuned_model)
+        print("-------------------------")
+
+        # If model retrieval failed, raise an exception
+        if fine_tuned_model is None:
+            print("Cannot retrieve fine-tuned model")
+            raise Exception("Fine-tuning succeeded, but cannot retrieve fine-tuned model")
+
+
+        # Model retrieval succeeded
+        # Test the model by querying it
+        # TODO: how to set industry and topic dynamically so it makes sense?
+        industry = "parking"
+        test_query = "I have just decided to build a new " + industry + " app. What steps do I take when performing " + topic.name + "?"
+        test_result = query_trained_model(client, fine_tuned_model, test_query).content
+
+        article.test_query = test_query
+        article.test_result = test_result
+        article.save()
+
+        # Email user to notify of fine-tuning completion, send test results and ask for feedback
+        accept_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/accept"
+        reject_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/reject"
+        email = EmailMessage(
+            'AI trained successfully with your article',
+            f"Here's the test results: <br><br> \
+                {test_result}<br><br> \
+                Did this improve the AI? \
+                <a href='{accept_url}'>yes</a> \
+                <a href='{reject_url}'>no</a>",
+            settings.EMAIL_HOST_USER,
+            [request.user.email])
+        email.content_subtype = 'html'
+        email.send(fail_silently=False)
+
+        return Response({"message":test_result})
+
+
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "FINETUNE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(error_str)
+
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
     response = client.chat.completions.create(
@@ -260,7 +298,7 @@ def openai_summarize_text(client, text_to_summarize):
         }
       ],
       temperature=0.7,
-      max_tokens=250,
+      max_tokens=300000,
       top_p=1
     )
 

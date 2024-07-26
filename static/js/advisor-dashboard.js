@@ -109,25 +109,39 @@ function handle_upload() {
 }
 
 function fetchAndDisplayURLContent(url) {
-    const proxyUrl = apiUrl + 'fetch_url_data?url=' + encodeURIComponent(url);
+    console.log("Within JS function fetchAndDisplayURLContent");
+    const topicsDropdown = document.getElementById('topics_dd_url');
+    const topicId = topicsDropdown.options[topicsDropdown.selectedIndex].value;
 
-    fetch(proxyUrl)
+    // Prepare to call training API
+    const data = JSON.stringify({
+        'url': url,
+        'topic_id': topicId
+    });
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+    };
+
+    // Call training API
+    fetch(apiUrl + 'url_fetch_train/', {
+        method: "POST",
+        headers: headers,
+        body: data
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
-            } else {
-                console.log("The response was OK");
-                return response.text();
             }
+            return response.json();
         })
         .then(data => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data, 'text/html');
-            const textContent = doc.body.innerText;
-            document.getElementById('fileContents').innerText = textContent;
+            const targetDiv = document.getElementById("summaryPrintSpace");
+            console.log("Test");
+            console.log("TODO Summary received: ", data.completion);
+            targetDiv.innerText = data.completion;
         })
         .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-            document.getElementById('fileContents').innerText = 'Failed to fetch content from the URL.';
+            console.error("Failed to send data to backend:", error);
         });
 }
