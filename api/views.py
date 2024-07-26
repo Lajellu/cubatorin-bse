@@ -7,6 +7,7 @@ import requests
 import ssl
 import certifi
 import traceback
+import shutil
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -16,6 +17,7 @@ from pathlib import Path
 from pprint import pprint
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
+from django.db.models import Q
 
 from advisor.models import Advisor, Topic, Article
 
@@ -62,17 +64,31 @@ def file_upload_train(request):
 
         return Response(str(e))
 
-    # TODO: generate db.jsonl from db.seed.jsonl + articles in DB
-    # Write to db.jsonl (adding to the data set)
-    file_path = "articles_and_summaries/db.jsonl"
-    write_to_jsonl(file_path, text_to_summarize, summary)
+    # Generate db.jsonl by copying db.seed.jsonl and
+    # appending all ACCEPTED articles and the current article being processed
+    try:
+        all_accepted_articles_and_current_article = Article.objects.filter(Q(status='ACCEPTED') | Q(id=article.id))
+
+        db_dir = "articles_and_summaries/"
+        db_seed_jsonl_path = db_dir + 'db.seed.jsonl'
+        db_jsonl_path = db_dir + 'db.jsonl'
+
+        generate_articles_and_summaries_jsonl(db_jsonl_path, db_seed_jsonl_path, all_accepted_articles_and_current_article)
+    except Exception as e:
+        error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
+
+        article.status = "SUMMARIZE-FAILED"
+        article.failure_reason = error_str
+        article.save()
+
+        return Response(str(e))
 
     # Upload the data to be added as Training Data
     try:
         article.status = "UPLOADDATA-PROCESSING"
         article.save()
 
-        remote_openAI_file_id = upload_dataset(client, file_path)
+        remote_openAI_file_id = upload_dataset(client, db_jsonl_path)
     except Exception as e: 
         error_str = str(e) + "\n" + "".join(traceback.format_tb(e.__traceback__))
 
@@ -160,7 +176,7 @@ def file_upload_train(request):
         article.test_result = test_result
         article.save()
 
-        # Email user to notify of fine-tuning completion, sent test results and ask for feedback
+        # Email user to notify of fine-tuning completion, send test results and ask for feedback
         accept_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/accept"
         reject_url = settings.PROTOCOL + settings.DOMAIN_NAME + f"/advisor/article/{article.id}/feedback/reject"
         email = EmailMessage(
@@ -253,8 +269,15 @@ def openai_summarize_text(client, text_to_summarize):
 
     return summaryByChatBot
 
-def write_to_jsonl(filename, article_text, summary):
-    with open(filename, 'a') as f:  # Append to the jsonl file
+def generate_articles_and_summaries_jsonl(db_jsonl_path, db_seed_jsonl_path, articles):
+    # copy db.seed.jsonl and replace db.jsonl if it already exists
+    shutil.copy(db_seed_jsonl_path, db_jsonl_path)
+
+    # open db.jsonl for appending
+    db_jsonl_file = open(db_jsonl_path, 'a')
+
+    # loop through articles and append summary records to db.jsonl
+    for article in articles:
         record = {
             "messages": [
                 {
@@ -268,12 +291,13 @@ def write_to_jsonl(filename, article_text, summary):
                 {
                     # TODO: Expert Knowledge: Get this from Rehber
                     "role": "assistant",
-                    "content": summary
+                    "content": article.summary
                 }
             ]
         }
 
-        f.write(json.dumps(record) + "\n")
+        db_jsonl_file.write(json.dumps(record) + "\n")
+
 
 def upload_dataset(client, local_file_path):
     try:
