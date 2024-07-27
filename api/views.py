@@ -110,6 +110,7 @@ def research(request):
 
 def train_model(user_id, topic_id, text_to_summarize):
     print("About to train the model")
+    
     # Ensure your OPENAI_API_KEY environment variable is set
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=OPENAI_API_KEY)
