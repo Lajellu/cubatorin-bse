@@ -17,7 +17,7 @@ class Topic(Model):
 
 class Article(Model):
     # SUMMARIZE-PROCESSING ---> UPLOADDATA-PROCESSING ----> FINETUNE-PROCESSING ----> FINETUNE-SUCCEEDED ----> ACCEPTED 
-    #                      └--> UPLOADDATA-FAILED     └---> SUMMARIZE-FAILED    └---> FINETUNE-FAILED    └---> REJECTED
+    #                      └---> SUMMARIZE-FAILED     └--> UPLOADDATA-FAILED    └---> FINETUNE-FAILED    └---> REJECTED
     STATUS_CHOICES = [
         ('SUMMARIZE-PROCESSING', 'Summarize Processing'),
         ('SUMMARIZE-FAILED', 'Summarize Failed'),

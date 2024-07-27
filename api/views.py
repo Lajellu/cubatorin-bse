@@ -290,7 +290,6 @@ def openai_summarize_text(client, text_to_summarize):
         {
           "role": "system",
           "content": "Summarize content you are provided with for a university student in 3 sentences, being specific about the steps provided. Do not state that the article is about market sizing. Start and end the summary with specific steps. Break steps into bullet points instead of using commas for subtasks in each step. Start each step with a verb."
-
         },
         {
           "role": "user",
