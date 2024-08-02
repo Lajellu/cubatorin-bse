@@ -19,8 +19,8 @@ from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.db.models import Q
 from django.http import JsonResponse
-
 from advisor.models import Advisor, Topic, Article
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
@@ -37,16 +37,19 @@ def url_fetch_train(request):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
-    response = requests.get(url, headers=headers)
-    print(response)
+    url_fetch_response = requests.get(url, headers=headers)
+    print(url_fetch_response)
 
-    if response.status_code == 200:
-        text_to_summarize = response.text
-        print(text_to_summarize)
+    if url_fetch_response.status_code == 200:
+        html_content = url_fetch_response.text
+        soup = BeautifulSoup(html_content, 'html.parser')
+        body_text = soup.body.get_text(separator=' ', strip=True)
+        # print(body_text)
     else:
-        print(f"Failed to retrieve data: {response.status_code}")
+        print(f"Failed to retrieve data: {url_fetch_response.status_code}")
+        return Response({'error': f"Failed to retrieve data: {url_fetch_response.status_code}"}, status=url_fetch_response.status_code)
 
-    response = train_model(user_id, topic_id, text_to_summarize)
+    response = train_model(user_id, topic_id, body_text)
 
     return response
 
@@ -200,7 +203,7 @@ def train_model(user_id, topic_id, text_to_summarize):
 
             raise Exception(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
 
-        # fine-tuning has successed
+        # fine-tuning has succeeded
         # Retrieve the fine-tuning job details
         print("--------- Finetune Job SUCCESS ---------")
         print(f"Finetune job {fine_tuned_model.id} finished with status: {status}")
@@ -298,7 +301,7 @@ def openai_summarize_text(client, text_to_summarize):
         }
       ],
       temperature=0.7,
-      max_tokens=300000,
+      max_tokens=500,
       top_p=1
     )
 
@@ -358,18 +361,20 @@ def upload_dataset(client, local_file_path):
 def finetune_model(client, remote_openAI_file_id):
     try:
         fine_tuned_model = client.fine_tuning.jobs.create(
-            model="gpt-3.5-turbo",
-            training_file=remote_openAI_file_id,
+            model = "gpt-3.5-turbo",
+            training_file = remote_openAI_file_id
         )
 
-        # Consider changing the above to the commented part by ChatGPT
-        # fine_tuned_model = client.fine_tuning.jobs.create(
-        #    model="gpt-3.5-turbo",
-        #    training_file=remote_openAI_file_id,
-        #    compute_class="standard",  # You can adjust this based on your requirements
-        #    n_epochs=4,  # Number of training epochs, adjust as necessary
-        #    checkpoint_frequency=1  # Adjust frequency of checkpoints
-        # )
+        """
+        # TODO: Potentially play with these hyperparameters. This is a argument for create()
+        hyperparameters = {
+            "n_epochs": 2,
+            "batch_size": 2,
+            "checkpoint_frequency": 1,
+            "compute_class": "standard",
+            "validation_file": "replace_this"
+        }
+        """
 
         print("Fine-tuning job created successfully")
         # print(fine_tuned_model)

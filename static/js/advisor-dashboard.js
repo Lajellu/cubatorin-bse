@@ -85,16 +85,6 @@ function handle_upload() {
                         }
                         return response.json();
                     })
-                    .then(data => {
-                        const targetDiv = document.getElementById("summaryPrintSpace");
-                        console.log("Test");
-                        console.log("TODO Summary received: ", data.completion);
-                        targetDiv.innerText = data.completion;
-                        // Reset file input after the last file is processed
-                        if (index === files.length - 1) {
-                            fileInput.value = ''; // Reset the file input here
-                        }
-                    })
                     .catch(error => {
                         console.error("Failed to send data to backend:", error);
                     });
@@ -134,12 +124,6 @@ function fetchAndDisplayURLContent(url) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
-        })
-        .then(data => {
-            const targetDiv = document.getElementById("summaryPrintSpace");
-            console.log("Test");
-            console.log("TODO Summary received: ", data.completion);
-            targetDiv.innerText = data.completion;
         })
         .catch(error => {
             console.error("Failed to send data to backend:", error);
