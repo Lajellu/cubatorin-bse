@@ -86,3 +86,7 @@ def register(request):
         form = AdviseeRegistrationForm()
     
     return render(request, 'advisee/register.html', {'form':form})
+
+
+def chatbot(request):
+    return render(request, "advisee/chatbot.html")

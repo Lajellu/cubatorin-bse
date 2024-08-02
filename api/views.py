@@ -74,29 +74,34 @@ def file_upload_train(request):
 def research(request):
     print("Received a request to /api/research")
 
-    # Ensure your OPENAI_API_KEY environment variable is set
-    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
-    client = OpenAI(api_key=OPENAI_API_KEY)
-
-    # TODO: Make the industry based on the entrepreneur's profile and topic based on frontend-advisee side "startup step"
     data = request.data
     industry = data['industry']
     topic = data['topic']
 
     # Use a pre-trained OpenAI API call to do research across the web for this information
     # query = "Please do research for me given that my app is in the " + industry + ". what is the usual geographical location, age, gender and income of user of this type of app?"
-    query = "I'm building an app in the " + industry + "industry. Do some " + topic + " research for me"
+    userPrompt = "I'm building an app in the " + industry + "industry. Do some " + topic + " research for me"
+    systemPrompt = "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
+
+    researchbyChatBot = promptAI(systemPrompt, userPrompt)
+
+    return Response({"message":researchbyChatBot})
+
+def promptAI(systemPrompt, userPrompt):
+    # Ensure your OPENAI_API_KEY environment variable is set
+    OPENAI_API_KEY =os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
     response = client.chat.completions.create(
       model="gpt-3.5-turbo",
       messages=[
         {
           "role": "system",
-          "content": "Please find correct market data across the web, based on other applications in the same industry. Data can be general (statistical) or specific to other existing applications. When referring to a general statistic, please provide the URL where the data was obtained. When referring to a specific application, list the application name and URL.  "
+          "content": systemPrompt
         },
         {
           "role": "user",
-          "content": query
+          "content": userPrompt
         }
       ],
       temperature=0.7,
@@ -105,10 +110,9 @@ def research(request):
     )
 
     researchbyChatBot = response.choices[0].message.content
-    print("Research is ready: ")
+    print("Response is ready: ")
     print(researchbyChatBot)
-
-    return Response({"message":researchbyChatBot})
+    return researchbyChatBot
 
 
 def train_model(user_id, topic_id, text_to_summarize):
@@ -317,6 +321,7 @@ def generate_articles_and_summaries_jsonl(db_jsonl_path, db_seed_jsonl_path, art
     # open db.jsonl for appending
     db_jsonl_file = open(db_jsonl_path, 'a')
 
+    # TODO: connect this with the variables in the profile of the advisee
     # loop through articles and append summary records to db.jsonl
     for article in articles:
         record = {
@@ -459,3 +464,8 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         print(metrics)
 
     return metrics
+
+def howto():
+    industry = "parking"
+    test_query = "I have just decided to build a new " + industry + " app. What steps do I take when performing " + topic.name + "?"
+    test_result = query_trained_model(client, fine_tuned_model, test_query).content
