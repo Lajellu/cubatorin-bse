@@ -1,18 +1,94 @@
 from pprint import pprint
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as loginUser, logout as logoutUser
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import Count, Q
 from django.conf import settings
+from django.urls import reverse
 
 from advisee.models import Advisee
 from .forms import AdvisorRegistrationForm
 from .forms import AdvisorLoginForm
-from .models import Advisor, Article, Topic
+from .models import Advisor, Article, Topic, Mail
 from .decorators import advisor_login_required
 
+@advisor_login_required
+def message_send (request, advisee_id):
+    advisor = Advisor.objects.get(user=request.user)
+    advisee = Advisee.objects.get(id=advisee_id)
+
+    message_body = request.POST['reply-textarea'].strip()
+
+    if (message_body != ""):
+        mail = Mail(
+            sender = advisor.user,
+            receiver = advisee.user,
+            body = message_body
+        )
+        mail.save()
+    
+    return redirect(reverse("advisor:message_advisee", kwargs={"advisee_id":advisee_id}))
+
+@advisor_login_required
+def message_advisee (request, advisee_id):
+    advisor = Advisor.objects.get(user=request.user)
+    advisee = Advisee.objects.get(id=advisee_id)
+
+    all_mails_reults = Mail.objects.filter(
+        (Q(sender=advisor.user.id) &  Q(receiver=advisee.user.id)) | (Q(sender=advisee.user.id) & Q(receiver=advisor.user.id))
+    ).order_by("sent_at")
+        
+    all_mails = []
+    for mail in all_mails_reults:
+        all_mails.append({
+            'sender': f"{mail.sender.first_name} {mail.sender.last_name}",
+            'receiver': f"{mail.receiver.first_name} {mail.receiver.last_name}",
+            'sent_at': mail.sent_at.strftime("%B %d '%y - %I:%M %p"),
+            'unread_class': 'fa-circle' if mail.unread and mail.receiver == advisor.user else '',
+            'body': mail.body.replace("\n", "<br/>")
+        })
+
+        if mail.unread and mail.receiver == advisor.user:
+            mail.unread = False
+            mail.save()
+
+
+    return render(request, "advisor/message/advisee.html", {
+        'advisee': advisee,
+        'all_mails': all_mails
+    })
+
+
+@advisor_login_required
+def message_inbox (request):
+    advisor = Advisor.objects.get(user=request.user)
+    advisees = Advisee.objects.filter(advisor=advisor)
+
+    latest_mails = []
+    for advisee in advisees:
+        latest_mail = Mail.objects.filter(Q(sender=advisee.user) | Q(receiver=advisee.user)).order_by("-sent_at")[:1].first()
+
+        sender = latest_mail.sender
+        receiver = latest_mail.receiver
+        unread = latest_mail.unread
+        body = latest_mail.body
+        sent_at = latest_mail.sent_at
+
+        latest_mails.append({
+            'advisee': advisee,
+            'unread_class': 'fa-circle' if unread and receiver == advisor.user else '',
+            'correspondent': receiver if sender == advisor.user else sender,
+            'snippet': body[:50] + ('...' if len(body) > 50 else ''),
+            'datetime': sent_at.strftime("%B %d '%y - %I:%M %p")
+        })
+
+    return render(request, "advisor/message/inbox.html", {
+        'latest_mails': latest_mails
+    })
 
 def article_feedback(request, id, feedback):
 
@@ -79,12 +155,11 @@ def dashboard(request):
     num_advisees = Advisee.objects.filter(advisor=advisor).count()
     num_articles = Article.objects.filter(status='SUCCEEDED').count()
     num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='SUCCEEDED').count()
-    topics = Topic.objects.all()
+    topics = Topic.objects.all().order_by("order")
     
     num_articles_per_topic = Topic.objects.annotate(
         num_articles=Count('article', filter=Q(article__status='SUCCEEDED'))
-        ).values('id','name','num_articles')
-    pprint(list(num_articles_per_topic))
+        ).values('id','name','num_articles').order_by("order")
     
     perc_articles_per_topic = []
     for row in num_articles_per_topic:
@@ -92,7 +167,6 @@ def dashboard(request):
             'topic_name':row['name'], 
             'topic_name_no_space': row['name'].replace(" ", ""),
             'perc_complete':int(row['num_articles']/30*100)})
-    pprint(perc_articles_per_topic)
 
     return render(request, 'advisor/dashboard.html', {
         'user':request.user, 
@@ -127,7 +201,6 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        pprint(request.POST)
         form = AdvisorRegistrationForm(request.POST)
         if form.is_valid():
             try:

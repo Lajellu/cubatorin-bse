@@ -9,6 +9,8 @@ class Advisee(models.Model):
 
     industry = models.TextField(blank=True, null=False, default='')
 
+    biz_plan = models.TextField(blank=True, null=False, default='')
+
     market_sizing = models.TextField(blank=True, null=False, default='')
     product_market_fit = models.TextField(blank=True, null=False, default='')
     valuation = models.TextField(blank=True, null=False, default='')

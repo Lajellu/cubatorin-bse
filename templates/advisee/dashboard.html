@@ -11,101 +11,15 @@
 {% endblock %}
 
 {% block sidebar %}
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" href="{% url 'advisee:dashboard' %}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
+    {% include "partial.advisee.sidebar.html" %}
 {% endblock %}
 
 {% block user_messages %}
-    <!-- Nav Item - Messages -->
-    <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-envelope fa-fw"></i>
-            <!-- Counter - Messages -->
-            <span class="badge badge-danger badge-counter">7</span>
-        </a>
-        <!-- Dropdown - Messages -->
-        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-            aria-labelledby="messagesDropdown">
-            <h6 class="dropdown-header">
-                Message Center
-            </h6>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="{% static 'img/undraw_profile_1.svg'%}"
-                        alt="...">
-                    <div class="status-indicator bg-success"></div>
-                </div>
-                <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                        problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                </div>
-            </a>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="{% static 'img/undraw_profile_2.svg'%}"
-                        alt="...">
-                    <div class="status-indicator"></div>
-                </div>
-                <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how
-                        would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                </div>
-            </a>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="{% static 'img/undraw_profile_3.svg'%}"
-                        alt="...">
-                    <div class="status-indicator bg-warning"></div>
-                </div>
-                <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with
-                        the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                </div>
-            </a>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="{% static 'img/undraw_profile_1.svg'%}"
-                        alt="...">
-                    <div class="status-indicator bg-success"></div>
-                </div>
-                <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                        told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                </div>
-            </a>
-            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-        </div>
-    </li>
+    {% include "partial.user_messages.html" %}
 {% endblock %}
 
 {% block user_menu %}
-    <!-- Nav Item - User Information -->
-    <li class="nav-item dropdown no-arrow">
-                            
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
-            <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg'%}">
-        </a>
-        
-        <!-- Dropdown - User Information -->
-        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-        aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="{% url 'advisee:logout' %}">
-                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Logout
-            </a>
-        </div>
-    </li>
+    {% include "partial.advisor.user_menu.html" %}
 {% endblock %}
 
 {% block content %}
@@ -168,27 +82,4 @@
 {% block body_end %}
     <!-- Frontend script -->
     <script src="{% static 'js/frontend-advisee.js' %}"></script>
-
-    <!-- <script>
-        tinymce.init({
-            selector: 'textarea.rich-editor',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
-    </script> -->
-    <script>
-        $(document).ready(function() {
-            $('.rich-editor').summernote({
-                height: 300,
-                toolbar: [
-                    // [groupName, [list of button]]
-                    ['style', ['style', 'bold', 'italic', 'underline', 'strikethrough', 'clear']],
-                    // ['font', ['strikethrough']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                ]
-            })
-        });
-    </script>
 {%endblock%}

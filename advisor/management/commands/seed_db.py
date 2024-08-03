@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from advisor.models import Advisor, Topic, Article
+from advisor.models import Advisor, Topic, Article, Mail
 from advisee.models import Advisee
 
 class Command(BaseCommand):
@@ -20,12 +20,16 @@ class Command(BaseCommand):
             self.create_advisors()
             self.stdout.write(self.style.SUCCESS('  OK'))
 
+            self.stdout.write('  Creating Topics...')
+            self.create_topics()
+            self.stdout.write(self.style.SUCCESS('  OK'))
+
             self.stdout.write('  Creating Advisees...')
             self.create_advisees()
             self.stdout.write(self.style.SUCCESS('  OK'))
 
-            self.stdout.write('  Creating Topics...')
-            self.create_topics()
+            self.stdout.write('  Creating Mails...')
+            self.create_mails()
             self.stdout.write(self.style.SUCCESS('  OK'))
         except Exception as e:
             self.stdout.write(self.style.ERROR(e))
@@ -64,21 +68,22 @@ class Command(BaseCommand):
         a2.save()
     
     def create_topics(self):
-        Topic.objects.create(name='Market Sizing')
-        Topic.objects.create(name='Product Market Fit')
-        Topic.objects.create(name='Valuation')
-        Topic.objects.create(name='Capitalization')
-        Topic.objects.create(name='Competitive Analysis')
-        Topic.objects.create(name='Content Marketing')
-        Topic.objects.create(name='Networking')
-        Topic.objects.create(name='Customer Journey')
-        Topic.objects.create(name='Privacy and Data Compliance')
-        Topic.objects.create(name='Customer Lifetime Value')
-        Topic.objects.create(name='SaaS Metrics')
+        Topic.objects.create(name='Market Sizing', order=1)
+        Topic.objects.create(name='Product Market Fit', order=2)
+        Topic.objects.create(name='Valuation', order=3)
+        Topic.objects.create(name='Capitalization', order=4)
+        Topic.objects.create(name='Competitive Analysis', order=5)
+        Topic.objects.create(name='Content Marketing', order=6)
+        Topic.objects.create(name='Networking', order=7)
+        Topic.objects.create(name='Customer Journey', order=8)
+        Topic.objects.create(name='Privacy and Data Compliance', order=9)
+        Topic.objects.create(name='Customer Lifetime Value', order=10)
+        Topic.objects.create(name='SaaS Metrics', order=11)
 
     def create_advisees(self):
         advisor = Advisor.objects.get(id=1)
-
+        topics = Topic.objects.filter(active=True).order_by("order")
+        
         u1 = User.objects.create_user(
             username="advisee1",
             email='advisee1@mailinator.com', 
@@ -93,6 +98,7 @@ class Command(BaseCommand):
             user=u1, 
             advisor=advisor,
             industry =                      "ad1 industry",
+            biz_plan=                       "{}",
             market_sizing =                 "ad1 market sizing",
             product_market_fit =            "ad1 product market fit",
             valuation =                     "ad1 valuation",
@@ -134,3 +140,14 @@ class Command(BaseCommand):
             saas_metrics =                  "ad2 saas metrics",
             )
         a2.save()
+    
+    def create_mails(self):
+        advisor1 = Advisor.objects.get(id=1).user
+        advisee1 = Advisee.objects.get(id=1).user
+        advisee2 = Advisee.objects.get(id=2).user
+
+        Mail(sender=advisor1, receiver=advisee1, body="Hi there").save()
+        Mail(sender=advisee1, receiver=advisor1, body="Hi back").save()
+
+        Mail(sender=advisee2, receiver=advisor1, body="Hi my advisor").save()
+        Mail(sender=advisor1, receiver=advisee2, body="Hi my advisee").save()

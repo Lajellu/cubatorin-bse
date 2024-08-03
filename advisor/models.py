@@ -11,6 +11,8 @@ class Advisor(Model):
 
 class Topic(Model):
     name = models.CharField(max_length=255)
+    active = models.BooleanField(blank=False, null=False, default=True)
+    order = models.IntegerField(blank=False, null=False, default=1)
 
     def __str__(self):
         return f"Topic({self.id}:{self.name})"
@@ -45,3 +47,16 @@ class Article(Model):
 
     def __str__(self):
         return f"Article({self.id}:{self.name} -on- {self.topic.name})"
+
+#  Internal one-to-one mail system 
+class Mail(Model):
+
+    sender = models.ForeignKey(User, related_name='sent_mails', on_delete=models.DO_NOTHING)
+    receiver = models.ForeignKey(User, related_name='received_mails', on_delete=models.DO_NOTHING)
+    body = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+    unread = models.BooleanField(default=True)
+    read_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Mail({self.id}:{self.sender} --> {self.receiver} on {self.sent_at})"

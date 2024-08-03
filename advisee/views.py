@@ -1,17 +1,63 @@
+from pprint import pprint
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as loginUser, logout as logoutUser
 from django.contrib import messages
 from django.db import transaction
-from pprint import pprint
+from django.db.models import Q
+from django.urls import reverse
 
-from advisor.models import Topic
+
+from advisor.models import Advisor, Topic, Mail
 
 from .forms import AdviseeRegistrationForm
 from .forms import AdviseeLoginForm
 from .models import Advisee
 from .decorators import advisee_login_required
 
+@advisee_login_required
+def message_send (request):
+    advisee = Advisee.objects.get(user_id=request.user.id)
+    advisor = advisee.advisor
+
+    message_body = request.POST['reply-textarea'].strip()
+
+    if (message_body != ""):
+        mail = Mail(
+            sender = advisee.user,
+            receiver = advisor.user,
+            body = message_body
+        )
+        mail.save()
+    
+    return redirect(reverse("advisee:message_inbox"))
+
+@advisee_login_required
+def message_inbox(request):
+    advisee = Advisee.objects.get(user_id=request.user.id)
+    advisor = advisee.advisor
+
+    all_mails_reults = Mail.objects.filter(Q(sender=advisee.user) | Q(receiver=advisee.user)).order_by("sent_at")
+
+    all_mails = []
+    for mail in all_mails_reults:
+        all_mails.append({
+            'sender': f"{mail.sender.first_name} {mail.sender.last_name}",
+            'receiver': f"{mail.receiver.first_name} {mail.receiver.last_name}",
+            'sent_at': mail.sent_at.strftime("%B %d '%y - %I:%M %p"),
+            'unread_class': 'fa-circle' if mail.unread and mail.receiver == advisee.user else '',
+            'body': mail.body.replace("\n", "<br/>")
+        })
+
+        if mail.unread and mail.receiver == advisee.user:
+            mail.unread = False
+            mail.save()
+
+    return render(request, 'advisee/message/inbox.html', {
+        'advisor': advisor,
+        'all_mails' : all_mails
+    })
 
 @advisee_login_required
 def dashboard(request):
