@@ -1,0 +1,17 @@
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'advisee:dashboard' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+    
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'advisee:message_inbox' %}">
+            <i class="fas fa-fw fa-envelope"></i>
+            <span>Inbox</span>
+
+            {% if unread_messages_count > 0 %}
+            <span class="badge badge-danger badge-circle">{{ unread_messages_count }}</span>
+            {% endif %}
+        </a>
+    </li>
