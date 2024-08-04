@@ -153,12 +153,12 @@ def advisees(request):
 def dashboard(request):
     advisor = Advisor.objects.get(user_id=request.user.id)
     num_advisees = Advisee.objects.filter(advisor=advisor).count()
-    num_articles = Article.objects.filter(status='SUCCEEDED').count()
-    num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='SUCCEEDED').count()
+    num_articles = Article.objects.filter(status='ACCEPTED').count()
+    num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='ACCEPTED').count()
     topics = Topic.objects.all().order_by("order")
     
     num_articles_per_topic = Topic.objects.annotate(
-        num_articles=Count('article', filter=Q(article__status='SUCCEEDED'))
+        num_articles=Count('article', filter=Q(article__status='ACCEPTED'))
         ).values('id','name','num_articles').order_by("order")
     
     perc_articles_per_topic = []
