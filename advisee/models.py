@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -9,32 +11,50 @@ class Advisee(models.Model):
 
     industry = models.TextField(blank=True, null=False, default='')
 
-    biz_plan = models.TextField(blank=True, null=False, default='')
+    # JSON field with this structure, where 1 and 2 are topic ids 
+    # {
+    #   "1": "some research text that the advisee has written on topic_id:1",
+    #   "2": "some research text that the advisee has written on topic_id:2"
+    # }
+    topic_texts = models.TextField(blank=True, null=False, default='{}')
 
-    market_sizing = models.TextField(blank=True, null=False, default='')
-    product_market_fit = models.TextField(blank=True, null=False, default='')
-    valuation = models.TextField(blank=True, null=False, default='')
-    capitalization = models.TextField(blank=True, null=False, default='')
-    competitive_analysis = models.TextField(blank=True, null=False, default='')
-    content_marketing = models.TextField(blank=True, null=False, default='')
-    networking = models.TextField(blank=True, null=False, default='')
-    customer_journey = models.TextField(blank=True, null=False, default='')
-    privacy_and_data_compliance = models.TextField(blank=True, null=False, default='')
-    customer_lifetime_value = models.TextField(blank=True, null=False, default='')
-    saas_metrics = models.TextField(blank=True, null=False, default='')
+    # JSON field with this structure, where 1 and 2 are topic ids 
+    # {
+    #   "1": "some instructions that AI generated on topic_id:1",
+    #   "2": "some instructions that AI generated on topic_id:1"
+    # }
+    topic_instructions = models.TextField(blank=True, null=False, default='{}')
 
-    @staticmethod
-    def get_topics_dict():
-        return {
-            'market_sizing': 'Market Sizing',
-            'product_market_fit': 'Product Market Fit',
-            'valuation': 'Valuation',
-            'capitalization' : 'Capitalization',
-            'competitive_analysis': 'Competitive Analysis',
-            'content_marketing': 'Content Marketing',
-            'networking': 'Networking',
-            'customer_journey': 'Customer Journey',
-            'privacy_and_data_compliance': 'Privacy and Data Compliance',
-            'customer_lifetime_value': 'Customer Lifetime Value',
-            'saas_metrics': 'SaaS Metrics',
-        }
+    topic_instructions_default = "AI is generating instructions on how you should approach this topic based on your industry. Please check back later."
+
+    def set_topic_text(self, topic_id, text):
+        topic_id = str(topic_id)
+        json_obj = json.loads(self.topic_texts)
+
+        json_obj[topic_id] = text.strip()
+        self.topic_texts = json.dumps(json_obj)
+
+    def get_topic_text(self, topic_id):
+        topic_id = str(topic_id)
+        json_obj = json.loads(self.topic_texts)
+
+        if topic_id in json_obj:
+            return json_obj[str(topic_id)]
+        else:
+            return ""
+
+    def set_topic_instruction(self, topic_id, text):
+        topic_id = str(topic_id)
+        json_obj = json.loads(self.topic_instructions)
+
+        json_obj[topic_id] = text.strip()
+        self.topic_instructions = json.dumps(json_obj)
+
+    def get_topic_instruction(self, topic_id):
+        topic_id = str(topic_id)
+        json_obj = json.loads(self.topic_instructions)
+
+        if topic_id in json_obj:
+            return json_obj[str(topic_id)]
+        else:
+            return ""

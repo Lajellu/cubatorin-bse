@@ -62,28 +62,28 @@ def message_inbox(request):
 @advisee_login_required
 def dashboard(request):
     advisee = Advisee.objects.get(user_id=request.user.id)
-    # topics = Topic.objects.all()
-    # topic_attr_names = [topic.name.lower().replace(" ", "_") for topic in topics]
+    topics = Topic.objects.filter(active=True).order_by("order")
 
+    # if method=POST, save data fields
     if (request.method == 'POST'):
         advisee.industry = request.POST.get("industry")
+        for topic in topics:
+            advisee.set_topic_text(topic.id, request.POST.get("topic-"+str(topic.id)))
 
-        advisee.market_sizing = request.POST.get("market_sizing")
-        advisee.product_market_fit = request.POST.get("product_market_fit")
-        advisee.valuation = request.POST.get("valuation")
-        advisee.capitalization = request.POST.get("capitalization")
-        advisee.competitive_analysis = request.POST.get("competitive_analysis")
-        advisee.content_marketing = request.POST.get("content_marketing")
-        advisee.networking = request.POST.get("networking")
-        advisee.customer_journey = request.POST.get("customer_journey")
-        advisee.privacy_and_data_compliance = request.POST.get("privacy_and_data_compliance")
-        advisee.customer_lifetime_value = request.POST.get("customer_lifetime_value")
-        advisee.saas_metrics = request.POST.get("saas_metrics")
         advisee.save()
 
+    # prepare topic data to insert into textareas in template
+    topics_data = []
+    for topic in topics: 
+        topics_data.append({
+            'id': topic.id,
+            'name': topic.name,
+            'text': advisee.get_topic_text(topic.id)
+        })
+
     return render(request, 'advisee/dashboard.html', {
-        'advisee':advisee,
-        # 'topics': topic_attr_names,
+        'advisee': advisee,
+        'topics_data': topics_data
     })
 
 def index(request):

@@ -1,3 +1,5 @@
+import traceback
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -32,7 +34,8 @@ class Command(BaseCommand):
             self.create_mails()
             self.stdout.write(self.style.SUCCESS('  OK'))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(e))
+            self.stderr.write(self.style.ERROR(f"Error: {e}"))
+            traceback.print_exc()
 
 
     def create_admin_user(self):
@@ -84,6 +87,7 @@ class Command(BaseCommand):
         advisor = Advisor.objects.get(id=1)
         topics = Topic.objects.filter(active=True).order_by("order")
         
+        ### Advisee 1
         u1 = User.objects.create_user(
             username="advisee1",
             email='advisee1@mailinator.com', 
@@ -97,22 +101,15 @@ class Command(BaseCommand):
         a1 = Advisee(
             user=u1, 
             advisor=advisor,
-            industry =                      "ad1 industry",
-            biz_plan=                       "{}",
-            market_sizing =                 "ad1 market sizing",
-            product_market_fit =            "ad1 product market fit",
-            valuation =                     "ad1 valuation",
-            capitalization =                "ad1 capitalization",
-            competitive_analysis =          "ad1 competitive analysis",
-            content_marketing =             "ad1 content marketing",
-            networking =                    "ad1 networking",
-            customer_journey =              "ad1 customer journey",
-            privacy_and_data_compliance =   "ad1 privacy and data compliance",
-            customer_lifetime_value =       "ad1 customer lifetime value",
-            saas_metrics =                  "ad1 saas metrics",
+            industry = "ad1 industry"
             )
+        for topic in topics:
+            a1.set_topic_text(topic.id, topic.name + " topic text")
+            a1.set_topic_instruction(topic.id, topic.name + " topic instructions")
+
         a1.save()
 
+        ### Advisee 2
         u2 = User.objects.create_user(
             username="advisee2",
             email='advisee2@mailinator.com', 
@@ -126,19 +123,12 @@ class Command(BaseCommand):
         a2 = Advisee(
             user=u2, 
             advisor=advisor,
-            industry =                      "ad2 industry",
-            market_sizing =                 "ad2 market sizing",
-            product_market_fit =            "ad2 product market fit",
-            valuation =                     "ad2 valuation",
-            capitalization =                "ad2 capitalization",
-            competitive_analysis =          "ad2 competitive analysis",
-            content_marketing =             "ad2 content marketing",
-            networking =                    "ad2 networking",
-            customer_journey =              "ad2 customer journey",
-            privacy_and_data_compliance =   "ad2 privacy and data compliance",
-            customer_lifetime_value =       "ad2 customer lifetime value",
-            saas_metrics =                  "ad2 saas metrics",
+            industry = "ad2 industry"
             )
+        for topic in topics:
+            a2.set_topic_text(topic.id, topic.name + " topic text")
+            a2.set_topic_instruction(topic.id, topic.name + " topic instructions")
+
         a2.save()
     
     def create_mails(self):

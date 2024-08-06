@@ -45,22 +45,22 @@
 
         <button type="submit" class="mb-4">Save All Work</button>
 
-        {% for topic_field_name, topic_name in advisee.get_topics_dict.items %}
+        {% for topic in topics_data %}
         <div class="card shadow mb-4">
             <!-- Card Header - Accordion -->
-            <a href="#collapse-{{topic_field_name}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-{{topic_field_name}}">
-                <h6 class="m-0 font-weight-bold text-primary">{{ topic_name }}</h6>
+            <a href="#collapse-topic-{{ topic.id }}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-topic-{{ topic.id }}">
+                <h6 class="m-0 font-weight-bold text-primary">{{ topic.name }}</h6>
             </a>
             <!-- Card Content - Collapse -->
-            <div class="collapse show" id="collapse-{{topic_field_name}}">
+            <div class="collapse show" id="collapse-topic-{{ topic.id }}">
                 <div class="card-body">
-                    <textarea id="market-sizing" name="{{topic_field_name}}" class="rich-editor">
-                        {{ advisee|get_attr:topic_field_name }}
+                    <textarea id="topic-{{ topic.id }}" name="topic-{{ topic.id }}" class="rich-editor">
+                        {{ topic.text }}
                     </textarea>
                     
                     <div class="container mt-4">
                         <div class="row justify-content-end">
-                            <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="{{ topic_name }}">
+                            <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="{{ topic.name }}">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-flag"></i>
                                 </span>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <p id="{{ topic_name }}-research-results"></p>
+                        <p id="topic-{{ topic.id }}-research-results"></p>
                     </div>
                 </div>
             </div>

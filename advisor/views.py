@@ -131,12 +131,22 @@ def article_feedback(request, id, feedback):
     })
 
 @advisor_login_required
-def advisee(request, id):
+def advisee (request, id):
     advisor = Advisor.objects.select_related('user').get(user_id=request.user.id)
     advisee = Advisee.objects.select_related('user').get(id=id)
+    topics = Topic.objects.filter(active=True).order_by("order")
+
+    topics_data = []
+    for topic in topics: 
+        topics_data.append({
+            'id': topic.id,
+            'name': topic.name,
+            'text': advisee.get_topic_text(topic.id)
+        })
 
     return render(request, 'advisor/advisee.html', {
-        'advisee': advisee
+        'advisee': advisee,
+        'topics_data': topics_data
     })
 
 @advisor_login_required
@@ -155,7 +165,7 @@ def dashboard(request):
     num_advisees = Advisee.objects.filter(advisor=advisor).count()
     num_articles = Article.objects.filter(status='ACCEPTED').count()
     num_articles_by_advisor = Article.objects.filter(advisor=advisor, status='ACCEPTED').count()
-    topics = Topic.objects.all().order_by("order")
+    topics = Topic.objects.all().filter(active=True).order_by("order")
     
     num_articles_per_topic = Topic.objects.annotate(
         num_articles=Count('article', filter=Q(article__status='ACCEPTED'))
