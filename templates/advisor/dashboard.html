@@ -22,6 +22,10 @@
 {% endblock %}
 
 {% block content %}
+    {% for message in messages %}
+    <div class="alert alert-success mt-4">{{ message }}</div>
+    {% endfor %}
+
      <!-- Content Row -->
      <div class="row">
 
@@ -259,6 +263,24 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6 mb-4">
+            <!-- Regenerate Topic Instructions -->
+            <div class="card shadow mb-4" style="width: 85%;">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Regenerate Topic Instructions</h6>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'advisor:regenerate_advisee_topic_instructions' %}" class="btn btn-primary btn-icon-split mb-4">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-sync"></i>
+                        </span>
+                        <span class="text">Regenerate Topic Instructions</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
     </div>
 {% endblock %}
 

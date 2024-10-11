@@ -20,8 +20,14 @@ class Advisee(models.Model):
 
     # JSON field with this structure, where 1 and 2 are topic ids 
     # {
-    #   "1": "some instructions that AI generated on topic_id:1",
-    #   "2": "some instructions that AI generated on topic_id:1"
+    #   "1": {
+    #           "text": "some instructions that AI generated on topic_id:1",
+    #           "unread": "true"
+    #        }
+    #   "2": {
+    #           "text": "some instructions that AI generated on topic_id:2",
+    #           "unread": "false"
+    #        }
     # }
     topic_instructions = models.TextField(blank=True, null=False, default='{}')
 
@@ -43,11 +49,17 @@ class Advisee(models.Model):
         else:
             return ""
 
-    def set_topic_instruction(self, topic_id, text):
+    def set_topic_instruction(self, topic_id, text, unread=True):
         topic_id = str(topic_id)
-        json_obj = json.loads(self.topic_instructions)
+        unread = "true" if unread else "false"
+        text = text.strip()
 
-        json_obj[topic_id] = text.strip()
+        json_obj = json.loads(self.topic_instructions)
+        
+        json_obj[topic_id] = {}
+        json_obj[topic_id]["text"] = text
+        json_obj[topic_id]["unread"] = unread
+
         self.topic_instructions = json.dumps(json_obj)
 
     def get_topic_instruction(self, topic_id):
@@ -55,6 +67,21 @@ class Advisee(models.Model):
         json_obj = json.loads(self.topic_instructions)
 
         if topic_id in json_obj:
-            return json_obj[str(topic_id)]
+            instruction = json_obj[topic_id]
+            if instruction: 
+                return instruction
+            else:
+                return {"text": self.topic_instructions_default, "unread": "false"}
         else:
-            return ""
+            return {"text": self.topic_instructions_default, "unread": "false"}
+    
+    def mark_topic_instruction_read(self, topic_id):
+        topic_id = str(topic_id)
+        json_obj = json.loads(self.topic_instructions)
+
+        if topic_id in json_obj:
+            json_obj[topic_id]["unread"] = "false"
+        
+        self.topic_instructions = json.dumps(json_obj)
+
+    

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from django.db.models import Q
 from django.conf import settings
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import EmailMessage
 
 from advisor.models import Advisor, Topic, Article
 
@@ -33,7 +33,7 @@ def prompt(systemPrompt, userPrompt):
         }
       ],
       temperature=0.7,
-      max_tokens=250,
+      max_tokens=500,
       top_p=1
     )
 
@@ -391,8 +391,3 @@ def retrieve_finetuning_metrics(client, fine_tuned_model_id):
         print(metrics)
 
     return metrics
-
-def howto():
-    industry = "parking"
-    test_query = "I have just decided to build a new " + industry + " app. What steps do I take when performing " + topic.name + "?"
-    test_result = query_trained_model(client, fine_tuned_model, test_query).content

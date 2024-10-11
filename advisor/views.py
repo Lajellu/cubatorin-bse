@@ -1,3 +1,5 @@
+import threading
+
 from pprint import pprint
 
 from django.shortcuts import render, redirect
@@ -11,6 +13,8 @@ from django.conf import settings
 from django.urls import reverse
 
 from advisee.models import Advisee
+from advisee.utils import regenerate_all_advisee_topic_instructions_and_notify_by_email
+
 from .forms import AdvisorRegistrationForm
 from .forms import AdvisorLoginForm
 from .models import Advisor, Article, Topic, Mail
@@ -187,6 +191,19 @@ def dashboard(request):
         'perc_articles_per_topic':perc_articles_per_topic,
         })
 
+@advisor_login_required
+def regenerate_advisee_topic_instructions(request):
+    def background_task():
+        regenerate_all_advisee_topic_instructions_and_notify_by_email(request.user.email)
+    
+    thread = threading.Thread(target=background_task)
+    thread.start()
+
+    messages.success(request, 'Regeneration of advisee topic instructions has started. You will receive an email at '+request.user.email+' when completed')
+
+    return redirect('/advisor/dashboard')
+
+
 def index(request):
     return render(request, 'advisor/index.html')
 
@@ -195,7 +212,7 @@ def logout(request):
     return redirect('/advisor')
 
 def login(request):
-    form_errors = None;
+    form_errors = None
 
     if request.method == 'POST':
         form = AdvisorLoginForm(request, request.POST)

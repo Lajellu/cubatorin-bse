@@ -15,4 +15,6 @@ urlpatterns = [
     path('message/inbox/', views.message_inbox, name='message_inbox'),
     path('message/inbox/advisee/<int:advisee_id>/', views.message_advisee, name='message_advisee'),
     path('message/send/<int:advisee_id>/', views.message_send, name='message_send'),
+    path('regenerate_advisee_topic_instructions/', views.regenerate_advisee_topic_instructions, name='regenerate_advisee_topic_instructions'),
+    
 ]

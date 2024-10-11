@@ -1,4 +1,266 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Cubatorin - The Chatbot Incubator for Investors and Startups
+{% endblock %}
+
+{% block heading %}
+Cubatorin - The Chatbot Incubator for Investors and Startups
+{% endblock %}
+
 {% block content %}
 
+
+
+<div class="row">
+
+  <!-- <div class="col-12 mt-5"> -->
+  <div class="col-1">
+    <img class="w-100" src="{% static '/img/homepage/yorklogo.png'%}" />
+  </div>
+  <div class="col-11">
+    <h2 class="h5 mb-0 text-gray-800">
+      Laily Ajellu, BSc, Jeff Edmonds, PhD, (Supervisor) <br />
+      School of Engineering,York University
+    </h2>
+
+  </div>
+
+  <!-- </div> -->
+
+  <div class="col-12 mt-5">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Introduction</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          Cubatorin is a business incubator for startups. It offers <b>detailed
+            instructions</b> and <b>statistical research</b> to entrepreneurs, based on
+          their industry and their startup idea. The platform also facilitates the
+          writing and sharing of business proposals between entrepreneurs
+          and interested investors. It includes a chat interface for investors to
+          confirm or deny proposals
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Entrepreneur’s View</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <img style="width: 100%" src="{% static '/img/homepage/demo1.jpg'%}" />
+        <p>
+          <b>Figure 1.</b> Building their business proposal (AI generated Instructions)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Investor's View</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <img style="width: 100%" src="{% static '/img/homepage/demo2.jpg'%}" />
+        <p>
+          <b>Figure 2.</b> Checking a startup’s business proposal
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Results</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          The key metric that we have monitored is the quality of the <b>detailed
+            instructions</b> and <b>statistical research</b>.
+        </p>
+        <p>
+          We have evaluated this using multiple methods:
+        <ol>
+          <li>Investor feedback (Thumbs up/Thumbs down)</li>
+          <li>Model metrics (Accuracy and Loss of the AI model in the Training and Validation phases)</li>
+        </ol>
+        </p>
+        <p>
+          The accuracy of the AI has generally improved with more data samples, however, quality matters. Anytime the
+          AI's answers start generalizing again, the most recent data samples are discarded to retain specificity.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Effect of Article Upload on ChatGPT Accuracy</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <img style="width: 100%" src="{% static '/img/homepage/graph1.png'%}" />
+        <p>
+          <b>Chart 1.</b> Comparing the base model's accuracy (51%) with Cubatorin’s model accuracy (74%), we can see a
+          long-term improvement.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Number of Positive Ratings vs. Number of Tokens</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <img style="width: 100%" src="{% static '/img/homepage/graph2.png'%}" />
+        <p>
+          <b>Chart 2.</b> Investors have higher ratings in the second half of the AI’s training phase.
+        <ul>
+          <li>4 positive ratings/105 tokens in the first half</li>
+          <li>5.33 positive ratings/105 tokens in the second half</li>
+        </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Problem Being Solved</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          ChatGPT's responses are often too generalized.
+
+          Cubatorin provides more specific answers tailored to the field of startup investing. There are many repetitive
+          (yet industry-specific) questions and processes that investors and entrepreneurs need to discuss before
+          closing a deal. Cubatorin is the liaison between the two worlds.
+        </p>
+        <img style="width: 100%" src="{% static '/img/homepage/demo3.png'%}" />
+        <p>
+          <b>Figure 3.</b> URL/File upload used for training AI
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Methods and Materials</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          Cubatorin makes its answers more specific by <b>fine-tuning an OpenAI chatbot.</b>
+        </p>
+        <p>
+          <b>Data Sources:</b> The BEST team at York University continuously curates and uploads relevant articles for
+          training the AI. As new startups join the incubator and new, practical methodologies and articles become
+          available, Cubatorin’s instructions are regenerated.
+        </p>
+        <p>
+          <b>Methodology:</b> The curated data is given priority over the data originally sourced for the base model of
+          ChatGPT (formed from general information on the web).
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Discussion</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          Cubatorin has a direct impact on the York University community as the software will be used at the Bergeron
+          Entrepreneurs in Science and Technology program to help students develop their startups.
+        </p>
+        <p>
+          Beyond York University, we plan to share it with other incubators and investors to speed up their process of
+          selecting startups to fund.
+        </p>
+        <p>
+          The insights provided by Cubatorin's instructions to the entrepreneur drastically reduce the amount of time
+          investors must spend mentoring their chosen startups (by about 40% per workday from 2 hours to 1.2 hours). In
+          addition, the research conducted by the AI is based on the startup's industry and speeds up the process of
+          product development.
+        </p>
+        <div class="col-xl-6 col-12">
+          <img class="w-100" src="{% static '/img/homepage/demo4.png' %}" />
+        </div>
+        <p>
+          <b>Figure 4.</b> Feedback given for a Test of the newly trained AI
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Conclusion</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          With Cubatorin, investors spend less time researching and guiding entrepreneurs in their niche industry. In
+          addition, entrepreneurs have more support while building their product.
+        </p>
+        <p>
+          These results allow investors to allocate more time to reviewing and providing feedback on business proposals.
+          It also provides entrepreneurs with more robust business planning.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Contact Cubatorin</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p>
+          Laily Ajellu: <a href="mailto:lajellu@my.yorku.ca">lajellu@my.yorku.ca</a>
+        </p>
+        <p>
+          York University: <a href="tel:+16476224273">Call +1 (647)622-4273</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
 {% endblock %}

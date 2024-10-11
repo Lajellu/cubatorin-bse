@@ -6,12 +6,11 @@ import certifi
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
-# from pathlib import Path
-# from django.http import JsonResponse
 from bs4 import BeautifulSoup
 
 from ai import ai
+
+from advisee.models import Advisee
 
 @api_view(['POST'])
 def url_fetch_train(request):
@@ -74,4 +73,16 @@ def research(request):
     researchbyChatBot = ai.prompt(systemPrompt, userPrompt)
 
     return Response({"message":researchbyChatBot})
+
+@api_view(['POST'])
+def mark_advisee_topic_instruction_read(request):
+    data = request.data
+    topic_id = data["topic_id"]
+    advisee = Advisee.objects.get(user_id=request.user.id)
+
+    advisee.mark_topic_instruction_read(topic_id)
+
+    advisee.save()
+
+    return Response({"message":str(advisee) + " topic instruction for topic_id " + topic_id + " set to read"})
 

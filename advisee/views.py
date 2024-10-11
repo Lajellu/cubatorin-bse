@@ -1,3 +1,5 @@
+import threading
+
 from pprint import pprint
 
 from django.shortcuts import render, redirect
@@ -8,13 +10,13 @@ from django.db import transaction
 from django.db.models import Q
 from django.urls import reverse
 
-
 from advisor.models import Advisor, Topic, Mail
 
 from .forms import AdviseeRegistrationForm
 from .forms import AdviseeLoginForm
 from .models import Advisee
 from .decorators import advisee_login_required
+from .utils import regenerate_advisee_topic_instructions
 
 @advisee_login_required
 def message_send (request):
@@ -64,20 +66,42 @@ def dashboard(request):
     advisee = Advisee.objects.get(user_id=request.user.id)
     topics = Topic.objects.filter(active=True).order_by("order")
 
-    # if method=POST, save data fields
+    # if form was saved
     if (request.method == 'POST'):
-        advisee.industry = request.POST.get("industry")
+        curIndustry = advisee.industry
+        newIndustry = request.POST.get("industry").strip()
+
+        # if the industry has changed:
+        if (curIndustry != newIndustry):
+            # set new industry in advisee and empty out topic instructions
+            advisee.industry = newIndustry
+            advisee.topic_instructions = "{}"
+            advisee.save()
+
+            # if newIndustry is not empty, regnereate topic instructions in background thread
+            if (newIndustry):
+                def background_task():
+                    regenerate_advisee_topic_instructions(advisee.id)
+                
+                thread = threading.Thread(target=background_task)
+                thread.start()
+
+        # save new topic texts
         for topic in topics:
-            advisee.set_topic_text(topic.id, request.POST.get("topic-"+str(topic.id)))
+            if request.POST.get("topic-"+str(topic.id)):
+                advisee.set_topic_text(topic.id, request.POST.get("topic-"+str(topic.id)))
 
         advisee.save()
 
-    # prepare topic data to insert into textareas in template
+
+    # compile topic data for template
     topics_data = []
     for topic in topics: 
         topics_data.append({
             'id': topic.id,
             'name': topic.name,
+            'instruction_text': advisee.get_topic_instruction(topic.id)["text"].replace('\n', '<br>'), 
+            'instruction_unread': advisee.get_topic_instruction(topic.id)["unread"], 
             'text': advisee.get_topic_text(topic.id)
         })
 

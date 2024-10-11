@@ -43,39 +43,57 @@
         </div>
         
 
-        <button type="submit" class="mb-4">Save All Work</button>
+        <!-- <button type="submit" class="mb-4">Save All Work</button> -->
+        <button type="submit" class="btn btn-primary btn-icon-split mb-4">
+            <span class="icon text-white-50">
+                <i class="fas fa-save"></i>
+            </span>
+            <span class="text">Save All Work</span>
+        </button>
 
-        {% for topic in topics_data %}
-        <div class="card shadow mb-4">
-            <!-- Card Header - Accordion -->
-            <a href="#collapse-topic-{{ topic.id }}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-topic-{{ topic.id }}">
-                <h6 class="m-0 font-weight-bold text-primary">{{ topic.name }}</h6>
-            </a>
-            <!-- Card Content - Collapse -->
-            <div class="collapse show" id="collapse-topic-{{ topic.id }}">
-                <div class="card-body">
-                    <textarea id="topic-{{ topic.id }}" name="topic-{{ topic.id }}" class="rich-editor">
-                        {{ topic.text }}
-                    </textarea>
-                    
-                    <div class="container mt-4">
-                        <div class="row justify-content-end">
-                            <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="{{ topic.name }}">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-flag"></i>
-                                </span>
-                                <span class="text">Research Topic with AI</span>
+        {% if advisee.industry %}
+            {% for topic in topics_data %}
+            <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapse-topic-{{ topic.id }}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-topic-{{ topic.id }}">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ topic.name }}</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapse-topic-{{ topic.id }}">
+                    <div class="card-body">
+                        <p>{{ topic.instruction_text|safe }}</p>
+
+                        {% if topic.instruction_unread == "true" %}
+                        <div class="alert alert-danger mt-4 ">
+                            Please read the above instructions because they are new
+                            <a href="" class="mark-instruction-as-read" data-topic-id="{{ topic.id}}">
+                                Ok, I read it
                             </a>
                         </div>
-                    </div>
+                        {% endif %}
+                        <textarea id="topic-{{ topic.id }}" name="topic-{{ topic.id }}" class="rich-editor">
+                            {{ topic.text }}
+                        </textarea>
+                        
+                        <div class="container mt-4">
+                            <div class="row justify-content-end">
+                                <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="topic-{{ topic.id }}">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-flag"></i>
+                                    </span>
+                                    <span class="text">Research Topic with AI</span>
+                                </a>
+                            </div>
+                        </div>
 
-                    <div class="mt-4">
-                        <p id="topic-{{ topic.id }}-research-results"></p>
+                        <div class="mt-4">
+                            <p id="topic-{{ topic.id }}-research-results"></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </form>
 {% endblock %}
 

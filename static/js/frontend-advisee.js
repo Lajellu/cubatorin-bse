@@ -16,7 +16,45 @@ document.addEventListener("DOMContentLoaded", () => {
             request_research(industry, topic, researchResultDiv)
         })
     })
+
+    // select all elements with class mark-instruction-as-read
+    const markAsReadAnchors = document.querySelectorAll(".mark-instruction-as-read")
+
+    // Loop through each mark-instruction-as-read anchor and add event listener
+    markAsReadAnchors.forEach(link => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault()
+
+            let topicId = link.getAttribute("data-topic-id");
+
+            console.log("marking instructions for topicId " + topicId + " as read")
+
+            markInstructionAsRead(topicId)
+        })
+    })
+
 })
+
+function markInstructionAsRead(topicId) {
+    const data = JSON.stringify({ 
+        'topic_id': topicId
+    });
+    const headers = {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken'),};
+
+    fetch(apiUrl + 'mark_advisee_topic_instruction_read/', {
+        method: "POST",
+        headers: headers,
+        body: data
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Mark Instruction As Read response:", data.message);
+
+        // hide the alert div
+        $('a.mark-instruction-as-read[data-topic-id="'+topicId+'"]').closest('div')[0].hidden = true
+    })
+    .catch(error => console.error("Failed to mark instruction as read:", error));
+}
 
 function request_research(industry, topic, researchResultDiv) {
     const data = JSON.stringify({ 
@@ -36,20 +74,4 @@ function request_research(industry, topic, researchResultDiv) {
         researchResultDiv.innerText = data.message;
     })
     .catch(error => console.error("Failed to fetch data:", error));
-}
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
 }

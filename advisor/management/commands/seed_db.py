@@ -105,7 +105,7 @@ class Command(BaseCommand):
             )
         for topic in topics:
             a1.set_topic_text(topic.id, topic.name + " topic text")
-            a1.set_topic_instruction(topic.id, topic.name + " topic instructions")
+            a1.set_topic_instruction(topic.id, topic.name + " topic instructions", True)
 
         a1.save()
 
@@ -127,7 +127,7 @@ class Command(BaseCommand):
             )
         for topic in topics:
             a2.set_topic_text(topic.id, topic.name + " topic text")
-            a2.set_topic_instruction(topic.id, topic.name + " topic instructions")
+            a2.set_topic_instruction(topic.id, topic.name + " topic instructions", True)
 
         a2.save()
     
