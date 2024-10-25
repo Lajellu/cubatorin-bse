@@ -1,3 +1,4 @@
+import threading
 import logging
 import requests
 import ssl
@@ -12,6 +13,8 @@ from ai import ai
 
 from advisee.models import Advisee
 
+from playwright.sync_api import sync_playwright
+
 @api_view(['POST'])
 def url_fetch_train(request):
     print("Received request to url_fetch_train")
@@ -21,24 +24,73 @@ def url_fetch_train(request):
     url = data['url']
     topic_id = data['topic_id']
     
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
+    body_text = ""
 
-    url_fetch_response = requests.get(url, headers=headers)
-    print(url_fetch_response)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
 
-    if url_fetch_response.status_code == 200:
-        html_content = url_fetch_response.text
-        soup = BeautifulSoup(html_content, 'html.parser')
-        body_text = soup.body.get_text(separator=' ', strip=True)
-    else:
-        print(f"Failed to retrieve data: {url_fetch_response.status_code}")
-        return Response({'error': f"Failed to retrieve data: {url_fetch_response.status_code}"}, status=url_fetch_response.status_code)
+        try:
+            response = page.goto(url)
 
-    response = ai.train_model(user_id, topic_id, body_text, request.user)
+            if response and response.status == 200:
+                print(f"Successfully fetched the page: {url}")
 
-    return Response(response)
+                # Wait for page to load
+                page.wait_for_timeout(5000)
+
+                html_content = page.content()
+                # print(html_content)
+                # TODO: Merge the Beautiful soup code here (Expected a `Response`, `HttpResponse` or `StreamingHttpResponse` to be returned from the view, but received a `<class 'NoneType'>`)
+                soup = BeautifulSoup(html_content, "html.parser")
+
+                # Remove elements that are not visible or relevant
+                for element in soup(['script', 'style', 'noscript', 'iframe', 'header', 'footer', 'aside', '[hidden]']):
+                    element.decompose()  # Completely remove these elements from the soup
+
+                # Optionally remove elements by class or ID related to ads, popups, etc.
+                for element in soup.find_all(True, {'class': ['ad', 'popup', 'modal', 'banner'], 'id': ['ad', 'popup', 'modal', 'banner']}):
+                    element.decompose()
+
+                body_text = soup.body.get_text(separator=' ', strip=True)
+                print(body_text)
+
+        except Exception as e:
+            print(f"Error caught: An error occurred: {e}")
+            return Response({'error': f"Failed to retrieve data: {e}"}, status=500)
+
+        finally:
+            browser.close()
+
+
+    def background_task():
+        response = ai.train_model(user_id, topic_id, body_text, request.user)
+
+    thread = threading.Thread(target=background_task)
+    thread.start()
+
+    return Response({"message" : "Success parsing body text from the requested URL:" + url})
+
+
+@api_view(['POST'])
+def raw_text_upload_train(request):
+    print("Received a request to /api/file_upload_train")
+    data = request.data
+    body_text = data['text']
+    print(f"Text to summarize: {body_text}")
+
+    user_id = request.user.id
+    topic_id = data['topic_id']
+    
+    
+    # Train the AI using the raw text entered (on a new thread)
+    def background_task():
+        response = ai.train_model(user_id, topic_id, body_text, request.user)
+
+    thread = threading.Thread(target=background_task)
+    thread.start()
+
+    return Response({"message" : "Success reading raw text entered"})
 
 
 @api_view(['POST'])

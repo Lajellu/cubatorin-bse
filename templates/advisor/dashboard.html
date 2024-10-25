@@ -85,8 +85,99 @@
         </div>
     </div>
 
-    <!-- Content Row -->
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - URL Upload -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">URL Upload</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h3>URL Upload</h3>
+                    <form id="urlUploadForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
 
+                        <label for="topics_dd_url">What topic is the article for?</label>
+                        <select id="topics_dd_url" name="topics_dd_url">
+                            {% for topic in topics%}
+                            <option value="{{topic.id}}">{{topic.name}}</option>
+                            {% endfor %}
+                        </select>
+
+                        <br>
+
+                        <label for="url_article">Upload via link to article</label>
+                        
+                        <br>
+
+                        <input style="width: 100%;" type="url" id="url_article" name="url_article">
+                        
+                        <div id="urlUploadErrorMsg" class="alert alert-danger d-none" role="alert">The URL was not correctly written, or the URL does not contain data. Please correct the URL or try another URL.</div>
+
+                        <div id="urlUploadSuccessMsg" class="alert alert-success d-none" role="alert"> Thank you for submitting an article via URL. The AI is being trained on it. <br>
+                            You will receive an email at <strong>{{ user.email }}</strong> when training is complete. </div>
+
+                        <br><br>
+                        
+                        <button type="button" class="btn btn-primary" id="URLuploadBtn">Train AI</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Content Row -->
+
+     <div class="row">
+        <div class="col-11">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Raw Text Upload -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Raw Text Upload</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h3>Raw Text Upload</h3>
+                    <p>Upload new article data to the OutCubator's OpenAI account, so it can be used for
+                        training the model on these *specific* articles.</p>
+
+                    <form id="rawTextUploadForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <label for="topics_dd_raw">What topic is the article for?</label>
+                        <select id="topics_dd_raw" name="topics_dd_raw">
+                            {% for topic in topics%}
+                            <option value="{{topic.id}}">{{topic.name}}</option>
+                            {% endfor %}
+                        </select>
+
+                        <br>
+
+                        <label for="rawText">Enter text, or paste text from another source, to the OutCubator's OpenAI account, so it can be used for
+                            training the model on these *specific* articles.</label>
+                        <textarea class="form-control" id="rawText" name="rawText" style="height: 200px"></textarea>
+
+                        <br>
+
+                        <div id="rawTextUploadSuccessMsg" class="alert alert-success d-none" role="alert">
+                            Thank you for submitting a raw text article. The AI is being trained on it. <br>
+                            You will receive an email at <strong>{{ user.email }}</strong> when training is complete. 
+                        </div>
+
+                        <div id="rawTextUploadErrorMsg" class="alert alert-danger d-none" role="alert">The text box cannot be left empty.</div>
+
+                        <br>
+                        
+                        <button type="button" class="btn btn-primary" id="rawTextUploadBtn">Train AI</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Row -->
+    
+    <!-- Content Row -->
     <div class="row">
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
@@ -131,94 +222,33 @@
                         <br>
                         
                         <button type="button" class="btn btn-primary" id="uploadBtn">Train AI</button>
-
-
-                        <!-- TODO: Add the ability to ask any question-->
-                        <!-- <hr>
-                        <h3> Test the new Cubatorin! </h3>
-                        <p>Click the button below to fill this space with the new model's response</p>
-                        <button type="button" class="btn btn-primary" id="testMe" name="testMe">Test the
-                            new me</button>
-                        <br><br>
-                        <p id="apiMessageSpace"></p> -->
                     </form>
                 </div>
             </div>
         </div>
 
         <!-- Illustration - "Upload article" image -->
-        <div class="card shadow mb-4" style="width: 30%;">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Description</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                    <p> Upload your articles for the ChatBot to train on!</p>
-
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" 
-                    src="{% static 'img/undraw_sharing_articles_re_jnkp.svg'%}" alt="...">
-
-
+        <div class="col-xl-3 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">File Preview</h6>
                 </div>
-                <div class="text-left">
-                    <label for="fileContents">Contents of the File Uploaded</label>
-                    <div id="fileContents"></div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" 
+                        src="{% static 'img/undraw_sharing_articles_re_jnkp.svg'%}" alt="...">
+
+
+                    </div>
+                    <div class="text-left">
+                        <label for="fileContents">Contents of the File Uploaded</label>
+                        <div id="fileContents"></div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- Content Row -->
-
-    <div class="row">
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - URL Upload -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">URL Upload</h6>
-                    <!-- <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="URLdropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                    </div> -->
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <h3>URL Upload</h3>
-                    <form id="urlUploadForm" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-
-                        <label for="topics_dd_url">What topic is the article for?</label>
-                        <select id="topics_dd_url" name="topics_dd_url">
-                            {% for topic in topics%}
-                            <option value="{{topic.id}}">{{topic.name}}</option>
-                            {% endfor %}
-                        </select>
-
-                        <br>
-
-                        <label for="url_article">Upload via link to article</label>
-                        
-                        <br>
-
-                        <input style="width: 100%;" type="url" id="url_article" name="url_article">
-                        
-                        <br><br>
-                        
-                        <button type="button" class="btn btn-primary" id="URLuploadBtn">Train AI</button>
-                        <!-- <hr>
-                        <h3>Test the new Cubatorin!</h3>
-                        <p>Click the button below to fill this space with the new model's response</p>
-                        <button type="button" class="btn btn-primary" id="URLtestMe" name="testMe">Test the
-                            new me</button>
-                        <br><br>
-                        <p id="URLapiMessageSpace"></p> -->
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Content Row -->
     <div class="row">
@@ -251,22 +281,8 @@
         </div>
 
         <div class="col-lg-6 mb-4">
-            <!-- Approach -->
-            <div class="card shadow mb-4" style="width: 85%;">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                </div>
-                <div class="card-body">
-                    <p>Expert Chatbot for Entrepreneurs</p>
-                    <p class="mb-0">A new nlp chatbot that provides tailored advice for entrepreneurs,
-                        fed by experts.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 mb-4">
             <!-- Regenerate Topic Instructions -->
-            <div class="card shadow mb-4" style="width: 85%;">
+            <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Regenerate Topic Instructions</h6>
                 </div>

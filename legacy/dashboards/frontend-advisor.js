@@ -1,30 +1,47 @@
 apiUrl = "http://cubatorin.com:5001"
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Always listening for clicks on the Upload button
-    document.querySelector("#uploadBtn").addEventListener("click", () => {
+
+$(document).ready("DOMContentLoaded", () => {
+    // Always listening for clicks on the File Upload button
+    $("#uploadBtn").click(() => {
         handle_upload();
     });
 
-    // Always listening for clicks on the Test Me button
-     document.querySelector("#testMe").addEventListener("click", () => {
-         console.log("Test Me button clicked");
-
-         fetch('http://cubatorin.com:5000/test_me')
-            .then(response => {
-                console.log("Received response from server");
-                return response.json();
-            })
-            .then(data => {
-                console.log("Sending request to the summarizer");
-                console.log(data);  // Add this line to see the received data
-                // Add newlines to the OpenAI API response
-                let formattedMessage = data.message.replace(/\.(\s+)/g, '.$1<br>');
-                formattedMessage = formattedMessage.replace(/([a-z]\))(\s+)/g, '<br>$1$2');
-                document.getElementById('apiMessageSpace').innerHTML = formattedMessage;
-            })
-            .catch(error => console.error('Error fetching data:', error));
+    // Always listening for clicks on the URL Upload button
+    $('#URLuploadBtn').click(() => {
+        const url = $('url_article').value;
+        fetchAndDisplayURLContent(url);
     });
+
+    // Always listening for clicks on the Raw Text Upload button
+    $('#rawTextUploadBtn').click(() => {
+        console.log("rawTextUploadBtn: Clicked");
+        const raw_text = $('#rawText').value;
+        handle_raw_text_upload(raw_text);
+    });
+
+    // Fill bar graphs with data regarding the amount of content uploaded
+    fillBarGraphs();
+
+    // Always listening for clicks on the Test Me button
+    //  document.querySelector("#testMe").addEventListener("click", () => {
+    //      console.log("Test Me button clicked");
+
+    //      fetch('http://cubatorin.com:5000/test_me')
+    //         .then(response => {
+    //             console.log("Received response from server");
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log("Sending request to the summarizer");
+    //             console.log(data);  // Add this line to see the received data
+    //             // Add newlines to the OpenAI API response
+    //             let formattedMessage = data.message.replace(/\.(\s+)/g, '.$1<br>');
+    //             formattedMessage = formattedMessage.replace(/([a-z]\))(\s+)/g, '<br>$1$2');
+    //             document.getElementById('apiMessageSpace').innerHTML = formattedMessage;
+    //         })
+    //         .catch(error => console.error('Error fetching data:', error));
+    // });
 
 })
 
