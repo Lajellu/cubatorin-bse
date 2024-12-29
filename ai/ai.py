@@ -21,7 +21,7 @@ def prompt(systemPrompt, userPrompt):
     client = OpenAI(api_key=OPENAI_API_KEY)
 
     response = client.chat.completions.create(
-      model="gpt-3.5-turbo",
+      model="gpt-4",
       messages=[
         {
           "role": "system",
@@ -37,9 +37,9 @@ def prompt(systemPrompt, userPrompt):
       top_p=1
     )
 
-    researchByChatBot = response.choices[0].message.content
-    
-    return researchByChatBot
+    responseByChatBot = response.choices[0].message.content
+
+    return responseByChatBot
 
 
 def train_model(user_id, topic_id, text_to_summarize, user):
@@ -220,7 +220,7 @@ def train_model(user_id, topic_id, text_to_summarize, user):
 def openai_summarize_text(client, text_to_summarize):
     # TODO: Explicitly asked for 3 TODO's in prompt, potentially allow for changes to this number
     response = client.chat.completions.create(
-      model="gpt-3.5-turbo",
+      model="gpt-4",
       messages=[
         {
           "role": "system",
@@ -293,7 +293,7 @@ def upload_dataset(client, local_file_path):
 def finetune_model(client, remote_openAI_file_id):
     try:
         fine_tuned_model = client.fine_tuning.jobs.create(
-            model = "gpt-3.5-turbo",
+            model = "gpt-4",
             training_file = remote_openAI_file_id
         )
 

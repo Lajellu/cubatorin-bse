@@ -5,6 +5,7 @@
             <span>Dashboard</span></a>
     </li>
     
+    <!-- Nav Item - Inbox -->
     <li class="nav-item active">
         <a class="nav-link" href="{% url 'advisee:message_inbox' %}">
             <i class="fas fa-fw fa-envelope"></i>
@@ -13,5 +14,13 @@
             {% if unread_messages_count > 0 %}
             <span class="badge badge-danger badge-circle">{{ unread_messages_count }}</span>
             {% endif %}
+        </a>
+    </li>
+
+    <!-- Nav Item - Chatbot -->
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'advisee:chatbot' %}">
+            <i class="fas fa-fw fa-envelope"></i>
+            <span>Chatbot</span>
         </a>
     </li>

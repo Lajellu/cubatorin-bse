@@ -61,7 +61,10 @@ function request_research(industry, topic, researchResultDiv) {
         'industry': industry,
         'topic': topic,
     });
-    const headers = {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken'),};
+    const headers = {
+        'Content-Type': 'application/json', 
+        'X-CSRFToken': getCookie('csrftoken')
+    };
 
     fetch(apiUrl + 'research/', {
         method: "POST",

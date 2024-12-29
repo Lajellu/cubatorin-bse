@@ -138,3 +138,36 @@ def mark_advisee_topic_instruction_read(request):
 
     return Response({"message":str(advisee) + " topic instruction for topic_id " + topic_id + " set to read"})
 
+
+@api_view(['POST'])
+def promptChatbot(request):
+    data = request.data
+    # print(request.data)
+    advisee = Advisee.objects.get(user_id=request.user.id)
+    # TODO: Concat key-values pairs of data (starting with Industry only) to the userPrompt - to act as a memory and get better responses 
+    userPrompt = "The industry for my application is: " + str(advisee.industry) + ". " + data["text"]
+    print(userPrompt)
+
+    systemPrompt = system_prompt = """
+        You are a business proposal mentor AI, assisting entrepreneurs in developing strong, compelling, and investor-ready business proposals. 
+        Your role is to provide data, clear, actionable guidance, tailored suggestions, and industry insights based on the entrepreneur's input.
+        Provide the links to the data sources each time you respond.
+        """
+
+    
+    responseByChatbot = ai.prompt(systemPrompt, userPrompt)
+    print(responseByChatbot)
+
+    return Response({"message":responseByChatbot})
+
+# Old Prompt that was giving artificial feeling prompts that did not directly answer the question  
+# When responding:
+#         - Respond directly to the question first
+#         - Break down complex concepts into simple steps.
+#         - Perform calculations with real data on the web based on the user's industry
+#         - Focus on clarity and practicality.
+#         - Encourage innovation, critical thinking, and alignment with business goals.
+#         - Address the specific challenges or questions raised by the entrepreneur.
+#         - Provide examples, frameworks, and recommendations to help structure their business proposal.
+
+#         Always conclude your guidance with a positive and motivational note, encouraging the entrepreneur to iterate and refine their ideas

@@ -157,6 +157,7 @@ def register(request):
     
     return render(request, 'advisee/register.html', {'form':form})
 
-
+# Recieves request to load Chatbot page for the advisee
+@advisee_login_required
 def chatbot(request):
     return render(request, "advisee/chatbot.html")

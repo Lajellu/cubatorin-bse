@@ -23,8 +23,10 @@
 {% endblock %}
 
 {% block content %}
+    <!-- Messages from previous page submit. E.g. New instructions re-generated read/unread -->
     {% for message in messages %}
     <p>{{message}}</p>
+
     {% endfor %}
     <form method="POST">
         {% csrf_token %}
