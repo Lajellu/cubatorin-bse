@@ -2,117 +2,124 @@
 {% load static %}
 {% load custom_filters %}
 
-{% block title %} 
-    Advisee Dashboard 
+{% block title %}
+Advisee Dashboard
 {% endblock %}
 
-{% block heading %} 
-    Advisee Dashboard 
+{% block heading %}
+Advisee Dashboard
 {% endblock %}
 
 {% block sidebar %}
-    {% include "partial.advisee.sidebar.html" %}
+{% include "partial.advisee.sidebar.html" %}
 {% endblock %}
 
 {% block user_messages %}
-    {% include "partial.user_messages.html" %}
+{% include "partial.user_messages.html" %}
 {% endblock %}
 
 {% block user_menu %}
-    {% include "partial.advisor.user_menu.html" %}
+{% include "partial.advisor.user_menu.html" %}
 {% endblock %}
 
 {% block content %}
-    <!-- Messages from previous page submit. E.g. New instructions re-generated read/unread -->
-    {% for message in messages %}
-    <p>{{message}}</p>
+<!-- Messages from previous page submit. E.g. New instructions re-generated read/unread -->
+{% for message in messages %}
+<p>{{message}}</p>
 
-    {% endfor %}
-    <form method="POST">
-        {% csrf_token %}
+{% endfor %}
+<form method="POST">
+  {% csrf_token %}
 
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Industry</h6>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Industry</h6>
+    </div>
+    <div class="card-body">
+      <textarea id="industry" name="industry" class="form-control col-12">{{advisee.industry}}</textarea>
+    </div>
+  </div>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h2 class="h4 mb-0 text-gray-800">Industry Topics</h2>
+  </div>
+
+
+  <!-- <button type="submit" class="mb-4">Save All Work</button> -->
+  <button type="submit" class="btn btn-primary btn-icon-split mb-4">
+    <span class="icon text-white-50">
+      <i class="fas fa-save"></i>
+    </span>
+    <span class="text">Save All Work</span>
+  </button>
+
+  {% if advisee.industry %}
+  <div class="container my-5">
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs" id="topicTabs" role="tablist">
+      {% for topic in topics_data %}
+      <li class="nav-item" role="presentation">
+        <!-- <button class="nav-link {% if forloop.first %}active{% endif %}" id="tab-topic-{{ topic.id }}" data-bs-toggle="tab" data-bs-target="#content-topic-{{ topic.id }}" type="button" role="tab" aria-controls="content-topic-{{ topic.name }}" aria-selected="true">{{ topic.name }}</button> -->
+        <a class="nav-link {% if forloop.first %}active{% endif %}" id="tab-topic-{{ topic.id }}" data-toggle="tab"
+          href="#content-topic-{{ topic.id }}" role="tab" aria-controls="content-topic-{{ topic.name }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+          {{ topic.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content" id="topicTabContent">
+      {% for topic in topics_data %}
+      <div id="content-topic-{{ topic.id }}" role="tabpanel"
+        class="tab-pane fade card shadow mb-4 {% if forloop.first %}show active{% endif %}">
+        <!-- Card Header - Accordion -->
+        <!-- <a href="#collapse-topic-{{ topic.id }}" class="d-block card-header py-3" data-toggle="collapse" role="button"
+          aria-expanded="true" aria-controls="collapse-topic-{{ topic.id }}"> -->
+        <h6 class="d-block card-header py-3 m-0 font-weight-bold text-primary">{{ topic.name }}</h6>
+        <!-- </a> -->
+        <!-- Card Content - Collapse -->
+        <div class="collapse show" id="collapse-topic-{{ topic.id }}">
+          <div class="card-body">
+            <p>{{ topic.instruction_text|safe }}</p>
+
+            {% if topic.instruction_unread == "true" %}
+            <div class="alert alert-danger mt-4 ">
+              Please read the above instructions because they are new
+              <a href="" class="mark-instruction-as-read" data-topic-id="{{ topic.id}}">
+                Ok, I read it
+              </a>
             </div>
-            <div class="card-body">
-                <textarea id="industry" name="industry" class="form-control col-12">{{advisee.industry}}</textarea>
-            </div>
-        </div>
-        
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h2 class="h4 mb-0 text-gray-800">Industry Topics</h2>
-        </div>
-        
-
-        <!-- <button type="submit" class="mb-4">Save All Work</button> -->
-        <button type="submit" class="btn btn-primary btn-icon-split mb-4">
-            <span class="icon text-white-50">
-                <i class="fas fa-save"></i>
-            </span>
-            <span class="text">Save All Work</span>
-        </button>
-
-        {% if advisee.industry %}
-            <div class="container my-5">
-                <!-- Nav Tabs -->
-                <ul class="nav nav-tabs" id="topicTabs" role="tablist">
-                    {% for topic in topics_data %}
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link {% if forloop.first %}active{% endif %}" id="tab-topic-{{ topic.id }}" data-bs-toggle="tab" data-bs-target="#content-topic-{{ topic.id }}" type="button" role="tab" aria-controls="content-topic-{{ topic.name }}" aria-selected="true">{{ topic.name }}</button>
-                    </li>
-                    {% endfor %}
-                </ul>
-                
-                <div class="tab-content" id="topicTabContent">
-                    {% for topic in topics_data %}
-                    <div id="content-topic-{{ topic.id }}" role="tabpanel" class="tab-pane fade card shadow mb-4 {% if forloop.first %}show active{% endif %}">
-                        <!-- Card Header - Accordion -->
-                        <a href="#collapse-topic-{{ topic.id }}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse-topic-{{ topic.id }}">
-                            <h6 class="m-0 font-weight-bold text-primary">{{ topic.name }}</h6>
-                        </a>
-                        <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapse-topic-{{ topic.id }}">
-                            <div class="card-body">
-                                <p>{{ topic.instruction_text|safe }}</p>
-
-                                {% if topic.instruction_unread == "true" %}
-                                <div class="alert alert-danger mt-4 ">
-                                    Please read the above instructions because they are new
-                                    <a href="" class="mark-instruction-as-read" data-topic-id="{{ topic.id}}">
-                                        Ok, I read it
-                                    </a>
-                                </div>
-                                {% endif %}
-                                <textarea id="topic-{{ topic.id }}" name="topic-{{ topic.id }}" class="rich-editor">
+            {% endif %}
+            <textarea id="topic-{{ topic.id }}" name="topic-{{ topic.id }}" class="rich-editor">
                                     {{ topic.text }}
                                 </textarea>
-                                
-                                <div class="container mt-4">
-                                    <div class="row justify-content-end">
-                                        <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="topic-{{ topic.id }}">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-flag"></i>
-                                            </span>
-                                            <span class="text">Research Topic with AI</span>
-                                        </a>
-                                    </div>
-                                </div>
 
-                                <div class="mt-4">
-                                    <p id="topic-{{ topic.id }}-research-results"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+            <div class="container mt-4">
+              <div class="row justify-content-end">
+                <a href="#" class="btn btn-primary btn-icon-split research-btn" data-topic="topic-{{ topic.id }}">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-flag"></i>
+                  </span>
+                  <span class="text">Research Topic with AI</span>
+                </a>
+              </div>
             </div>
-        {% endif %}
-    </form>
+
+            <div class="mt-4">
+              <p id="topic-{{ topic.id }}-research-results"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</form>
 {% endblock %}
 
 {% block body_end %}
-    <!-- Frontend script -->
-    <script src="{% static 'js/frontend-advisee.js' %}"></script>
+<!-- Frontend script -->
+<script src="{% static 'js/frontend-advisee.js' %}"></script>
 {%endblock%}
