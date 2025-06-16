@@ -21,10 +21,10 @@
 
     <!-- SB Admin Bootstrap CSS -->
     <link href="{% static 'vendor/bootstrap/css/sb-admin-2.min.css' %}" rel="stylesheet">
-    
+
     <!-- Summernote -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    
+
 
     {% block head_end %}{% endblock %}
 </head>
@@ -57,15 +57,10 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Advisors</span>
                 </a>
-                <div id="collapseAdvisor" class="collapse" aria-labelledby="advisorPages" data-parent="#accordionSidebar">
+                <div id="collapseAdvisor" class="collapse" aria-labelledby="advisorPages"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item"
-                            href="{% url 'advisor:index' %}">For Advisors</a>
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item"
-                            href="{% url 'advisor:login' %}">Login</a>
-                        <a class="collapse-item"
-                            href="{% url 'advisor:register' %}">Register</a>
                         <div class="collapse-divider"></div>
                     </div>
                 </div>
@@ -78,15 +73,10 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Advisees</span>
                 </a>
-                <div id="collapseAdvisee" class="collapse" aria-labelledby="adviseePages" data-parent="#accordionSidebar">
+                <div id="collapseAdvisee" class="collapse" aria-labelledby="adviseePages"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item"
-                            href="{% url 'advisee:index' %}">For Advisees</a>
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item"
-                            href="{% url 'advisee:login' %}">Login</a>
-                        <a class="collapse-item"
-                            href="{% url 'advisee:register' %}">Register</a>
                         <div class="collapse-divider"></div>
                     </div>
                 </div>
@@ -187,10 +177,15 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+
+                    {% block heading %}
+                    {% if heading %}
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">{% block heading %}{% endblock %}</h1>
+                        <h1 class="h3 mb-0 text-gray-800">{{heading}}</h1>
                     </div>
+                    {% endif %}
+                    {% endblock %}
 
                     {% block content %}{% endblock %}
                 </div>
@@ -203,7 +198,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Cubatorin 2024</span>
+                        <span>Copyright &copy; Cubatorin 2025</span>
                     </div>
                 </div>
             </footer>
@@ -219,6 +214,8 @@
     <script src="{% static 'vendor/jquery/js/jquery.min.js' %}"></script>
     <!-- Bootstrap JS -->
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Popper:Modals -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <!-- JQuery:Easing JS -->
     <script src="{% static 'vendor/jquery-easing/js/jquery.easing.min.js' %}"></script>
     <!-- Admin-page Bootstrap JS -->

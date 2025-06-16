@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block user_menu %}
+{% include "core/_team_top_bar.html" %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid step-header">
+    <div class="row d-flex align-items-center justify-content-center py-2">
+        <div class="col-5 step-header-title">
+            <div class="row">
+                <div class="col-2">
+                    {% block step_number %}
+                    {% endblock %}
+                </div>
+                <div class="col-10">
+                    {% block step_title %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <div class="col-6">
+                    input
+                    {% block step_input %}
+                    {% endblock %}
+                </div>
+                <div class="col-6">
+                    output
+                    {% block step_output %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">See
+                Example</button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid step-duration py-2">
+    <i class="fas fa-clock"></i> ~45 minutes
+</div>
+
+<!-- EXAMPLE MODAL -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Step Example</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="{% block step_example_img %}{% endblock %}" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block step_content %}
+{% endblock %}
+
+<style>
+    .step-header {
+        background-color: black;
+        color: white;
+    }
+
+    .step-header-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-right: 1px solid white;
+    }
+
+    .step-duration {
+        color: red;
+    }
+
+    .modal-dialog {
+        max-width: 70%;
+    }
+</style>
+{% endblock %}
