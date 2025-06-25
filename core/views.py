@@ -21,6 +21,7 @@ def team_login(request):
 
             return redirect('/team/step-1')
         else:
+            # print("erroring out")
             form_errors = form.errors.get("__all__")
     else:
         form = TeamLoginForm()

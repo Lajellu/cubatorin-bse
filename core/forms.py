@@ -28,6 +28,6 @@ class TeamLoginForm(AuthenticationForm):
         if not user.is_active:
             raise ValidationError("This account is inactive.")
             
-        # ensure user is an advisee
+        # ensure user is a team
         if not Team.objects.filter(user_id=user.id).exists():
             raise ValidationError("Sorry, you are not a team.")
