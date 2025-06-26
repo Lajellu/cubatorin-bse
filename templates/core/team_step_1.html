@@ -13,16 +13,16 @@ INTRODUCTION
 {% endblock %}
 {% block step_input %}
 <ul>
-    <li>a</li>
-    <li>b</li>
-    <li>c</li>
+    <li>Individual expectations</li>
+    <li>Individual motivations</li>
+    <li>Individual problem interests</li>
 </ul>
 {% endblock %}
 {% block step_output %}
 <ul>
-    <li>x</li>
-    <li>y</li>
-    <li>z</li>
+    <li>Team vision</li>
+    <li>Team values</li>
+    <li>Problem/opportunity focus area</li>
 </ul>
 {% endblock %}
 
@@ -37,5 +37,51 @@ https://picsum.photos/1000/500
             allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
     </div>
 </div>
-somethin
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <h3>Start</h3>
+            Introductions
+            Have each team member pick a colour sticky note.
+            Introduce yourselves; share your expectations, motivations, and problem interests.
+        </div>
+        <div class="col-5">
+            <h3>Diverge</h3>
+            Ideate on possible problems/opportunities
+            Individually, write your relevant problems/opportunities ideas with high-level challenge in mind on a sticky
+            (corresponds to your colour).
+
+            As a group, share the content of your sticky, why you chose it and what it means to you. When listening, ask
+            for clarification, but no feedback/judgement.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <input id="mem1_name" class="form-control" type="text" placeholder="Default input">
+            interested in
+            <input id="mem1_interest" class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="col-2">
+             <input id="mem1_prob1" class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="col-2">
+            <input id="mem1_prob2" class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="col-2">
+            <input id="mem1_prob3" class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="col-2">
+            <input id="mem1_prob4" class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="col-2">
+            <input id="mem1_prob5" class="form-control" type="text" placeholder="Default input">
+        </div>
+    </div>
+    
+</div>
+
+
+
 {% endblock %}
