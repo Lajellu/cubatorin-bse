@@ -34,4 +34,11 @@ def team_logout(request):
 
 @team_login_required
 def team_step_1(request):
-    return render(request, 'core/team_step_1.html')
+    context = {
+        "member_range": range(1, 6),
+        "problem_range": range(1, 6),
+        "focusarea_range": range(1, 7),
+        "focusarea_problem_range": range(1, 11),
+    }
+    
+    return render(request, "core/team_step_1.html", context)
