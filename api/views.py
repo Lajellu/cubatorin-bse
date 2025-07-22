@@ -107,10 +107,20 @@ def suggest_focus_areas(request):
             "error": f"No MembersAndFocus entry found for team_id={team_id}"
         }, status=status.HTTP_404_NOT_FOUND)
 
-    # For example purposes; add real suggestion logic here
-    suggestions = ["Pattern: Innovation", "Pattern: Collaboration", "Pattern: Impact"]
+    # Extract fields that match mem{i}_prob{j}
+    problem_fields = [
+        field.name for field in MembersAndFocus._meta.fields
+        if field.name.startswith("mem") and "_prob" in field.name
+    ]
+
+     # Collect non-empty problems
+    problems = []
+    for field_name in problem_fields:
+        value = getattr(members_and_focus, field_name, None)
+        if value:
+            problems.append(value)
 
     return Response({
-        "suggestions": suggestions,
+        "problems": problems,
         "team_id": team_id
     }, status=status.HTTP_200_OK)

@@ -1,4 +1,5 @@
 {% extends 'core/_team_step.html' %}
+{% load custom_filters %}
 
 {% block title %}
 Step 1
@@ -57,36 +58,47 @@ https://picsum.photos/1000/500
             for clarification, but no feedback/judgement.
         </div>
 
-        <p>Members: {{ member_range }}</p>
-        <p>Problems: {{ problem_range }}</p>
         <!-- Loop over the below -->
+
         {% for i in member_range %}
+            {% with i_str=i|stringformat:"s" %}
             <div class="row my-3">
                 <div class="col-3">
                     <div class="row">
                         <div class="col-7">
-                            <input id="mem{{ i }}_name" class="form-control" type="text" placeholder="Name">
+                        {% with field_name="mem"|add:i_str|add:"_name" %}
+                            <input id="mem{{ i }}_name" class="form-control" type="text" placeholder="Name" value="{{ members_and_focus|get_attr:field_name }}">
+
+                        {% endwith %}
                     
                             interested in
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <input id="mem{{ i }}_interest" class="form-control" type="text" placeholder="Interest">
+                            {% with field_name="mem"|add:i_str|add:"_interest" %}
+                            <input id="mem{{ i }}_interest" class="form-control" type="text" placeholder="Interest" value="{{ members_and_focus|get_attr:field_name }}">
+                            {% endwith %}
                         </div>
                     </div>
                 </div>
                 
+                
                 <div class="col-9">
                     <div class="row">
                         {% for j in problem_range %}
-                            <div class="col-2">
-                                <textarea id="mem{{ i }}_prob{{ j }}" class="form-control"></textarea>
-                            </div>
+                            {% with j_str=j|stringformat:"s" %}
+                                {% with field_name="mem"|add:i_str|add:"_prob"|add:j_str %}
+                                <div class="col-2">
+                                    <textarea id="mem{{ i }}_prob{{ j }}" class="form-control">{{ members_and_focus|get_attr:field_name }} </textarea>
+                                </div>
+                                {% endwith %}
+                            {% endwith %}
                         {% endfor %}
                     </div>
                 </div>
             </div>
+            {% endwith %}
         {% endfor %}
     </div>
     <div class="row mt-5">
