@@ -2,31 +2,28 @@
 {% load custom_filters %}
 
 {% block title %}
-Step 1
+Step 2
 {% endblock %}
 
 
 {% block step_number %}
-01
+02
 {% endblock %}
 
 {% block step_title %}
-INTRODUCTION
+OPPORTUNITY DISCOVERY
 {% endblock %}
 
 {% block step_input %}
 <ul>
-    <li>Individual expectations</li>
-    <li>Individual motivations</li>
-    <li>Individual problem interests</li>
+    <li>Team Problem/Opportunity</li>
+    <li>Data collection/Evidence gathering</li>
 </ul>
 {% endblock %}
 
 {% block step_output %}
 <ul>
-    <li>Team vision</li>
-    <li>Team values</li>
-    <li>Problem/opportunity focus area</li>
+    <li>Initial problem/opportunity focus</li>
 </ul>
 {% endblock %}
 
@@ -35,38 +32,39 @@ https://picsum.photos/1000/500
 {% endblock %}
 
 {% block step_duration %}
-~45 minutes
+~1+ hour
 {% endblock %}
 
 {% block step_content %}
 <div class="container-fluid py-2">
     <div class="row justify-content-center">
-        <iframe src="https://player.vimeo.com/video/472345888" width="480" height="270" frameborder="0"
-            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/474710985" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/480022182" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 </div>
 
 
 <div class="container-fluid mt-4">
     <div class="row">
-        <div class="col-3">
-            <h3>Start</h3>
-            <strong>Introductions</strong><br>
-            <br>
-            Have each team member pick a colour sticky note.<br>
-            Introduce yourselves; share your expectations, motivations, and problem interests.
-        </div>
-        <div class="col-9">
+        <div class="col-12">
             <h3>Diverge</h3>
-            <strong>Ideate on possible problems/opportunities</strong><br>
-            <br>
-            <strong>Individually</strong>, write your relevant problems/opportunities ideas with high-level challenge in
-            mind on a sticky
-            (corresponds to your colour).<br>
-            <br>
-            <strong>As a group</strong>, share the content of your sticky, why you chose it and what it means to you.
-            When listening, ask
-            for clarification, but no feedback/judgement.<br>
+            <p>
+                <strong>Identify the problem</strong>
+            </p>
+
+            <ul>
+                <li>Identify how the <strong>PROBLEM MANIFESTS</strong> within your focus area.</li>
+                <li>Obtain feedback by asking potential users and identify a <strong>CAUSE</strong> of this problem.
+                </li>
+                <li>Identify real <strong>EVIDENCE</strong> of the problem and their causes.</li>
+                <li><strong>REPEAT</strong> for second problem.... and third....</li>
+            </ul>
         </div>
     </div>
     <!-- Loop over the below -->
@@ -116,19 +114,54 @@ https://picsum.photos/1000/500
 
     <div class="row mt-5">
         <div class="col-12">
-            <h3>Merge & Converge</h3>
+            <h3>Analyze</h3>
+
+            <p><strong>Selecting Problem For You To Work On</strong></p>
+
+            <p>Use this step to choose appropriate problem to work on. Not too big..or too small. Not too hard ..or too
+                easy</p>
+
+            <strong>01. Ease of development:</strong> Rank problems based on how easy it will be for your team to
+            develop a
+            solution:
+            <ul>
+                <li>Not too complex or too challenging</li>
+                <li>Not too technical or too big in scope</li>
+            </ul>
+
+            <strong>02. Problem Size:</strong> (Impact): Rank problems based on overall impact developing a solution
+            would have:
+            <ul>
+                <li>Bigger than helping one person...smaller than helping a country (think of a community)</li>
+                <li>Bigger than addressing a specific local issue...smaller than changing the world</li>
+            </ul>
+
             <p>
-                <strong>Selecting your Problem/Opportunity Focus Areas</strong>
+                Goal is to choose problem to be solved based on ease of development and impact (as well as time &
+                resources
+                available to address the challenge). It is hoped that if you solve the problem at the right level, in
+                the future you
+                can expand to solve it for other users/applications.
+            </p>
+        </div>
+    </div>
+
+
+
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Converge</h3>
+            <p>
+                Selecting your Problem/Opportunity Focus
             </p>
             <ul>
-                <li>
-                    <strong>TRANSFER</strong> from the previous section to the focus area boxes (e.g BOX 1 will be for
-                    problems related to emerging technologies)
-                </li>
-                <li><strong>ADD</strong> similar ideas to Box 1, <strong>MERGE</strong> with each other where possible.
-                </li>
-                <li><strong>REPEAT</strong> for next theme boxes...</li>
-                <li><strong>CONVERGE</strong> on focus area (initial problem statement) as a team.</li>
+                <li>Copy and paste the <strong>PROBLEM 1</strong> into the matrix based on how easy it is to develop
+                    (x-axis) and how much impact would there be if that problem was solved (y-axis).</li>
+                <li>Repeat step one for other <strong>PROBLEMS</strong>.</li>
+                <li><strong>REPEAT</strong> this cycle for the second problem you identified.</li>
+                <li>Focus on the <strong>PROBLEM</strong> set in the red box (Just right problem size and easy to
+                    implement)</li>
             </ul>
 
         </div>
@@ -173,7 +206,7 @@ https://picsum.photos/1000/500
         <div class="col-6 p-3"
             style="border: 3px solid black; background-color: #fdf545; color: black; text-align: center; border-radius: 15px;">
 
-            Our high level problem/opportunity area we want to focus on is:
+            THE PROBLEM we are going to investigate is:
 
             <input id="high_level_problem" class="form-control" type="text"
                 value="{{members_and_focus.high_level_problem}}"
@@ -183,9 +216,6 @@ https://picsum.photos/1000/500
 </div>
 
 
-<!-- disable previous step because we're on step 1 -->
-{% block prev_step_button %}
-{% endblock %}
 
 
 

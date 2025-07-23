@@ -77,18 +77,6 @@ def save_field(request):
         "object_id": instance.id
     }, status=status.HTTP_200_OK)
 
-# @api_view(['POST'])
-# def suggest_focus_areas(request):
-#     print("Received a request to /api/suggest_focus_areas/")
-#     data = request.data
-#     team_id = data.get('team_id')
-
-#     memebers_and_focus = MembersAndFocus.objects.get(team_id=team_id)
-#     print(memebers_and_focus)
-
-#     return Response({
-#         "suggestions": suggestions,
-#     }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def suggest_focus_areas(request):
@@ -107,20 +95,35 @@ def suggest_focus_areas(request):
             "error": f"No MembersAndFocus entry found for team_id={team_id}"
         }, status=status.HTTP_404_NOT_FOUND)
 
-    # Extract fields that match mem{i}_prob{j}
-    problem_fields = [
-        field.name for field in MembersAndFocus._meta.fields
-        if field.name.startswith("mem") and "_prob" in field.name
-    ]
+    # want to genereate: 
+    #   John is interested in Biotech and wants to solve these problems: p1, p2, p3, ...
+    #   Jill is ... etc
+    output_lines = []
 
-     # Collect non-empty problems
-    problems = []
-    for field_name in problem_fields:
-        value = getattr(members_and_focus, field_name, None)
-        if value:
-            problems.append(value)
+    for i in range(1, 6):  # mem1 to mem5
+        name = getattr(members_and_focus, f"mem{i}_name", "").strip()
+        interest = getattr(members_and_focus, f"mem{i}_interest", "").strip()
 
+        # Skip if no name and no interest
+        if not name and not interest:
+            continue
+
+        # Get non-empty problems
+        problems = []
+        for j in range(1, 6):  # prob1 to prob5
+            prob_value = getattr(members_and_focus, f"mem{i}_prob{j}", "").strip()
+            if prob_value:
+                problems.append(prob_value)
+
+        # Format the line
+        problem_text = ", ".join(problems) if problems else "no specific problems"
+        line = f"{name} is interested in {interest} and wants to solve these problems: {problem_text}"
+        output_lines.append(line)
+
+    # Combine all lines into a single string
+    final_output = "\n".join(output_lines)
+    print(final_output)
+    
     return Response({
-        "problems": problems,
-        "team_id": team_id
+        "prompt": final_output
     }, status=status.HTTP_200_OK)

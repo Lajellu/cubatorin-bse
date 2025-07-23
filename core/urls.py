@@ -8,4 +8,5 @@ urlpatterns = [
     path('team/login/',     views.team_login,   name="team_login"),
     path('team/logout/',    views.team_logout,  name='team_logout'),
     path('team/step-1/',    views.team_step_1,  name="team_step_1"),
+    path('team/step-2/',    views.team_step_2,  name="team_step_2"),
 ]

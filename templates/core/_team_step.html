@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="container-fluid step-header">
-    <div class="row d-flex align-items-center justify-content-center py-2">
+    <div class="row d-flex align-items-center justify-content-center py-4">
         <div class="col-5 step-header-title">
             <div class="row">
                 <div class="col-2">
@@ -27,12 +27,12 @@
         <div class="col-5">
             <div class="row">
                 <div class="col-6">
-                    input
+                    INPUTS
                     {% block step_input %}
                     {% endblock %}
                 </div>
                 <div class="col-6">
-                    output
+                    OUTPUTS
                     {% block step_output %}
                     {% endblock %}
                 </div>
@@ -44,8 +44,8 @@
         </div>
     </div>
 </div>
-<div class="container-fluid step-duration py-2">
-    <i class="fas fa-clock"></i> ~45 minutes
+<div class="container-fluid step-duration py-2 mb-5">
+    <i class="fas fa-clock"></i> {% block step_duration %}{% endblock %}
 </div>
 
 <!-- EXAMPLE MODAL -->
@@ -68,7 +68,29 @@
 {% block step_content %}
 {% endblock %}
 
+<div class="row my-5">
+    <div class="col-6">
+        {% block prev_step_button %}
+        <a href="{{prev_step_link}}" class="btn btn-primary">← Previous step</a>
+        {% endblock %}
+    </div>
+    <div class="col-6 text-right">
+        {% block next_step_button %}
+        <a href="{{next_step_link}}" class="btn btn-primary">Next step →</a>
+        {% endblock %}
+    </div>
+</div>
 <style>
+    body {
+        color: black;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        color: black;
+        font-size: 0.8rem;
+    }
+
     .step-header {
         background-color: black;
         color: white;
@@ -87,6 +109,31 @@
 
     .modal-dialog {
         max-width: 70%;
+    }
+
+    .postit-note {
+        box-sizing: border-box;
+        display: block;
+        height: 100px;
+        background-color: #fff475;
+        font-family: 'Shadows Into Light', cursive;
+        padding: 10px;
+        text-align: center;
+        border: none;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+        resize: none;
+        line-height: 1.4;
+        outline: none;
+    }
+
+    .postit-note::placeholder {
+        color: #8a7f30;
+    }
+
+    .ai-output-container {
+        background-color: #ebcfee;
+        padding: 10px;
+        display: none;
     }
 
     #accordionSidebar {
