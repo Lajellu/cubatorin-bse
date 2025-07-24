@@ -12,8 +12,6 @@ class Team(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     
-from django.db import models
-
 class MembersAndFocus(models.Model):
     team = models.ForeignKey('Team', on_delete=models.CASCADE)
     high_level_problem = models.TextField(default="", blank=True)
@@ -128,3 +126,45 @@ class MembersAndFocus(models.Model):
 
     def __str__(self):
         return f"MembersAndFocus for {self.team}"
+
+class OpportunityDiscovery(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    problem_to_investigate = models.TextField(default="", blank=True)
+    
+    prob1 = models.TextField(default="", blank=True)
+    causes1 = models.TextField(default="", blank=True)
+    assumptions1 = models.TextField(default="", blank=True)
+    difficulty1 = models.TextField(default="", blank=True)
+    impact1 = models.TextField(default="", blank=True)
+
+    prob2 = models.TextField(default="", blank=True)
+    causes2 = models.TextField(default="", blank=True)
+    assumptions2 = models.TextField(default="", blank=True)
+    difficulty2 = models.TextField(default="", blank=True)
+    impact2 = models.TextField(default="", blank=True)
+
+    prob3 = models.TextField(default="", blank=True)
+    causes3 = models.TextField(default="", blank=True)
+    assumptions3 = models.TextField(default="", blank=True)
+    difficulty3 = models.TextField(default="", blank=True)
+    impact3 = models.TextField(default="", blank=True)
+
+    prob4 = models.TextField(default="", blank=True)
+    causes4 = models.TextField(default="", blank=True)
+    assumptions4 = models.TextField(default="", blank=True)
+    difficulty4 = models.TextField(default="", blank=True)
+    impact4 = models.TextField(default="", blank=True)
+
+    prob5 = models.TextField(default="", blank=True)
+    causes5 = models.TextField(default="", blank=True)
+    assumptions5 = models.TextField(default="", blank=True)
+    difficulty5 = models.TextField(default="", blank=True)
+    impact5 = models.TextField(default="", blank=True)
+
+    prob6 = models.TextField(default="", blank=True)
+    causes6 = models.TextField(default="", blank=True)
+    assumptions6 = models.TextField(default="", blank=True)
+    difficulty6 = models.TextField(default="", blank=True)
+    impact6 = models.TextField(default="", blank=True)    
+        
+    

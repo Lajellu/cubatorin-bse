@@ -127,3 +127,21 @@ def suggest_focus_areas(request):
     return Response({
         "prompt": final_output
     }, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def suggest_causes(request):
+    print("Received a request to /api/suggest_causes/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    problem = data.get('problem')
+    causes = data.get('causes')
+    
+    print (team_id, problem, causes)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": problem + " " + causes
+    }, status=status.HTTP_200_OK)

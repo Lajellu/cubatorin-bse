@@ -49,7 +49,6 @@ https://picsum.photos/1000/500
     </div>
 </div>
 
-
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-12">
@@ -67,47 +66,39 @@ https://picsum.photos/1000/500
             </ul>
         </div>
     </div>
-    <!-- Loop over the below -->
 
-    {% for i in member_range %}
+    <div class="row font-weight-bold text-center border">
+        <div class="col-2 py-2 border-right">MANIFESTATION OF PROBLEM</div>
+        <div class="col-6 py-2 border-right">CAUSES + EVIDENCE</div>
+        <div class="col-4 py-2">ASSUMPTIONS</div>
+    </div>
+
+    {% for i in diverge_table_range %}
     {% with i_str=i|stringformat:"s" %}
-    <div class="row my-3">
-        <div class="col-3">
-            <div class="row">
-                <div class="col-7">
-                    {% with field_name="mem"|add:i_str|add:"_name" %}
-                    <input id="mem{{ i }}_name" class="form-control mb-3" type="text" placeholder="Member name..."
-                        style="background-color: {{color_list|index:i}};"
-                        value="{{ members_and_focus|get_attr:field_name }}">
-                    {% endwith %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {% with field_name="mem"|add:i_str|add:"_interest" %}
-                    <input id="mem{{ i }}_interest" class="form-control" type="text" placeholder="Interested in..."
-                        style="background-color: {{color_list|index:i}};"
-                        value="{{ members_and_focus|get_attr:field_name }}">
-                    {% endwith %}
-                </div>
-            </div>
+    <div class="row border prob-cause-row">
+
+        <div class="col-2 py-3 font-weight-bold border-right">
+            {% with field_name="prob"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ opportunity_discovery|get_attr:field_name }}</textarea>
+            {% endwith %}
         </div>
 
-
-        <div class="col-9">
-            <div class="row">
-                {% for j in problem_range %}
-                {% with j_str=j|stringformat:"s" %}
-                {% with field_name="mem"|add:i_str|add:"_prob"|add:j_str %}
-                <div class="col-2 mr-3">
-                    <textarea id="mem{{ i }}_prob{{ j }}" class="postit-note"
-                        style="background-color: {{color_list|index:i}};">{{ members_and_focus|get_attr:field_name }}</textarea>
-                </div>
-                {% endwith %}
-                {% endwith %}
-                {% endfor %}
-            </div>
+        <div class="col-6 py-3 border-right">
+            {% with field_name="causes"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 100px; border: none; background-color: {{color_list|index:i}};">{{ opportunity_discovery|get_attr:field_name }}</textarea>
+            {% endwith %}
+            <button class="btn btn-ai research-cause-button">Research Causes</button>
+            <div class="ai-output-container"></div>
         </div>
+        <div class="col-4 py-3">
+            {% with field_name="assumptions"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 100px; border: none; background-color: {{color_list|index:i}};">{{ opportunity_discovery|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
     </div>
     {% endwith %}
     {% endfor %}
@@ -167,40 +158,60 @@ https://picsum.photos/1000/500
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-2">
-            <button id="suggest_focus_area_button" type="button" class="btn btn-primary">AI, Help Us Get
-                Started!</button>
-        </div>
+    <div class="row font-weight-bold text-center border w-50">
+        <div class="col-4 py-2 border-right">MANIFESTATION OF PROBLEM</div>
+        <div class="col-4 py-2 border-right">EASE OF DEVELOPMENT<br>(Can be lead by you)</div>
+        <div class="col-4 py-2">IMPACT<br></div>
     </div>
 
-    <div class="row">
-        <div class="col-12 mt-4">
-            <div class="ai-output-container" id="focus_area_suggestion">
+    {% for i in diverge_table_range %}
+    {% with i_str=i|stringformat:"s" %}
+    <div class="row border w-50 problem-row" style="min-height: 20px;">
 
+        <div class="col-4 py-3 border-right">
+            {% with field_name="prob"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" data-copy-from-id="{{field_name}}" class="postit-note" disabled
+                style="background-color: {{color_list|index:i}};">{{ opportunity_discovery|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
+        <div class="col-4 py-3 border-right">
+            <div class="form-group">
+                {% with field_name="difficulty"|add:i_str %}
+                {% with current_value=opportunity_discovery|get_attr:field_name %}
+                <select class="form-control difficulty-dd" data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}};">
+                    <option value="" {% if not current_value %}selected{% endif %}></option>
+                    <option {% if current_value == "VERY EASY" %}selected{% endif %}>VERY EASY</option>
+                    <option {% if current_value == "EASY" %}selected{% endif %}>EASY</option>
+                    <option {% if current_value == "NORMAL" %}selected{% endif %}>NORMAL</option>
+                    <option {% if current_value == "HARD" %}selected{% endif %}>HARD</option>
+                    <option {% if current_value == "VERY HARD" %}selected{% endif %}>VERY HARD</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
             </div>
         </div>
-    </div>
 
-    <div class="row mt-5" style="border: 1px solid black">
-        {% for i in focusarea_range %}
-        {% with i_str=i|stringformat:"s" %}
-        <div style="border: 1px solid black !important" class="col-2 d-flex flex-column align-items-center border">
-
-            <p class="mt-2">FOCUS AREA {{ i }}</p>
-
-            {% for j in focusarea_problem_range %}
-            {% with j_str=j|stringformat:"s" %}
-            {% with field_name="fa"|add:i_str|add:"_prob"|add:j_str %}
-            <textarea id="fa{{ i }}_prob{{ j }}"
-                class="postit-note mb-2">{{ members_and_focus|get_attr:field_name }}</textarea>
-            {% endwith %}
-            {% endwith %}
-            {% endfor %}
+        <div class="col-4 py-3">
+            <div class="form-group">
+                {% with field_name="impact"|add:i_str %}
+                {% with current_value=opportunity_discovery|get_attr:field_name %}
+                <select class="form-control impact-dd" data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}};">
+                    <option value="" {% if not current_value %}selected{% endif %}></option>
+                    <option {% if current_value == "TOO SMALL" %}selected{% endif %}>TOO SMALL</option>
+                    <option {% if current_value == "SMALL" %}selected{% endif %}>SMALL</option>
+                    <option {% if current_value == "JUST RIGHT" %}selected{% endif %}>JUST RIGHT</option>
+                    <option {% if current_value == "LARGE" %}selected{% endif %}>LARGE</option>
+                    <option {% if current_value == "VERY LARGE" %}selected{% endif %}>VERY LARGE</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
         </div>
-        {% endwith %}
-        {% endfor %}
+
     </div>
+    {% endwith %}
+    {% endfor %}
 
     <div class="row mt-5 justify-content-center">
         <div class="col-6 p-3"
@@ -208,8 +219,8 @@ https://picsum.photos/1000/500
 
             THE PROBLEM we are going to investigate is:
 
-            <input id="high_level_problem" class="form-control" type="text"
-                value="{{members_and_focus.high_level_problem}}"
+            <input data-db-field="problem_to_investigate" class="form-control" type="text"
+                value="{{opportunity_discovery.problem_to_investigate}}"
                 style="color:black; font-weight: bolder; font-size: larger; border-color: #f4c90e; text-align: center;">
         </div>
     </div>
@@ -227,27 +238,37 @@ https://picsum.photos/1000/500
     const teamId = {{ team_id }};
 
     $(document).ready(function () {
+        setupAutosave('OpportunityDiscovery')
 
-        $('#suggest_focus_area_button').on('click', function () {
-            console.log("clicked");
+
+        $('.research-cause-button').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const problem = aiButton.closest(".prob-cause-row").find("textarea").val()
+            const causes = aiButton.siblings('textarea').val();
+
+            console.log(problem, causes);
 
             const headers = {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken'),
             };
 
-            // Post to your Django API
+
+            // Call suggest_causes API
             $.ajax({
-                url: '/api/suggest_focus_areas/',
+                url: '/api/suggest_causes/',
                 method: 'POST',
                 headers: headers,
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    team_id: teamId
+                    team_id: teamId, 
+                    problem: problem,
+                    causes: causes
                 }),
                 success: function (response) {
-                    console.log('Suggested focus areas successfully:', response);
-                    $("#focus_area_suggestion").html(response.prompt).show();
+                    console.log('Suggested causes successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting focus areas:', xhr.responseText || error);
@@ -255,46 +276,40 @@ https://picsum.photos/1000/500
             });
         });
 
-        $('input, textarea').on('blur', function () {
-            console.log("unfocused");
+        // instantly copy contents of prob1-6 post-it notes on top of page
+        // to read-only post-it notes at bottom of page
+        $("[data-copy-from-id]").each(function(index, element) {
+            let copyFromId = $(element).data("copy-from-id");
+            console.log("setup listener for: ", copyFromId);
 
-            const fieldName = $(this).attr('id');
-            const fieldValue = $(this).val();
-
-            console.log('Unfocused field:', fieldName);
-            console.log('Value:', fieldValue);
-
-            // Optional: Make sure required info exists
-            if (!fieldName || !teamId) {
-                console.warn("Missing 'name' or 'data-team-id' on field.");
-                return;
-            }
-
-            const headers = {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            };
-
-            // Post to your Django API
-            $.ajax({
-                url: '/api/save_field/',
-                method: 'POST',
-                headers: headers,
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    table: 'MembersAndFocus', // or pass dynamically if needed
-                    field: fieldName,
-                    value: fieldValue,
-                    team_id: teamId
-                }),
-                success: function (response) {
-                    console.log('Saved successfully:', response);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error saving field:', xhr.responseText || error);
-                }
+            $("#"+copyFromId).on("input", function(){
+                console.log("copying ", copyFromId);
+                $(element).val($(this).val());
             });
         });
+
+        // based on difficulties and impacts selected, highlight rows
+        // that are sweet spots
+        highlightSweetSpot();
+        $(".difficulty-dd").on("input", highlightSweetSpot)
+        $(".impact-dd").on("input", highlightSweetSpot)
+        
+        function highlightSweetSpot() {
+            console.log("calculating sweet spot");
+
+            $(".problem-row").each(function(index, element){
+                const difficulty = $(element).find(".difficulty-dd").val();
+                const impact  = $(element).find(".impact-dd").val();
+
+                console.log(difficulty, impact);
+                if (["VERY EASY", "EASY", "NORMAL"].includes(difficulty) && ["SMALL", "JUST RIGHT", "LARGE"].includes(impact)) {
+                    console.log(difficulty, impact, "--> sweet spot");
+                    $(element).css("background-color", "#cde740");
+                } else {
+                    $(element).css("background-color", "white");
+                }
+            });
+        }
     });
 </script>
 
