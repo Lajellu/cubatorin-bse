@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from core.models import MembersAndFocus
+from ai import ai
+
 
 @api_view(['POST'])
 def save_field(request):
@@ -123,9 +125,16 @@ def suggest_focus_areas(request):
     # Combine all lines into a single string
     final_output = "\n".join(output_lines)
     print(final_output)
-    
+
+    # Use a pre-trained OpenAI API call to do suggest focus area based on the entered Step 1 information
+    userPrompt = "Based on the following college engineering students: " + final_output
+
+    systemPrompt = "Ideate 5 top focus areas that are the intersections of the students' interests and problems. Be concise, techincal, and keep the scope appropriate for a 5 person team to implement. Aim for practical focus areas that can eventually be implmented."
+
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
     return Response({
-        "prompt": final_output
+        "message":responsebyChatBot
     }, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
