@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import TeamLoginForm
 from .decorators import team_login_required
 
-from core.models import Team, MembersAndFocus, OpportunityDiscovery, UserNeed, RootCause
+from core.models import Team, MembersAndFocus, OpportunityDiscovery, UserNeed, RootCause, HowMightWe
 
 def index(request):
     return redirect('/team/step-1')
@@ -125,3 +125,28 @@ def team_step_4(request):
 
     
     return render(request, "core/team_step_4.html", context)
+
+@team_login_required
+def team_step_5(request):
+    user_id = request.user.id
+    team_id = Team.objects.filter(user_id=user_id).first().id
+    how_might_we = HowMightWe.objects.filter(team_id=team_id).first()
+    root_cause = RootCause.objects.filter(team_id=team_id).first()
+
+    if not how_might_we: 
+        how_might_we = HowMightWe(team_id=team_id)
+        how_might_we.save()
+    
+    context = {
+        "team_id": team_id,
+        "diverge_table_range": range(1, 6),
+        "top_hmw_range": range(1,4),
+        "color_list": ["", "#fffa9c", "#fbeb7d", "#daf1a9", "#9ce7ff", "#f9d6f3", "#b2b7e1"],
+        "how_might_we": how_might_we,
+        "root_cause": root_cause,
+        "prev_step_link": "/team/step-4/",
+        "next_step_link": "/team/step-6/",
+    }
+
+    
+    return render(request, "core/team_step_5.html", context)

@@ -227,3 +227,31 @@ class RootCause(models.Model):
     desired_state5 = models.TextField(default="", blank=True)
     research5 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
     root_cause5 = models.TextField(default="", blank=True)
+
+class HowMightWe(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    how_might_we = models.TextField(default="", blank=True)
+    
+    root_cause1 = models.TextField(default="", blank=True)
+    hmw1 = models.TextField(default="How might we...", blank=True)
+    rank1 = models.TextField(default="", blank=True)
+
+    root_cause2 = models.TextField(default="", blank=True)
+    hmw2 = models.TextField(default="How might we...", blank=True)
+    rank2 = models.TextField(default="", blank=True)
+
+    root_cause3 = models.TextField(default="", blank=True)
+    hmw3 = models.TextField(default="How might we...", blank=True)
+    rank3 = models.TextField(default="", blank=True)
+
+    root_cause4 = models.TextField(default="", blank=True)
+    hmw4 = models.TextField(default="How might we...", blank=True)
+    rank4 = models.TextField(default="", blank=True)
+
+    root_cause5 = models.TextField(default="", blank=True)
+    hmw5 = models.TextField(default="How might we...", blank=True)
+    rank5 = models.TextField(default="", blank=True)
+    
+    top_hmw1 = models.TextField(default="How might we...", blank=True)
+    top_hmw2 = models.TextField(default="How might we...", blank=True)
+    top_hmw3 = models.TextField(default="How might we...", blank=True)

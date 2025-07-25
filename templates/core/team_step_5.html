@@ -1,0 +1,168 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 5
+{% endblock %}
+
+
+{% block step_number %}
+05
+{% endblock %}
+
+{% block step_title %}
+HOW MIGHT WE
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Root cause</li>
+    <li>User</li>
+    <li>Desired state</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>How might we statement</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~45 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/766092219" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/683993545" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Diverge</h3>
+                    <p><strong>Develop HOW MIGHT WE (HMW) statements</strong></p>
+                    <ul>
+                        <li>Take your root causes and then ask <strong>"HOW MIGHT WE" SOLVE IT BY DOING [X] FOR [Y] PERSONS WHEN [Z] HAPPENS?" (HMW)</strong></li>
+                        <li><strong>ASK:</strong> what specifically are we changing? Who specifically are we fixing the problem for? In what circumstances does the problem occur? What technology will we use?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row font-weight-bold text-center border">
+                <div class="col-5 py-2 border-right">ROOT CAUSE</div>
+                <div class="col-5 py-2 border-right">HMW</div>
+                <div class="col-2 py-2">RANK</div>
+            </div>
+
+            {% for i in diverge_table_range %}
+            {% with i_str=i|stringformat:"s" %}
+            <div class="row border root-cause-row">
+
+                <div class="col-5 py-3 border-right d-flex justify-content-center">
+                    {% with field_name="root_cause"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note" disabled
+                        style="background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+
+                <div class="col-5 py-3 border-right d-flex justify-content-center">
+                    {% with field_name="hmw"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                        style="background-color: {{color_list|index:i}};">{{ how_might_we|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-3 border-right d-flex justify-content-center">
+                    {% with field_name="rank"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                        style="background-color: {{color_list|index:i}};  width: 50px; height: 50px;">{{ how_might_we|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Converge</h3>
+                    <p><strong>Select the top 3 HMW statements</strong></p>
+                    <ul>
+                        <li><strong>IDENTIFY</strong> elements of desired state that you want to achieve. Which are the most important ones (prioritize) then turn into statement that captures as many of those as possible but includes the most important aspect.</li>
+                        <li><strong>SELECT</strong>  the TOP 3 HMW sattements. </li>
+                    </ul>
+                </div>
+            </div>
+            {% for i in top_hmw_range %}
+            {% with i_str=i|stringformat:"s" %}
+            <div class="row mt-4 d-flex justify-content-center align-items-center">
+                <div class="col-8">
+                    {% with field_name="top_hmw"|add:i_str %}
+                    <div class="hmw-box d-flex justify-content-center align-items-center">
+                        <textarea id="{{field_name}}" data-db-field="{{field_name}}">{{ how_might_we|get_attr:field_name }}</textarea>
+                    </div>
+                    {% endwith %}
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6 p-3 step-result-col">
+            HOW MIGHT WE...
+            <input data-db-field="how_might_we" class="form-control" type="text" value="{{how_might_we.how_might_we}}">
+        </div>
+    </div>
+</div>
+
+<style>
+    .hmw-box {
+        width: 100%;
+        height: 100px;
+        border: 3px solid black; 
+        background-color: #cde740; 
+        color: black; 
+        text-align: center; 
+        text-justify:;
+        border-radius: 15px;
+    }
+
+     .hmw-box textarea {
+        width: 80%;
+        height: 50%;
+        text-align: center;
+        border: none;
+        background-color: #cde740; 
+        font-weight: bolder;
+        resize: none;
+     }
+</style>
+
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('HowMightWe')
+    });
+</script>
+
+{% endblock %}

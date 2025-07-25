@@ -11,4 +11,5 @@ urlpatterns = [
     path('team/step-2/',    views.team_step_2,  name="team_step_2"),
     path('team/step-3/',    views.team_step_3,  name="team_step_3"),
     path('team/step-4/',    views.team_step_4,  name="team_step_4"),
+    path('team/step-5/',    views.team_step_5,  name="team_step_5"),
 ]
