@@ -1,0 +1,157 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 4
+{% endblock %}
+
+
+{% block step_number %}
+04
+{% endblock %}
+
+{% block step_title %}
+ROOT CAUSE ANALYSIS
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Problem facing first customer</li>
+    <li>Apparent cause of problem</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Root cause of the problem</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~1+ hour
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-12 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/683993248" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <p>
+                Refine the problem by thinking about the present state and desired state.
+            </p>
+
+            IDENTIFY the present state of the problem and the desired state you would like to see it.
+COMPLETE the 5 why analysis for that problem.
+REPEAT the process with other manifestations of the problem and their desire states.
+            <ul>
+                <li><strong>IDENTIFY</strong> the present state of the problem and the desired state you would like to see it.</li>
+                <li><strong>COMPLETE</strong> the 5 why analysis for that problem.</li>
+                <li><strong>REPEAT</strong> the process with other manifestations of the problem and their desire states.</li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="row font-weight-bold text-center border">
+        <div class="col-2 py-2 border-right">PRESENT STATE</div>
+        <div class="col-2 py-2 border-right">DESIRED STATE</div>
+        <div class="col-6 py-2 border-right">RESEARCH ROOT CAUSE</div>
+        <div class="col-2 py-2">ROOT CUASE</div>
+    </div>
+
+    {% for i in diverge_table_range %}
+    {% with i_str=i|stringformat:"s" %}
+    <div class="row border root-cause-row">
+
+        <div class="col-2 py-3 border-right d-flex justify-content-center">
+            {% with field_name="present_state"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
+        <div class="col-2 py-3 border-right d-flex justify-content-center">
+            {% with field_name="desired_state"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+        <div class="col-6 py-3 border-right">
+            {% with field_name="research"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 150px; border: none; background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+            {% endwith %}
+            <button class="btn btn-ai research-root-cause-btn">Research Root Cause</button>
+            <div class="ai-output-container"></div>
+        </div>
+        <div class="col-2 py-3 border-right d-flex justify-content-center">
+            {% with field_name="root_cause"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+</div>
+
+
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('RootCause')
+
+        $('.research-root-cause-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const presentState = $(aiButton.closest(".root-cause-row").find("textarea.postit-note")[0]).val()
+            const desiredState = $(aiButton.closest(".root-cause-row").find("textarea.postit-note")[1]).val()
+
+            console.log(presentState, desiredState);
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+
+            // Call research_functional_needs API
+            $.ajax({
+                url: '/api/research_root_cause/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId, 
+                    present_state: presentState,
+                    desired_state: desiredState
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

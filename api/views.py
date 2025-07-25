@@ -8,6 +8,7 @@ from django.apps import apps
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.core.exceptions import FieldDoesNotExist
 from core.models import MembersAndFocus
 from ai import ai
 
@@ -57,11 +58,15 @@ def save_field(request):
     filter_kwargs = {team_fk_field: team_id}
     instance = model.objects.filter(**filter_kwargs).first()
 
+    # if no row exists, create it and set its team
     if not instance:
-        # Create new instance with team FK set
-        #instance = model(**filter_kwargs)
         instance = model(team=team_instance)
 
+    try:
+        instance._meta.get_field(field)
+    except FieldDoesNotExist:
+        return Response({"error": f"Field {field} doesn't exist in {table}"}, status=status.HTTP_400_BAD_REQUEST)
+    
     # Dynamically assign the field
     setattr(instance, field, value)
 
@@ -153,4 +158,58 @@ def suggest_causes(request):
 
     return Response({
         "prompt": problem + " " + causes
+    }, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def research_functional_needs(request):
+    print("Received a request to /api/research_functional_needs/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    users_and_problem = data.get('users_and_problem')
+    functional_need = data.get('functional_need')
+    
+    print (team_id, users_and_problem, functional_need)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": users_and_problem + " " + functional_need
+    }, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def research_emotional_needs(request):
+    print("Received a request to /api/research_emotional_needs/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    users_and_problem = data.get('users_and_problem')
+    emotional_need = data.get('emotional_need')
+    
+    print (team_id, users_and_problem, emotional_need)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": users_and_problem + " " + emotional_need
+    }, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def research_root_cause(request):
+    print("Received a request to /api/research_emotional_needs/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    present_state = data.get('present_state')
+    desired_state = data.get('desired_state')
+    
+    print (team_id, present_state, desired_state)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": present_state + " " + desired_state
     }, status=status.HTTP_200_OK)

@@ -1,0 +1,233 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 3
+{% endblock %}
+
+
+{% block step_number %}
+03
+{% endblock %}
+
+{% block step_title %}
+USER NEED
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Potential users who have this problem or need.</li>
+    <li>Nature of functional and/or emotional need of these users.</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Identification of user who has the greatest need.</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~45 mins
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/766092144" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/430256541" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <p>
+                List the users/potential problems you've chosen from previous step, if you find another user with the 
+                same problem you can add them here. 
+                <strong>
+                    Identify functional and emotional needs (see definition in box)
+                    for every user and group with a specific problem.
+                </strong>
+            </p>
+
+            <p>Answers from users you interview will be much more impactful.</p>
+
+            <ul>
+                <li><strong>RANK</strong> users with the greatest need for the problem to be solved, but also the ones that would adopt the solution faster.</li>
+                <li>Your <strong>FIRST CUSTOMER</strong> will be the user ranked as 1.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row font-weight-bold text-center border">
+        <div class="col-2 py-2 border-right">USER(S) / PROBLEM</div>
+        <div class="col-3 py-2 border-right">FUNCTIONAL NEEDS</div>
+        <div class="col-3 py-2 border-right">EMOTIONAL NEEDS</div>
+        <div class="col-1 py-2 border-right">PAIN KILLER / VITAMIN</div>
+        <div class="col-2 py-2 border-right">EXISTING SOLUTIONS</div>
+        <div class="col-1 py-2">RANKING</div>
+    </div>
+
+    {% for i in diverge_table_range %}
+    {% with i_str=i|stringformat:"s" %}
+    <div class="row border user-need-row">
+
+        <div class="col-2 py-3 border-right d-flex justify-content-center">
+            {% with field_name="users_and_problem"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ user_need|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
+        <div class="col-3 py-3 border-right">
+            {% with field_name="functional_need"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 100px; border: none; background-color: {{color_list|index:i}};">{{ user_need|get_attr:field_name }}</textarea>
+            {% endwith %}
+            <button class="btn btn-ai research-functional-needs-btn">Research Needs</button>
+            <div class="ai-output-container"></div>
+        </div>
+        <div class="col-3 py-3 border-right">
+            {% with field_name="emotional_need"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 100px; border: none; background-color: {{color_list|index:i}};">{{ user_need|get_attr:field_name }}</textarea>
+            {% endwith %}
+            <button class="btn btn-ai research-emotional-needs-btn">Research Needs</button>
+            <div class="ai-output-container"></div>
+        </div>
+        <div class="col-1 py-3 border-right">
+            {% with field_name="severity"|add:i_str %}
+            {% with current_value=user_need|get_attr:field_name %}
+            <select class="form-control difficulty-dd" data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; font-size: 0.5rem;">
+                <option value="" {% if not current_value %}selected{% endif %}></option>
+                <option {% if current_value == "PAIN KILLER" %}selected{% endif %}>PAIN KILLER</option>
+                <option {% if current_value == "VITAMIN" %}selected{% endif %}>VITAMIN</option>
+            </select>
+            {% endwith %}
+            {% endwith %}
+        </div>
+        <div class="col-2 py-3 border-right">
+            {% with field_name="existing_solution"|add:i_str %}
+            <textarea data-db-field="{{field_name}}" class="w-100 p-2"
+                style="height: 100px; border: none; background-color: {{color_list|index:i}};">{{ user_need|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+        <div class="col-1 py-3 d-flex justify-content-center">
+            {% with field_name="ranking"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}}; width: 50px; height: 50px;">{{ user_need|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
+
+    </div>
+    {% endwith %}
+    {% endfor %}
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6 p-3"
+            style="border: 3px solid black; background-color: #fdf545; color: black; text-align: center; border-radius: 15px;">
+
+            The FIRST CUSTOMER we are targetting is: 
+
+            <input data-db-field="first_customer" class="form-control" type="text"
+                value="{{user_need.first_customer}}"
+                style="color:black; font-weight: bolder; font-size: larger; border-color: #f4c90e; text-align: center;">
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('UserNeed')
+
+        $('.research-functional-needs-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const usersAndProblem = aiButton.closest(".user-need-row").find("textarea.postit-note").val()
+            const functionalNeed = aiButton.siblings('textarea').val();
+
+            console.log(usersAndProblem, functionalNeed);
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+
+            // Call research_functional_needs API
+            $.ajax({
+                url: '/api/research_functional_needs/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId, 
+                    users_and_problem: usersAndProblem,
+                    functional_need: functionalNeed
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+
+        $('.research-emotional-needs-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const usersAndProblem = aiButton.closest(".user-need-row").find("textarea.postit-note").val()
+            const emotionalNeed = aiButton.siblings('textarea').val();
+
+            console.log(usersAndProblem, emotionalNeed);
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+
+            // Call research_emotional_needs API
+            $.ajax({
+                url: '/api/research_emotional_needs/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId, 
+                    users_and_problem: usersAndProblem,
+                    emotional_need: emotionalNeed
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

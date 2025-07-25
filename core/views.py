@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import TeamLoginForm
 from .decorators import team_login_required
 
-from core.models import Team, MembersAndFocus, OpportunityDiscovery
+from core.models import Team, MembersAndFocus, OpportunityDiscovery, UserNeed, RootCause
 
 def index(request):
     return redirect('/team/step-1')
@@ -81,3 +81,47 @@ def team_step_2(request):
 
     
     return render(request, "core/team_step_2.html", context)
+
+@team_login_required
+def team_step_3(request):
+    user_id = request.user.id
+    team_id = Team.objects.filter(user_id=user_id).first().id
+    user_need = UserNeed.objects.filter(team_id=team_id).first()
+
+    if not user_need: 
+        user_need = UserNeed(team_id=team_id)
+        user_need.save()
+    
+    context = {
+        "team_id": team_id,
+        "diverge_table_range": range(1, 5),
+        "color_list": ["", "#fffa9c", "#fbeb7d", "#daf1a9", "#9ce7ff", "#f9d6f3", "#b2b7e1"],
+        "user_need": user_need,
+        "prev_step_link": "/team/step-2/",
+        "next_step_link": "/team/step-4/",
+    }
+
+    
+    return render(request, "core/team_step_3.html", context)
+
+@team_login_required
+def team_step_4(request):
+    user_id = request.user.id
+    team_id = Team.objects.filter(user_id=user_id).first().id
+    root_cause = RootCause.objects.filter(team_id=team_id).first()
+
+    if not root_cause: 
+        root_cause = RootCause(team_id=team_id)
+        root_cause.save()
+    
+    context = {
+        "team_id": team_id,
+        "diverge_table_range": range(1, 6),
+        "color_list": ["", "#fffa9c", "#fbeb7d", "#daf1a9", "#9ce7ff", "#f9d6f3", "#b2b7e1"],
+        "root_cause": root_cause,
+        "prev_step_link": "/team/step-3/",
+        "next_step_link": "/team/step-5/",
+    }
+
+    
+    return render(request, "core/team_step_4.html", context)

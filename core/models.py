@@ -168,3 +168,62 @@ class OpportunityDiscovery(models.Model):
     impact6 = models.TextField(default="", blank=True)    
         
     
+class UserNeed(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    first_customer = models.TextField(default="", blank=True)
+
+    users_and_problem1 = models.TextField(default="", blank=True)
+    functional_need1 = models.TextField(default="", blank=True)
+    emotional_need1 = models.TextField(default="", blank=True)
+    severity1 = models.TextField(default="", blank=True)
+    existing_solution1 = models.TextField(default="", blank=True)
+    ranking1 = models.TextField(default="", blank=True)
+    
+    users_and_problem2 = models.TextField(default="", blank=True)
+    functional_need2 = models.TextField(default="", blank=True)
+    emotional_need2 = models.TextField(default="", blank=True)
+    severity2 = models.TextField(default="", blank=True)
+    existing_solution2 = models.TextField(default="", blank=True)
+    ranking2 = models.TextField(default="", blank=True)
+
+    users_and_problem3 = models.TextField(default="", blank=True)
+    functional_need3 = models.TextField(default="", blank=True)
+    emotional_need3 = models.TextField(default="", blank=True)
+    severity3 = models.TextField(default="", blank=True)
+    existing_solution3 = models.TextField(default="", blank=True)
+    ranking3 = models.TextField(default="", blank=True)
+
+    users_and_problem4 = models.TextField(default="", blank=True)
+    functional_need4 = models.TextField(default="", blank=True)
+    emotional_need4 = models.TextField(default="", blank=True)
+    severity4 = models.TextField(default="", blank=True)
+    existing_solution4 = models.TextField(default="", blank=True)
+    ranking4 = models.TextField(default="", blank=True)
+    
+class RootCause(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+
+    present_state1 = models.TextField(default="", blank=True)
+    desired_state1 = models.TextField(default="", blank=True)
+    research1 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
+    root_cause1 = models.TextField(default="", blank=True)
+    
+    present_state2 = models.TextField(default="", blank=True)
+    desired_state2 = models.TextField(default="", blank=True)
+    research2 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
+    root_cause2 = models.TextField(default="", blank=True)
+
+    present_state3 = models.TextField(default="", blank=True)
+    desired_state3 = models.TextField(default="", blank=True)
+    research3 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
+    root_cause3 = models.TextField(default="", blank=True)
+
+    present_state4 = models.TextField(default="", blank=True)
+    desired_state4 = models.TextField(default="", blank=True)
+    research4 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
+    root_cause4 = models.TextField(default="", blank=True)
+    
+    present_state5 = models.TextField(default="", blank=True)
+    desired_state5 = models.TextField(default="", blank=True)
+    research5 = models.TextField(default="Why are labs necessary? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\nWhy...? Because...\n", blank=True)
+    root_cause5 = models.TextField(default="", blank=True)
