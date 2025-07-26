@@ -1,0 +1,312 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 7
+{% endblock %}
+
+
+{% block step_number %}
+07
+{% endblock %}
+
+{% block step_title %}
+SOLUTION SELECTION
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Solution ideas</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Chosen solution</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~75 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-4 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/478638203" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/540754504" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/686805141" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <strong >Right sizing - Prove that it's not too simple or too complex</strong>
+                    <ul>
+                        <li>Can this be built by anyone?</li>
+                        <li>Can be implemented easily?</li>
+                        <li>Does it require resources that are limited or very hard to get?</li>
+                        <li>Is the time scale reasonable?</li>
+                    </ul>
+
+                    <strong>Desirability - Prove that the users/stakeholders want this</strong>
+                    <ul>
+                        <li>How are you going to test desirability?</li>
+                        <li>What are the user needs and how does the solution meet the needs?</li>
+                    </ul>
+
+                    <strong>Evidence of Desirability</strong>
+                    <ol>
+                        <li>Provide evidence that your problem exists
+                        <ol type="a">
+                            <li>Secondary sources (such as online market research)</li>
+                            <li>Secondary research (such as online discussion or feedback from user groups)</li>
+                            <li>Primary research (such as direct interactions with users)</li>
+                        </ol>
+                        </li>
+                        <li>Provide evidence that there are sufficient potential users</li>
+                    </ol>
+
+                    <strong>Feasibility - Prove the solution is technically possible to make</strong>
+                    <ul>
+                        <li>How likely is it that the solution needs to be technology?</li>
+                        <li>Do existing similar solutions exist? Is yours better?</li>
+                        <li>How will this solution be made? Can it be made to scale?</li>
+                        <li>Does it perform in a way that meets the criteria while being within the constraints?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <strong>Viability - Prove the solution has a market and will succeed financially</strong>
+                    <p>Provide details of the financial aspects of your business (including):</p>
+                    <ul>
+                        <li>Cost to develop solution</li>
+                        <li>Selling price</li>
+                    </ul>
+                    <p>
+                        Consider what people are paying now for existing solutions and what they would pay for your solution.
+                        Could you make money to sustain your idea?
+                    </p>
+
+                    <strong>Strategic importance - Prove that this will positively impact the market</strong>
+                    <ul>
+                        <li>Will it make people's lives easier?</li>
+                        <li>Is it easy to implement or integrate into existing systems?</li>
+                        <li>Can this be easily piloted?</li>
+                        <li>Could it be adopted by different types of users and markets?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <strong>Solution Decision Matrix</strong>
+            <p>
+                Input your solution ideas, rank each idea against that following criteria on a <strong>SCALE OF 1-5</strong>, 
+                then total each row to select the solution idea that you want to prototype.
+            </p>
+         </div>
+    </div>
+
+    <div class="row font-weight-bold text-center">
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">CRITERIA →<br>SOLUTION IDEAS ↓</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">RIGHT SIZING</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">DESIRABILITY</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">FEASIBILITY</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">VIABILITY</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">STRATEGIC IMPORTANCE</div>
+        <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">TOTAL</div>
+    </div>
+
+    {% for i in solution_group_range %}
+    {% with i_str=i|stringformat:"s" %}
+        {% for j in approach_group_range %}
+        {% with j_str=j|stringformat:"s" %}
+        <div class="row solution-row">
+            <div class="col-2 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_solution" %}
+                <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note" disabled
+                    style="background-color: #ffbc80; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_s" %}
+                {% with current_value=solution_selection|get_attr:field_name %}
+                <select class="form-control " data-db-field="{{ field_name }}" style="background-color: #beb3fc; width: 70px; text-align: center;">
+                    <option {% if current_value == "" %}selected{% endif %}></option>
+                    <option {% if current_value == "1" %}selected{% endif %}>1</option>
+                    <option {% if current_value == "2" %}selected{% endif %}>2</option>
+                    <option {% if current_value == "3" %}selected{% endif %}>3</option>
+                    <option {% if current_value == "4" %}selected{% endif %}>4</option>
+                    <option {% if current_value == "5" %}selected{% endif %}>5</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_d" %}
+                {% with current_value=solution_selection|get_attr:field_name %}
+                <select class="form-control " data-db-field="{{ field_name }}" style="background-color: #77e498; width: 70px; text-align: center;">
+                    <option {% if current_value == "" %}selected{% endif %}></option>
+                    <option {% if current_value == "1" %}selected{% endif %}>1</option>
+                    <option {% if current_value == "2" %}selected{% endif %}>2</option>
+                    <option {% if current_value == "3" %}selected{% endif %}>3</option>
+                    <option {% if current_value == "4" %}selected{% endif %}>4</option>
+                    <option {% if current_value == "5" %}selected{% endif %}>5</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_f" %}
+                {% with current_value=solution_selection|get_attr:field_name %}
+                <select class="form-control " data-db-field="{{ field_name }}" style="background-color: #fce66f; width: 70px; text-align: center;">
+                    <option {% if current_value == "" %}selected{% endif %}></option>
+                    <option {% if current_value == "1" %}selected{% endif %}>1</option>
+                    <option {% if current_value == "2" %}selected{% endif %}>2</option>
+                    <option {% if current_value == "3" %}selected{% endif %}>3</option>
+                    <option {% if current_value == "4" %}selected{% endif %}>4</option>
+                    <option {% if current_value == "5" %}selected{% endif %}>5</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_v" %}
+                {% with current_value=solution_selection|get_attr:field_name %}
+                <select class="form-control " data-db-field="{{ field_name }}" style="background-color: #fed0f0; width: 70px; text-align: center;">
+                    <option {% if current_value == "" %}selected{% endif %}></option>
+                    <option {% if current_value == "1" %}selected{% endif %}>1</option>
+                    <option {% if current_value == "2" %}selected{% endif %}>2</option>
+                    <option {% if current_value == "3" %}selected{% endif %}>3</option>
+                    <option {% if current_value == "4" %}selected{% endif %}>4</option>
+                    <option {% if current_value == "5" %}selected{% endif %}>5</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_si" %}
+                {% with current_value=solution_selection|get_attr:field_name %}
+                <select class="form-control " data-db-field="{{ field_name }}" style="background-color: #83e7de; width: 70px; text-align: center;">
+                    <option {% if current_value == "" %}selected{% endif %}></option>
+                    <option {% if current_value == "1" %}selected{% endif %}>1</option>
+                    <option {% if current_value == "2" %}selected{% endif %}>2</option>
+                    <option {% if current_value == "3" %}selected{% endif %}>3</option>
+                    <option {% if current_value == "4" %}selected{% endif %}>4</option>
+                    <option {% if current_value == "5" %}selected{% endif %}>5</option>
+                </select>
+                {% endwith %}
+                {% endwith %}
+            </div>
+
+            <div class="col-1 border p-2 d-flex justify-content-center align-items-center">
+                <textarea class="postit-note" disabled style="background-color: black; color: white; width: 50px; height: 50px; font-weight:bolder; font-size: x-large;"></textarea>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    {% endwith %}
+    {% endfor %}
+
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6 p-3 step-result-col">
+            Our chosen solution is...
+            <input data-db-field="chosen_solution" class="form-control" type="text" value="{{solution_selection.chosen_solution}}">
+        </div>
+    </div>
+</div>
+
+<style>
+    .hmw-box {
+        width: 100%;
+        height: 100px;
+        border: 3px solid black; 
+        background-color: #cde740; 
+        color: black; 
+        text-align: center; 
+        text-justify:;
+        border-radius: 15px;
+    }
+
+     .hmw-box textarea {
+        width: 80%;
+        height: 50%;
+        text-align: center;
+        border: none;
+        background-color: #cde740; 
+        font-weight: bolder;
+        resize: none;
+     }
+</style>
+
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('SolutionSelection');
+
+        highlightMaxTotal();
+        $("select").on("input", highlightMaxTotal);
+    });
+
+    
+    function highlightMaxTotal() {
+        let maxTotalScore = 0;
+
+        // calculate totals and max total
+        $(".solution-row").each(function(index, row){
+            let totalScore = 0;
+            $(row).find("select").each(function(){
+                let value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    totalScore += value;
+                }
+            });
+            console.log("total", totalScore);
+
+            $(row).find("textarea.postit-note").eq(1).val(totalScore);
+
+            maxTotalScore = Math.max(maxTotalScore, totalScore)
+        })
+
+        // highlight all totals = max
+        $(".solution-row").each(function(index, row){
+            const rowTotalPostit = $(row).find("textarea.postit-note").eq(1);
+            if (rowTotalPostit.val() == maxTotalScore) {
+                rowTotalPostit.css("background-color", "red");
+            }
+        });
+    }
+</script>
+
+{% endblock %}

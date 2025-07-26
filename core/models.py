@@ -375,4 +375,86 @@ class SolutionIdeation(models.Model):
     sg4_ag3_solution = models.TextField(default="", blank=True)
 
     
+class SolutionSelection(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    chosen_solution = models.TextField(default="", blank=True)
     
+    # sg = solution group
+    # ag = approach group
+    
+    # s = right sizing
+    # d = desirability
+    # f = feasibility
+    # v = viability
+    # si = strategic importance
+    sg1_ag1_s = models.TextField(default="", blank=True)
+    sg1_ag1_d = models.TextField(default="", blank=True)
+    sg1_ag1_f = models.TextField(default="", blank=True)
+    sg1_ag1_v = models.TextField(default="", blank=True)
+    sg1_ag1_si = models.TextField(default="", blank=True)
+
+    sg1_ag2_s = models.TextField(default="", blank=True)
+    sg1_ag2_d = models.TextField(default="", blank=True)
+    sg1_ag2_f = models.TextField(default="", blank=True)
+    sg1_ag2_v = models.TextField(default="", blank=True)
+    sg1_ag2_si = models.TextField(default="", blank=True)
+
+    sg1_ag3_s = models.TextField(default="", blank=True)
+    sg1_ag3_d = models.TextField(default="", blank=True)
+    sg1_ag3_f = models.TextField(default="", blank=True)
+    sg1_ag3_v = models.TextField(default="", blank=True)
+    sg1_ag3_si = models.TextField(default="", blank=True)
+
+    sg2_ag1_s = models.TextField(default="", blank=True)
+    sg2_ag1_d = models.TextField(default="", blank=True)
+    sg2_ag1_f = models.TextField(default="", blank=True)
+    sg2_ag1_v = models.TextField(default="", blank=True)
+    sg2_ag1_si = models.TextField(default="", blank=True)
+
+    sg2_ag2_s = models.TextField(default="", blank=True)
+    sg2_ag2_d = models.TextField(default="", blank=True)
+    sg2_ag2_f = models.TextField(default="", blank=True)
+    sg2_ag2_v = models.TextField(default="", blank=True)
+    sg2_ag2_si = models.TextField(default="", blank=True)
+
+    sg2_ag3_s = models.TextField(default="", blank=True)
+    sg2_ag3_d = models.TextField(default="", blank=True)
+    sg2_ag3_f = models.TextField(default="", blank=True)
+    sg2_ag3_v = models.TextField(default="", blank=True)
+    sg2_ag3_si = models.TextField(default="", blank=True)
+
+    sg3_ag1_s = models.TextField(default="", blank=True)
+    sg3_ag1_d = models.TextField(default="", blank=True)
+    sg3_ag1_f = models.TextField(default="", blank=True)
+    sg3_ag1_v = models.TextField(default="", blank=True)
+    sg3_ag1_si = models.TextField(default="", blank=True)
+
+    sg3_ag2_s = models.TextField(default="", blank=True)
+    sg3_ag2_d = models.TextField(default="", blank=True)
+    sg3_ag2_f = models.TextField(default="", blank=True)
+    sg3_ag2_v = models.TextField(default="", blank=True)
+    sg3_ag2_si = models.TextField(default="", blank=True)
+
+    sg3_ag3_s = models.TextField(default="", blank=True)
+    sg3_ag3_d = models.TextField(default="", blank=True)
+    sg3_ag3_f = models.TextField(default="", blank=True)
+    sg3_ag3_v = models.TextField(default="", blank=True)
+    sg3_ag3_si = models.TextField(default="", blank=True)
+
+    sg4_ag1_s = models.TextField(default="", blank=True)
+    sg4_ag1_d = models.TextField(default="", blank=True)
+    sg4_ag1_f = models.TextField(default="", blank=True)
+    sg4_ag1_v = models.TextField(default="", blank=True)
+    sg4_ag1_si = models.TextField(default="", blank=True)
+
+    sg4_ag2_s = models.TextField(default="", blank=True)
+    sg4_ag2_d = models.TextField(default="", blank=True)
+    sg4_ag2_f = models.TextField(default="", blank=True)
+    sg4_ag2_v = models.TextField(default="", blank=True)
+    sg4_ag2_si = models.TextField(default="", blank=True)
+
+    sg4_ag3_s = models.TextField(default="", blank=True)
+    sg4_ag3_d = models.TextField(default="", blank=True)
+    sg4_ag3_f = models.TextField(default="", blank=True)
+    sg4_ag3_v = models.TextField(default="", blank=True)
+    sg4_ag3_si = models.TextField(default="", blank=True)
