@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import TeamLoginForm
 from .decorators import team_login_required
 
-from core.models import Team, MembersAndFocus, OpportunityDiscovery, UserNeed, RootCause, HowMightWe
+from core.models import Team, MembersAndFocus, OpportunityDiscovery, UserNeed, RootCause, HowMightWe, SolutionIdeation
 
 def index(request):
     return redirect('/team/step-1')
@@ -150,3 +150,28 @@ def team_step_5(request):
 
     
     return render(request, "core/team_step_5.html", context)
+
+@team_login_required
+def team_step_6(request):
+    user_id = request.user.id
+    team_id = Team.objects.filter(user_id=user_id).first().id
+    solution_ideation = SolutionIdeation.objects.filter(team_id=team_id).first()
+
+    if not solution_ideation: 
+        solution_ideation = SolutionIdeation(team_id=team_id)
+        solution_ideation.save()
+    
+    context = {
+        "team_id": team_id,
+        "diverge_range": range(1, 8),
+        "solution_group_range": range(1,5),
+        "approach_group_range": range(1,4),
+        "approach_range": range(1,6),
+        "color_list": ["", "#fbeb7d", "#daf1a9", "#9ce7ff", "#f9d6f3", "#b2b7e1"],
+        "solution_ideation": solution_ideation,
+        "prev_step_link": "/team/step-5/",
+        "next_step_link": "/team/step-7/",
+    }
+
+    
+    return render(request, "core/team_step_6.html", context)

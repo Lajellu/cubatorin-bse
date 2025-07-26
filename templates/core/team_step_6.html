@@ -1,0 +1,281 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 6
+{% endblock %}
+
+
+{% block step_number %}
+06
+{% endblock %}
+
+{% block step_title %}
+SOLUTION IDEATION
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Your problem</li>
+    <li>The user you are solving the problem for</li>
+    <li>How might we statement</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Your solution ideas</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~60 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/766092258" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/474711418" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <p><strong>Ideate Solutions</strong></p>
+            <ul>
+                <li><strong>IDEATE</strong> solutions within each of the solution types (Economic, Technological, Behavioral).</li>
+                <li><strong>BUILD</strong>  on ideas from team members to <strong>EXPAND</strong> to new ideas (feel free to make more sticky notes).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row p-3 mb-3" style="border: 3px solid black; border-radius: 20px;">
+        <div class="col-2" style="border-right: 3px solid black;">
+            <p><strong>Economic Approach</strong></p>
+            <p>Financial incentives that encourage users to modify current practices</p>
+            <button class="btn btn-ai brainstorm-btn" data-approach="economic">Brainstorm</button>
+            <div class="ai-output-container"></div>
+        </div>
+
+        <div class="col-10 d-flex justify-content-between align-items-center">
+            <div class="row">
+                {% for i in diverge_range %}
+                {% with i_str=i|stringformat:"s" %}
+                <div class="col-auto">
+                    {% with field_name="eco_approach"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                        style="background-color: {{color_list|index:1}}; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-3 mb-3" style="border: 3px solid black; border-radius: 20px;">
+        <div class="col-2" style="border-right: 3px solid black;">
+            <p><strong>Technological Approach</strong></p>
+            <p>Technologies that either remove or directly address the problem</p>
+            <button class="btn btn-ai brainstorm-btn" data-approach="technological">Brainstorm</button>
+            <div class="ai-output-container"></div>
+        </div>
+
+        <div class="col-10 d-flex justify-content-between align-items-center">
+            <div class="row">
+                {% for i in diverge_range %}
+                {% with i_str=i|stringformat:"s" %}
+                <div class="col-auto">
+                    {% with field_name="tech_approach"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                        style="background-color: {{color_list|index:2}}; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-3 mb-3" style="border: 3px solid black; border-radius: 20px;">
+        <div class="col-2" style="border-right: 3px solid black;">
+            <p><strong>Behavioral Approach</strong></p>
+            <p>Information/ education that persuade users to modify current practices</p>
+            <button class="btn btn-ai brainstorm-btn" data-approach="behavioral">Brainstorm</button>
+            <div class="ai-output-container"></div>
+        </div>
+
+        <div class="col-10 d-flex justify-content-between align-items-center">
+            <div class="row">
+                {% for i in diverge_range %}
+                {% with i_str=i|stringformat:"s" %}
+                <div class="col-auto">
+                    {% with field_name="behave_approach"|add:i_str %}
+                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                        style="background-color: {{color_list|index:3}}; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% for i in diverge_table_range %}
+    {% with i_str=i|stringformat:"s" %}
+    <div class="row border root-cause-row">
+
+        <div class="col-5 py-3 border-right d-flex justify-content-center">
+            {% with field_name="root_cause"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note" disabled
+                style="background-color: {{color_list|index:i}};">{{ root_cause|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+
+        <div class="col-5 py-3 border-right d-flex justify-content-center">
+            {% with field_name="hmw"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};">{{ how_might_we|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+        <div class="col-2 py-3 border-right d-flex justify-content-center">
+            {% with field_name="rank"|add:i_str %}
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                style="background-color: {{color_list|index:i}};  width: 50px; height: 50px;">{{ how_might_we|get_attr:field_name }}</textarea>
+            {% endwith %}
+        </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3>Merge & Converge</h3>
+            <p><strong>Identify Solutions</strong></p>
+            <ul>
+                <li><strong>IDENTIFY</strong> different types of solutions based on ideas created previously.</li>
+                <li><strong>TRANSFER</strong> the ideas from previous step and MERGE where possible. </li>
+                <li><strong>CATEGORIZE</strong> under various Approach Groups based on business logic relevance.</li>
+                <li><strong>SYNTHESIZE</strong> additional components of the solution (grey notes).</li>
+                <li><strong>USE</strong> these protype solutions as the basis for your selection for the next step.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row border ">
+        {% for i in solution_group_range %}
+        {% with i_str=i|stringformat:"s" %}
+        <div class="col-6 border-right border-bottom">
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-center">
+                    {% with field_name="sg"|add:i_str %}
+                    <input data-db-field="{{field_name}}" class="form-control mb-3" type="text"
+                        style="background-color: {{color_list|index:1}}; width: 40%; text-align: center; font-size: 1.2rem; font-weight: bolder;"
+                        value="{{ solution_ideation|get_attr:field_name }}">
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="row">
+                {% for j in approach_group_range %}
+                {% with j_str=j|stringformat:"s" %}
+                <div class="col-4 border-right">
+                    <div class="row mb-3">
+                        <div class="col-12 d-flex justify-content-center">
+                            <strong>Approach Group {{j}}</strong>
+                        </div>
+                    </div>
+                    {% for k in approach_range %}
+                    {% with k_str=k|stringformat:"s" %}
+                    <div class="row mb-2">
+                        <div class="col-12 d-flex justify-content-center">
+                            {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_a"|add:k_str %}
+                            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                                style="background-color: {{color_list|index:1}}; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                            {% endwith %}
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    solution
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    {% with field_name="sg"|add:i_str|add:"_ag"|add:j_str|add:"_solution" %}
+                                    <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note"
+                                        style="background-color: #fbb374; width: 120px;">{{ solution_ideation|get_attr:field_name }}</textarea>
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('SolutionIdeation')
+    });
+
+    $('.brainstorm-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const approach = aiButton.data('approach');
+
+            console.log(approach);
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+            // Call brainstorm_approach API
+            $.ajax({
+                url: '/api/brainstorm_approach/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId, 
+                    approach: approach
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+</script>
+
+{% endblock %}

@@ -213,3 +213,24 @@ def research_root_cause(request):
     return Response({
         "prompt": present_state + " " + desired_state
     }, status=status.HTTP_200_OK)
+    
+    
+
+@api_view(['POST'])
+def brainstorm_approach(request):
+    print("Received a request to /api/brainstorm_approach/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    # approach can be economic, technological, behavioral
+    approach = data.get('approach')
+    
+    print (team_id, approach)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": approach
+    }, status=status.HTTP_200_OK)
+    
