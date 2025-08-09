@@ -458,3 +458,136 @@ class SolutionSelection(models.Model):
     sg4_ag3_f = models.TextField(default="", blank=True)
     sg4_ag3_v = models.TextField(default="", blank=True)
     sg4_ag3_si = models.TextField(default="", blank=True)
+    
+class SolutionValidation(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    
+    f1_desc = models.TextField(default="", blank=True)
+    f1_func_need = models.TextField(default="", blank=True)
+    f1_test_method = models.TextField(default="", blank=True)
+    f1_test_method_alt = models.TextField(default="", blank=True)
+    f1_emot_need = models.TextField(default="", blank=True)
+    f1_proto_test = models.TextField(default="", blank=True)
+    f1_who_test = models.TextField(default="", blank=True)
+    f1_where_test = models.TextField(default="", blank=True)
+    f1_proto_test_desc = models.TextField(default="", blank=True)
+    f1_proto_test_question = models.TextField(default="", blank=True)
+    f1_proto_test_satisfaction = models.TextField(default="", blank=True)
+    
+    f2_desc = models.TextField(default="", blank=True)
+    f2_func_need = models.TextField(default="", blank=True)
+    f2_test_method = models.TextField(default="", blank=True)
+    f2_test_method_alt = models.TextField(default="", blank=True)
+    f2_emot_need = models.TextField(default="", blank=True)
+    f2_proto_test = models.TextField(default="", blank=True)
+    f2_who_test = models.TextField(default="", blank=True)
+    f2_where_test = models.TextField(default="", blank=True)
+    f2_proto_test_desc = models.TextField(default="", blank=True)
+    f2_proto_test_question = models.TextField(default="", blank=True)
+    f2_proto_test_satisfaction = models.TextField(default="", blank=True)
+
+    f3_desc = models.TextField(default="", blank=True)
+    f3_func_need = models.TextField(default="", blank=True)
+    f3_test_method = models.TextField(default="", blank=True)
+    f3_test_method_alt = models.TextField(default="", blank=True)
+    f3_emot_need = models.TextField(default="", blank=True)
+    f3_proto_test = models.TextField(default="", blank=True)
+    f3_who_test = models.TextField(default="", blank=True)
+    f3_where_test = models.TextField(default="", blank=True)
+    f3_proto_test_desc = models.TextField(default="", blank=True)
+    f3_proto_test_question = models.TextField(default="", blank=True)
+    f3_proto_test_satisfaction = models.TextField(default="", blank=True)
+
+    f4_desc = models.TextField(default="", blank=True)
+    f4_func_need = models.TextField(default="", blank=True)
+    f4_test_method = models.TextField(default="", blank=True)
+    f4_test_method_alt = models.TextField(default="", blank=True)
+    f4_emot_need = models.TextField(default="", blank=True)
+    f4_proto_test = models.TextField(default="", blank=True)
+    f4_who_test = models.TextField(default="", blank=True)
+    f4_where_test = models.TextField(default="", blank=True)
+    f4_proto_test_desc = models.TextField(default="", blank=True)
+    f4_proto_test_question = models.TextField(default="", blank=True)
+    f4_proto_test_satisfaction = models.TextField(default="", blank=True)
+    
+class FirstCustomer(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    
+    # c = customer
+    # o = organization
+    # i = industry
+    # c1
+    c1_name = models.TextField(default="", blank=True)
+    c1_where_use = models.TextField(default="", blank=True)
+    c1_how_use = models.TextField(default="", blank=True)
+    c1_benefits = models.TextField(default="", blank=True)
+    c1_cost_risk = models.TextField(default="", blank=True)
+    c1_c_speed = models.TextField(default="", blank=True)
+    c1_o_speed = models.TextField(default="", blank=True)
+    c1_i_speed = models.TextField(default="", blank=True)
+
+    # c2
+    c2_name = models.TextField(default="", blank=True)
+    c2_where_use = models.TextField(default="", blank=True)
+    c2_how_use = models.TextField(default="", blank=True)
+    c2_benefits = models.TextField(default="", blank=True)
+    c2_cost_risk = models.TextField(default="", blank=True)
+    c2_c_speed = models.TextField(default="", blank=True)
+    c2_o_speed = models.TextField(default="", blank=True)
+    c2_i_speed = models.TextField(default="", blank=True)
+
+    # c3
+    c3_name = models.TextField(default="", blank=True)
+    c3_where_use = models.TextField(default="", blank=True)
+    c3_how_use = models.TextField(default="", blank=True)
+    c3_benefits = models.TextField(default="", blank=True)
+    c3_cost_risk = models.TextField(default="", blank=True)
+    c3_c_speed = models.TextField(default="", blank=True)
+    c3_o_speed = models.TextField(default="", blank=True)
+    c3_i_speed = models.TextField(default="", blank=True)
+
+    # c4
+    c4_name = models.TextField(default="", blank=True)
+    c4_where_use = models.TextField(default="", blank=True)
+    c4_how_use = models.TextField(default="", blank=True)
+    c4_benefits = models.TextField(default="", blank=True)
+    c4_cost_risk = models.TextField(default="", blank=True)
+    c4_c_speed = models.TextField(default="", blank=True)
+    c4_o_speed = models.TextField(default="", blank=True)
+    c4_i_speed = models.TextField(default="", blank=True)
+
+class Pitch(models.Model):
+    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    
+    evidence_problem1 = models.TextField(default="", blank=True)
+    evidence_problem2 = models.TextField(default="", blank=True)
+    evidence_problem3 = models.TextField(default="", blank=True)
+    evidence_problem4 = models.TextField(default="", blank=True)
+
+    evidence_novelty1 = models.TextField(default="", blank=True)
+    evidence_novelty2 = models.TextField(default="", blank=True)
+    evidence_novelty3 = models.TextField(default="", blank=True)
+    evidence_novelty4 = models.TextField(default="", blank=True)
+
+    evidence_feasible1 = models.TextField(default="", blank=True)
+    evidence_feasible2 = models.TextField(default="", blank=True)
+    evidence_feasible3 = models.TextField(default="", blank=True)
+    evidence_feasible4 = models.TextField(default="", blank=True)
+
+    evidence_viable1 = models.TextField(default="", blank=True)
+    evidence_viable2 = models.TextField(default="", blank=True)
+    evidence_viable3 = models.TextField(default="", blank=True)
+    evidence_viable4 = models.TextField(default="", blank=True)
+
+    creative_approach1 = models.TextField(default="", blank=True)
+    creative_approach2 = models.TextField(default="", blank=True)
+    creative_approach3 = models.TextField(default="", blank=True)
+    creative_approach4 = models.TextField(default="", blank=True)
+
+    first_customer1 = models.TextField(default="", blank=True)
+    first_customer2 = models.TextField(default="", blank=True)
+    first_customer3 = models.TextField(default="", blank=True)
+    first_customer4 = models.TextField(default="", blank=True)
+
+    
+    

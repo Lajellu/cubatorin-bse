@@ -234,3 +234,54 @@ def brainstorm_approach(request):
         "prompt": approach
     }, status=status.HTTP_200_OK)
     
+
+@api_view(['POST'])
+def brainstorm_test_method(request):
+    print("Received a request to /api/brainstorm_test_method/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    # feature will be f1, f2, ...
+    feature = data.get('feature')
+    
+    print (team_id, feature)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": feature
+    }, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def suggest_customer_profiles(request):
+    print("Received a request to /api/brainstorm_test_method/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    
+    print (team_id)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": "suggesting customer profiles for teamId : " + str(team_id)
+    }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def suggest_benefits_costs(request):
+    print("Received a request to /api/brainstorm_test_method/")
+    
+    data = request.data
+    team_id = data.get('team_id')
+    
+    print (team_id)
+    
+    if not team_id:
+        return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({
+        "prompt": "suggesting benefits / costs for teamId : " + str(team_id)
+    }, status=status.HTTP_200_OK)
+

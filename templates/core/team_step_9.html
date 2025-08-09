@@ -1,0 +1,313 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 9
+{% endblock %}
+
+
+{% block step_number %}
+09
+{% endblock %}
+
+{% block step_title %}
+FIRST CUSTOMER & <br> BARRIERS TO ADOPTION
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Validated Solution</li>
+    <li>Finalized solution features</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>First Customer</li>
+    <li>Solution value proposition</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~90 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/480046974" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-2">
+            <p><strong>Customer Types:</strong></p>
+            <p>Write specific customers within user group</p>
+        </div>
+        
+        {% for i in customer_range %}
+        {% with i_str=i|stringformat:"s" %}
+        {% with field_name="c"|add:i_str|add:"_name" %}
+        <div class="col-1">
+            <textarea id="{{field_name}}" data-db-field="{{field_name}}" class="postit-note" 
+                style="width: 100px; height: 50px; background-color: {{color_list|index:i}};">{{ first_customer|get_attr:field_name }}</textarea>
+        </div>
+        {% endwith %}
+        {% endwith %}
+        {% endfor %}
+
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <strong>Brainstorm:</strong>
+            <p>Write specific customers within user groups.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-6">
+            <div class="row font-weight-bold">
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Customer</div>
+                <div class="col-4 py-2 border d-flex align-items-center justify-content-center"">Where will they use it?</div>
+                <div class="col-4 py-2 border d-flex align-items-center justify-content-center"">How will they use it?</div>
+            </div>
+            {% for i in customer_range %}
+            {% with i_str=i|stringformat:"s" %}
+            
+            <div class="row">
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_name" %}
+                    <textarea class="postit-note" disabled data-copy-from-id="{{field_name}}"
+                        style="height: 50px; background-color: {{color_list|index:i}};"></textarea>
+                    {% endwith %}
+                </div>
+                <div class="col-4 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_where_use" %}
+                    <textarea data-db-field="{{field_name}}" class="postit-note" 
+                        style="width: 150px; background-color: {{color_list|index:i}};">{{ first_customer|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+                <div class="col-4 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_how_use" %}
+                    <textarea data-db-field="{{field_name}}" class="postit-note" 
+                        style="width: 150px; background-color: {{color_list|index:i}};">{{ first_customer|get_attr:field_name }}</textarea>
+                    {% endwith %}
+                </div>
+            </div>
+
+            {% endwith %}
+            {% endfor %}
+
+        </div>
+        <div class="col-6">
+            <button class="btn btn-ai suggest-customer-profiles-btn">Suggest Customer Profiles</button>
+            <div class="ai-output-container"></div>
+        </div>
+    </div>
+
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>Identify</h3>
+
+            <strong>Motivation to Adopt:</strong>
+            <p>Benefits [Small - Medium - Large]</p>
+            <p>Costs/Risks [Low - Medium - High]</p>
+
+            <strong>Speed of Adoption:</strong>
+            <p>
+                Customer speed, organizational speed, industry speed of decision making. Break the over user to different customers
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="row font-weight-bold">
+                <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">Customer</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Benefits</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Costs/Risks</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Customer Speed</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Organizational Speed</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Industry Speed</div>
+            </div>
+            {% for i in customer_range %}
+            {% with i_str=i|stringformat:"s" %}
+            
+            <div class="row">
+                <div class="col-1 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_name" %}
+                    <textarea class="postit-note" disabled data-copy-from-id="{{field_name}}"
+                        style="height: 50px; background-color: {{color_list|index:i}};"></textarea>
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_benefits" %}
+                    {% with current_value=first_customer|get_attr:field_name %}
+                    <select class="form-control " data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; width: 100px; text-align: center;">
+                        <option {% if current_value == "" %}selected{% endif %}></option>
+                        <option {% if current_value == "SMALL" %}selected{% endif %}>SMALL</option>
+                        <option {% if current_value == "MEDIUM" %}selected{% endif %}>MEDIUM</option>
+                        <option {% if current_value == "LARGE" %}selected{% endif %}>LARGE</option>
+                    </select>
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_cost_risk" %}
+                    {% with current_value=first_customer|get_attr:field_name %}
+                    <select class="form-control " data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; width: 100px; text-align: center;">
+                        <option {% if current_value == "" %}selected{% endif %}></option>
+                        <option {% if current_value == "LOW" %}selected{% endif %}>LOW</option>
+                        <option {% if current_value == "MEDIUM" %}selected{% endif %}>MEDIUM</option>
+                        <option {% if current_value == "HIGH" %}selected{% endif %}>HIGH</option>
+                    </select>
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_c_speed" %}
+                    {% with current_value=first_customer|get_attr:field_name %}
+                    <select class="form-control " data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; width: 100px; text-align: center;">
+                        <option {% if current_value == "" %}selected{% endif %}></option>
+                        <option {% if current_value == "SLOW" %}selected{% endif %}>SLOW</option>
+                        <option {% if current_value == "FAST" %}selected{% endif %}>FAST</option>
+                    </select>
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_o_speed" %}
+                    {% with current_value=first_customer|get_attr:field_name %}
+                    <select class="form-control " data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; width: 100px; text-align: center;">
+                        <option {% if current_value == "" %}selected{% endif %}></option>
+                        <option {% if current_value == "SLOW" %}selected{% endif %}>SLOW</option>
+                        <option {% if current_value == "FAST" %}selected{% endif %}>FAST</option>
+                    </select>
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center">
+                    {% with field_name="c"|add:i_str|add:"_i_speed" %}
+                    {% with current_value=first_customer|get_attr:field_name %}
+                    <select class="form-control " data-db-field="{{ field_name }}" style="background-color: {{color_list|index:i}}; width: 100px; text-align: center;">
+                        <option {% if current_value == "" %}selected{% endif %}></option>
+                        <option {% if current_value == "SLOW" %}selected{% endif %}>SLOW</option>
+                        <option {% if current_value == "FAST" %}selected{% endif %}>FAST</option>
+                    </select>
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+
+            {% endwith %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-ai suggest-benefits-costs-btn">Suggest Benefits, Costs, and Adoption Speed</button>
+            <div class="ai-output-container"></div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('FirstCustomer');
+        
+        // instantly copy contents of prob1-6 post-it notes on top of page
+        // to read-only post-it notes at bottom of page
+        $("[data-copy-from-id]").each(function(index, element) {
+            let copyFromId = $(element).data("copy-from-id");
+            console.log("setup listener for: ", copyFromId);
+
+            // copy existing contents
+            $(element).val($("#"+copyFromId).val());
+
+            // setup listener to continuously copy contents as content changes
+            $("#"+copyFromId).on("input", function(){
+                console.log("copying ", copyFromId);
+                $(element).val($(this).val());
+            });
+        });
+
+        $('.suggest-customer-profiles-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+            // Call brainstorm_test_method API
+            $.ajax({
+                url: '/api/suggest_customer_profiles/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+
+        $('.suggest-benefits-costs-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+            // Call brainstorm_test_method API
+            $.ajax({
+                url: '/api/suggest_benefits_costs/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+        
+
+    });
+
+    
+
+</script>
+
+{% endblock %}

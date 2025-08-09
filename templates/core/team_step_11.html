@@ -1,0 +1,225 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 10
+{% endblock %}
+
+
+{% block step_number %}
+10
+{% endblock %}
+
+{% block step_title %}
+PITCHING
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Solution Customer</li>
+    <li>Solution value proposition</li>
+    <li>Everything from previous stages</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Compelling Final Pitch</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~120 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/17XZGUX_9iM?si=M75OtnZXRc-AvVFG" 
+            title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>Diverge</h3>
+            <p><strong>Create your pitch deck on google slides, PowerPoint, canva or a place of your choice with the components below.</strong></p>
+            <p>You may add anything you find necessary, but remember <strong>the goal is get people interested and wanting to find out more, so don't present ALL the details. There is a fine balance.</strong></p>
+
+            <div class="row mb-4">
+                <div class="col-5 border rounded-lg p-4" style="background-color: #fffcc8;">
+                    <ol>
+                        <li>
+                            <strong>Set the theme - single headline that sets the theme </strong>
+                            <ul>
+                                <li>Make theme clear and consistent</li>
+                                <li>Create the headline that sets the direction for your meeting</li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Provide the outline (I want to share with you 4 things) </strong>
+                            <ul>
+                                <li>Open and close each section with a clear transition (..and this was the first thing I wanted to share with you this morning)</li>
+                                <li>Make it easy for your listeners to follow the story</li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Demonstrate Enthusiasm </strong>
+                            <ul>
+                                <li>Words like Extraordinary, amazing, cool, incredible</li>
+                                <li>Wow your audience</li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Sell an experience </strong>
+                            <ul>
+                                <li>Make numbers and statistics meaningful</li>
+                                <li>Analogies helps connect the dots for your audience</li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Make it visual </strong>
+                            <ul>
+                                <li>Paint a simple picture that doesn't overwhelm</li>
+                                <li>Give them a show - add video / guest / demonstrate the product</li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <strong>Spend time to Rehearse </strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row font-weight-bold">
+                <div class="col-1 py-2 border d-flex align-items-center justify-content-center""></div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Criteria</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">Expectations</div>
+                <div class="col-7 py-2 border d-flex align-items-center justify-content-center"">Brainstorm / Notes</div>
+            </div>
+
+            {% for i in row_range %}
+            {% with i_str=i|stringformat:"s" %}
+            <div class="row font-weight-bold">
+                <div class="col-1 py-2 border d-flex align-items-center justify-content-center"">{{i}}</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">{{row_criteria|index:i}}</div>
+                <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">{{row_expectation|index:i}}</div>
+                <div class="col-7 py-2 border d-flex align-items-center justify-content-center"">
+                    {% for j in postit_range %}
+                    {% with j_str=j|stringformat:"s" %}
+                    {% with field_name=row_field|index:i %}
+                    {% with full_field_name=field_name|add:j_str %}
+                    <textarea class="postit-note mr-3" data-db-field="{{full_field_name}}">{{pitch|get_attr:full_field_name}}</textarea>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('Pitch');
+        
+        // instantly copy contents of prob1-6 post-it notes on top of page
+        // to read-only post-it notes at bottom of page
+        $("[data-copy-from-id]").each(function(index, element) {
+            let copyFromId = $(element).data("copy-from-id");
+            console.log("setup listener for: ", copyFromId);
+
+            // copy existing contents
+            $(element).val($("#"+copyFromId).val());
+
+            // setup listener to continuously copy contents as content changes
+            $("#"+copyFromId).on("input", function(){
+                console.log("copying ", copyFromId);
+                $(element).val($(this).val());
+            });
+        });
+
+        $('.suggest-customer-profiles-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+            // Call brainstorm_test_method API
+            $.ajax({
+                url: '/api/suggest_customer_profiles/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+
+        $('.suggest-benefits-costs-btn').on('click', function () {
+            const aiButton = $(event.target);
+            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            };
+
+            // Call brainstorm_test_method API
+            $.ajax({
+                url: '/api/suggest_benefits_costs/',
+                method: 'POST',
+                headers: headers,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    team_id: teamId
+                }),
+                success: function (response) {
+                    console.log('Suggested successfully:', response);
+                    aiOutputCont.html(response.prompt).show();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error suggesting:', xhr.responseText || error);
+                }
+            });
+        });
+        
+
+    });
+
+    
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends 'core/_team_step.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Step 8
+{% endblock %}
+
+
+{% block step_number %}
+08
+{% endblock %}
+
+{% block step_title %}
+SOLUTION VALIDATION
+{% endblock %}
+
+{% block step_input %}
+<ul>
+    <li>Chosen solution</li>
+</ul>
+{% endblock %}
+
+{% block step_output %}
+<ul>
+    <li>Validated Solution</li>
+    <li>Finalized solution features</li>
+</ul>
+{% endblock %}
+
+{% block step_example_img %}
+https://picsum.photos/1000/500
+{% endblock %}
+
+{% block step_duration %}
+~120 minutes
+{% endblock %}
+
+{% block step_content %}
+<div class="container-fluid py-2">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/766092329" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <iframe src="https://player.vimeo.com/video/477817426" width="480" height="270" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-6">
+            <h3>Diverge</h3>
+            <strong>For chosen solution:</strong>
+            <ul>
+                <li><strong>IDENTIFY</strong> critical feature/s (maybe more than one).</li>
+                <li><strong>CHOOSE</strong> the most important feature.</li>
+                <li><strong>IDENTIFY</strong> how you would validate this.</li>
+                <li><strong>REPEAT</strong> for second feature.</li>
+                <li><strong>DO</strong> the prototyping and <strong>ANALYZE</strong> results from the test.</li>
+                <li><strong>INTERPRET</strong>  how the results modify the solution.</li>
+            </ul>
+        </div>
+
+        <div class="col-6">
+            <h3>Gather Evidence</h3>
+            <strong>Gather the results of prototype testing:</strong>
+            <ul>
+                <li><strong>GET</strong> feedback on how each prototype addressed each of the needs (Functional & Emotional).</li>
+                <li><strong>IDENTIFY</strong> implications for solution.</li>
+                <li><strong>IDENTIFY</strong> possible improvements where it's not well met.</li>
+                <li><strong>SUGGEST</strong> improvements to the solution itself and retest.</li>
+                <li>Goal is to get results that support your hypothesis that <strong>SOLUTION</strong> will work.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row font-weight-bold d-flex justify-content-center">
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center""></div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 1</div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 2</div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 3</div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 4</div>
+    </div>
+
+    
+    {% for i in fields_range %}
+    {% with i_str=i|stringformat:"s" %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-2 border p-2 font-weight-bold" style="background-color: {{row_backgrounds|index:i}};">{{ field_descs|index:i }}</div>
+
+        {% for j in feature_range %}
+        {% with j_str=j|stringformat:"s" %}
+        {% with field_name=fields|index:i %}
+        {% with full_field_name="f"|add:j_str|add:"_"|add:field_name %}
+        <div class="col-2 border p-2 d-flex flex-column justify-content-center align-items-center" style="background-color: {{row_backgrounds|index:i}};">
+            <div class="row">
+                <div class="col-12">
+                    <textarea data-db-field="{{full_field_name}}" class="postit-note"
+                        style="background-color: {{feature_postit_colors|index:j}};">{{ solution_validation|get_attr:full_field_name }}</textarea>
+                </div>
+            </div>
+            
+            {% if field_name == "test_method" %}
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button class="btn btn-ai brainstorm-btn" data-feature="f{{j}}">Brainstorm</button>
+                    <div class="ai-output-container"></div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        {% endwith %}
+        {% endwith %}
+        {% endwith %}
+        {% endfor %}
+    </div>
+    {% endwith %}
+    {% endfor %}
+    
+    <div class="row font-weight-bold d-flex justify-content-center">
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center""></div>
+
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">
+            <button class="btn btn-ai test-results-btn" style="background-color: black; color: white;">Test Results...</button>
+        </div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 2</div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 3</div>
+        <div class="col-2 py-2 border d-flex align-items-center justify-content-center"">FEATURE 4</div>
+    </div>
+
+</div>
+
+
+<script>
+    const teamId = {{ team_id }};
+
+    $(document).ready(function () {
+        setupAutosave('SolutionValidation');
+    });
+
+    $('.brainstorm-btn').on('click', function () {
+        const aiButton = $(event.target);
+        const aiOutputCont = aiButton.siblings('.ai-output-container');
+        const feature = aiButton.data('feature');
+        
+        console.log(feature);
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        };
+
+        // Call brainstorm_test_method API
+        $.ajax({
+            url: '/api/brainstorm_test_method/',
+            method: 'POST',
+            headers: headers,
+            contentType: 'application/json',
+            data: JSON.stringify({
+                team_id: teamId, 
+                feature: feature
+            }),
+            success: function (response) {
+                console.log('Suggested successfully:', response);
+                aiOutputCont.html(response.prompt).show();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error suggesting:', xhr.responseText || error);
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}
