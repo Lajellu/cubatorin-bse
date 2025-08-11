@@ -129,15 +129,29 @@ def suggest_focus_areas(request):
 
     # Combine all lines into a single string
     final_output = "\n".join(output_lines)
-    print(final_output)
+    # print(final_output)
 
-    # Use a pre-trained OpenAI API call to do suggest focus area based on the entered Step 1 information
-    userPrompt = "Based on the following college engineering students: " + final_output
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "Here are group members, their interests and problems they want to solve: \n" + 
+        final_output + "\n" + 
+        "I want you to come up with several business ideas. The best ideas are ones that incorporate the most 'interests' and 'problems' of the group and are most realistic to implement."
+        "Come up with the top 3 business ideas and explain each in less than 50 words. Title this section 'TOP 3 IDEAS'." +
+        "Then pick the top 1 bueinss idea and explain it in more detail, mentioning each team member by name and how their 'interest' or 'problem' is incorporated in the business idea. Title this section 'BEST IDEA'."
+    )
 
-    systemPrompt = "Ideate 5 top focus areas that are the intersections of the students' interests and problems. Be concise, techincal, and keep the scope appropriate for a 5 person team to implement. Aim for practical focus areas that can eventually be implmented."
+    systemPrompt = "You are a business development advisor, helping a group of young engineering students develop a business idea based on their interests and the kind of problems they want to solve in the world."
 
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
     responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
 
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
+    
     return Response({
         "message":responsebyChatBot
     }, status=status.HTTP_200_OK)
