@@ -165,13 +165,35 @@ def suggest_causes(request):
     problem = data.get('problem')
     causes = data.get('causes')
     
+    members_and_focus = MembersAndFocus.objects.filter(team_id=team_id).first()
+    
     print (team_id, problem, causes)
+    
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "A group of engineering students are meeting to come up with a business idea. " + 
+        "They've decided to focus on " + members_and_focus.high_level_problem + ". " + 
+        "They've identified a problem: " + problem + ". "
+        "What are the top 3 causes of this problem?"
+    )
+
+    systemPrompt = "You are a researcher. Given a real-world problem, you come up with why that problem exists, and provide evidence for your response."
+
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
     
     if not team_id:
         return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({
-        "prompt": problem + " " + causes
+        "message": responsebyChatBot
     }, status=status.HTTP_200_OK)
     
 @api_view(['POST'])

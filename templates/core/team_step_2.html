@@ -263,7 +263,7 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested causes successfully:', response);
-                    aiOutputCont.html(response.prompt).show();
+                    aiOutputCont.html(response.message.replace(/\n/g, "<br>")).show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting focus areas:', xhr.responseText || error);
