@@ -196,6 +196,12 @@ https://picsum.photos/1000/500
         $('#suggest_focus_area_button').on('click', function () {
             console.log("clicked");
 
+            const $btn = $(this);
+
+            // Add spinner and disable button
+            $btn.prop('disabled', true);
+            $btn.append(' <i class="fas fa-spinner fa-spin" id="focus_area_spinner"></i>');
+
             const headers = {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken'),
@@ -212,10 +218,17 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested focus areas successfully:', response);
-                    $("#focus_area_suggestion").html(response.message.replace(/\n/g, "<br>")).show();
+                    $("#focus_area_suggestion")
+                        .html(response.message.replace(/\n/g, "<br>"))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting focus areas:', xhr.responseText || error);
+                },
+                complete: function () {
+                    // Remove spinner and enable button
+                    $('#focus_area_spinner').remove();
+                    $btn.prop('disabled', false);
                 }
             });
         });

@@ -235,12 +235,15 @@ https://picsum.photos/1000/500
     $(document).ready(function () {
         setupAutosave('OpportunityDiscovery')
 
-
         $('.research-cause-button').on('click', function () {
             const aiButton = $(event.target);
             const aiOutputCont = aiButton.siblings('.ai-output-container');
             const problem = aiButton.closest(".prob-cause-row").find("textarea").val()
             const causes = aiButton.siblings('textarea').val();
+
+            // Add spinner and disable button
+            aiButton.prop('disabled', true);
+            aiButton.append(' <i class="fas fa-spinner fa-spin" id="focus_area_spinner"></i>');
 
             console.log(problem, causes);
 
@@ -263,10 +266,17 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested causes successfully:', response);
-                    aiOutputCont.html(response.message.replace(/\n/g, "<br>")).show();
+                    aiOutputCont
+                        .html(response.message.replace(/\n/g, "<br>"))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting focus areas:', xhr.responseText || error);
+                },
+                complete: function () {
+                    // Remove spinner and enable button
+                    $('#focus_area_spinner').remove();
+                    aiButton.prop('disabled', false);
                 }
             });
         });

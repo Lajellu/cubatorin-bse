@@ -66,11 +66,10 @@ https://picsum.photos/1000/500
         <div class="col-2" style="border-right: 3px solid black;">
             <p><strong>Economic Approach</strong></p>
             <p>Financial incentives that encourage users to modify current practices</p>
-            <button class="btn btn-ai brainstorm-btn" data-approach="economic">Brainstorm</button>
-            <div class="ai-output-container"></div>
+            <button class="btn btn-ai brainstorm-btn" data-approach="economic" data-output-container-id="ai-output-economic">Brainstorm</button>
         </div>
 
-        <div class="col-10 d-flex justify-content-between align-items-center">
+        <div class="col-10 d-flex flex-column justify-content-between align-items-center">
             <div class="row">
                 {% for i in diverge_range %}
                 {% with i_str=i|stringformat:"s" %}
@@ -83,6 +82,11 @@ https://picsum.photos/1000/500
                 {% endwith %}
                 {% endfor %}
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="ai-output-container mt-4" id="ai-output-economic"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -90,11 +94,10 @@ https://picsum.photos/1000/500
         <div class="col-2" style="border-right: 3px solid black;">
             <p><strong>Technological Approach</strong></p>
             <p>Technologies that either remove or directly address the problem</p>
-            <button class="btn btn-ai brainstorm-btn" data-approach="technological">Brainstorm</button>
-            <div class="ai-output-container"></div>
+            <button class="btn btn-ai brainstorm-btn" data-approach="technological" data-output-container-id="ai-output-technological">Brainstorm</button>
         </div>
 
-        <div class="col-10 d-flex justify-content-between align-items-center">
+        <div class="col-10 d-flex flex-column justify-content-between align-items-center">
             <div class="row">
                 {% for i in diverge_range %}
                 {% with i_str=i|stringformat:"s" %}
@@ -107,6 +110,11 @@ https://picsum.photos/1000/500
                 {% endwith %}
                 {% endfor %}
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="ai-output-container mt-4" id="ai-output-technological"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -114,11 +122,10 @@ https://picsum.photos/1000/500
         <div class="col-2" style="border-right: 3px solid black;">
             <p><strong>Behavioral Approach</strong></p>
             <p>Information/ education that persuade users to modify current practices</p>
-            <button class="btn btn-ai brainstorm-btn" data-approach="behavioral">Brainstorm</button>
-            <div class="ai-output-container"></div>
+            <button class="btn btn-ai brainstorm-btn" data-approach="behavioral" data-output-container-id="ai-output-behavioral">Brainstorm</button>
         </div>
 
-        <div class="col-10 d-flex justify-content-between align-items-center">
+        <div class="col-10 d-flex flex-column justify-content-between align-items-center">
             <div class="row">
                 {% for i in diverge_range %}
                 {% with i_str=i|stringformat:"s" %}
@@ -130,6 +137,11 @@ https://picsum.photos/1000/500
                 </div>
                 {% endwith %}
                 {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="ai-output-container mt-4" id="ai-output-behavioral"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -247,8 +259,12 @@ https://picsum.photos/1000/500
 
     $('.brainstorm-btn').on('click', function () {
             const aiButton = $(event.target);
-            const aiOutputCont = aiButton.siblings('.ai-output-container');
+            const aiOutputCont = $("#"+aiButton.data('output-container-id'));
             const approach = aiButton.data('approach');
+
+            // Add spinner and disable button
+            aiButton.prop('disabled', true);
+            aiButton.append(' <i class="fas fa-spinner fa-spin" id="focus_area_spinner"></i>');
 
             console.log(approach);
 
@@ -269,10 +285,17 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested successfully:', response);
-                    aiOutputCont.html(response.prompt).show();
+                    aiOutputCont
+                        .html(response.message.replace(/\n/g, "<br>"))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting:', xhr.responseText || error);
+                },
+                complete: function () {
+                    // Remove spinner and enable button
+                    $('#focus_area_spinner').remove();
+                    aiButton.prop('disabled', false);
                 }
             });
         });

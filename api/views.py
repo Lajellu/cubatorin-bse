@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.core.exceptions import FieldDoesNotExist
-from core.models import MembersAndFocus
+from core.models import MembersAndFocus, OpportunityDiscovery, UserNeed, HowMightWe
 from ai import ai
 
 
@@ -173,7 +173,7 @@ def suggest_causes(request):
     userPrompt = (
         "A group of engineering students are meeting to come up with a business idea. " + 
         "They've decided to focus on " + members_and_focus.high_level_problem + ". " + 
-        "They've identified a problem: " + problem + ". "
+        "They've identified a problem: " + problem + ". " +
         "What are the top 3 causes of this problem?"
     )
 
@@ -205,13 +205,35 @@ def research_functional_needs(request):
     users_and_problem = data.get('users_and_problem')
     functional_need = data.get('functional_need')
     
+    members_and_focus = MembersAndFocus.objects.filter(team_id=team_id).first()
+    
     print (team_id, users_and_problem, functional_need)
     
     if not team_id:
         return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "A group of engineering students are meeting to come up with a business idea. " + 
+        "They've decided to focus on " + members_and_focus.high_level_problem + ". " + 
+        "They've identified a problem that a user type has: " + users_and_problem + ". " +
+        "What functional need of the user is not being met due to this problem?"
+    )
+
+    systemPrompt = "You are a researcher. Given a user and a problem they're facing, you come up with the functional need that is not being met."
+
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
+    
     return Response({
-        "prompt": users_and_problem + " " + functional_need
+        "message": responsebyChatBot
     }, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
@@ -223,13 +245,35 @@ def research_emotional_needs(request):
     users_and_problem = data.get('users_and_problem')
     emotional_need = data.get('emotional_need')
     
+    members_and_focus = MembersAndFocus.objects.filter(team_id=team_id).first()
+    
     print (team_id, users_and_problem, emotional_need)
     
     if not team_id:
         return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "A group of engineering students are meeting to come up with a business idea. " + 
+        "They've decided to focus on " + members_and_focus.high_level_problem + ". " + 
+        "They've identified a problem that a user type has: " + users_and_problem + ". " +
+        "What emotional need of the user is not being met due to this problem?"
+    )
+
+    systemPrompt = "You are a researcher. Given a user and a problem they're facing, you come up with the emotional need that is not being met."
+
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
+    
     return Response({
-        "prompt": users_and_problem + " " + emotional_need
+        "message": responsebyChatBot
     }, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
@@ -241,13 +285,40 @@ def research_root_cause(request):
     present_state = data.get('present_state')
     desired_state = data.get('desired_state')
     
+    members_and_focus = MembersAndFocus.objects.filter(team_id=team_id).first()
+    
     print (team_id, present_state, desired_state)
     
     if not team_id:
         return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "A group of engineering students are meeting to come up with a business idea. " + 
+        "They've decided to focus on " + members_and_focus.high_level_problem + ". " + 
+        "They've identified a problem that a user type has: " + present_state + ". " +
+        "Perform root cause analysis of this problem and show all 5 steps of asking why, why, ..." + 
+        ""
+    )
+
+    systemPrompt = (
+            "You are a business development coach. Given a problem that a user type is facing, you perform root cause analysis." +
+            "Do this by asking why the user is facing the problem? When you have an answer, ask why again 4 more times."
+        )
+    
+
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
+    
     return Response({
-        "prompt": present_state + " " + desired_state
+        "message": responsebyChatBot
     }, status=status.HTTP_200_OK)
     
     
@@ -261,13 +332,56 @@ def brainstorm_approach(request):
     # approach can be economic, technological, behavioral
     approach = data.get('approach')
     
+    opp_discovery = OpportunityDiscovery.objects.filter(team_id=team_id).first()
+    user_need = UserNeed.objects.filter(team_id=team_id).first()
+    hmw = HowMightWe.objects.filter(team_id=team_id).first()
+    
+    match approach:
+        case "economic":
+            approach_prompt = "Financial incentives that encourage users to modify current practices."
+        case "technological":
+            approach_prompt = "Technologies that either remove or directly address the problem."
+        case "behavioral":
+            approach_prompt = "Information/ education that persuade users to modify current practices."
+        case _:
+            approach_prompt = "Unknown approach type."
+            
     print (team_id, approach)
     
     if not team_id:
         return Response({"error": "Missing team_id"}, status=status.HTTP_400_BAD_REQUEST)
 
+    # opp_discovery.problem_to_investigate
+    # user_need.first_customer
+    # hmw.how_might_we
+    
+    # Use a pre-trained OpenAI API call to suggest focus area based on the entered Step 1 information
+    userPrompt = (
+        "A group of engineering students are meeting to come up with a business idea. " + 
+        "They've decided to focus on solving this problem: " + opp_discovery.problem_to_investigate + ". " + 
+        "They've decided that their main customer/user is: " + user_need.first_customer + ". " +
+        "They ask themselves, how might we: " + hmw.how_might_we + ". " +
+        "Your task is to ideate up to 7 possible solutions from an " + approach + " angle. Meaning " + approach_prompt
+    )
+
+    systemPrompt = (
+            "You are a business development coach. Given a problem, a user type and a 'how might we...' statement, " +
+            "you come with possible solutions to solve the problem for that user."
+        )
+    
+
+    print("PROMPT")
+    print("--------")
+    print(userPrompt)
+    
+    responsebyChatBot = ai.prompt(systemPrompt, userPrompt)
+
+    print("RESPONSE")
+    print("--------")
+    print(responsebyChatBot)
+    
     return Response({
-        "prompt": approach
+        "message": responsebyChatBot
     }, status=status.HTTP_200_OK)
     
 

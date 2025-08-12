@@ -161,6 +161,10 @@ https://picsum.photos/1000/500
 
             console.log(usersAndProblem, functionalNeed);
 
+            // Add spinner and disable button
+            aiButton.prop('disabled', true);
+            aiButton.append(' <i class="fas fa-spinner fa-spin" id="focus_area_spinner"></i>');
+
             const headers = {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken'),
@@ -180,10 +184,17 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested successfully:', response);
-                    aiOutputCont.html(response.prompt).show();
+                    aiOutputCont
+                        .html(response.message.replace(/\n/g, "<br>"))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting:', xhr.responseText || error);
+                },
+                complete: function () {
+                    // Remove spinner and enable button
+                    $('#focus_area_spinner').remove();
+                    aiButton.prop('disabled', false);
                 }
             });
         });
@@ -195,6 +206,10 @@ https://picsum.photos/1000/500
             const emotionalNeed = aiButton.siblings('textarea').val();
 
             console.log(usersAndProblem, emotionalNeed);
+
+            // Add spinner and disable button
+            aiButton.prop('disabled', true);
+            aiButton.append(' <i class="fas fa-spinner fa-spin" id="focus_area_spinner"></i>');
 
             const headers = {
                 'Content-Type': 'application/json',
@@ -215,10 +230,17 @@ https://picsum.photos/1000/500
                 }),
                 success: function (response) {
                     console.log('Suggested successfully:', response);
-                    aiOutputCont.html(response.prompt).show();
+                    aiOutputCont
+                        .html(response.message.replace(/\n/g, "<br>"))
+                        .show();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error suggesting:', xhr.responseText || error);
+                },
+                complete: function () {
+                    // Remove spinner and enable button
+                    $('#focus_area_spinner').remove();
+                    aiButton.prop('disabled', false);
                 }
             });
         });
